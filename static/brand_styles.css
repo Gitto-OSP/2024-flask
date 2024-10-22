@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9faf9;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.brand-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.brand-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+.image-section {
+    flex: 1;
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 10px;
+}
+
+.thumbnails img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.thumbnails img:hover {
+    transform: scale(1.1);
+}
+
+.brand-info-section {
+    flex: 2;
+}
+
+.brand-info {
+    border-left: 4px solid #2E6E2B;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.brand-info h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.representative {
+    font-size: 1rem;
+    color: #666;
+}
+
+.instagram {
+    font-size: 1rem;
+    color: #ff69b4;
+    margin-top: 5px;
+}
+
+.discount-banner {
+    background-color: #ffd5d5;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.discount-banner p {
+    font-size: 1.2rem;
+    color: #e63946;
+}
+
+.brand-description {
+    line-height: 1.6;
+}
+
+.brand-description h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
