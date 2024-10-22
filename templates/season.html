@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+{% block section %}
+
+<div class="content__header">
+    <a class="register__btn" href="">부스 등록하기</a>
+    <h1>시즌/대동제</h1>
+</div>
+<img src ="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
+<div class="filter__area">
+    <ul>
+        <li>총 <span id="number_itms"></span>86 개 상품
+        <li>필터 <span id="filter_str"></span>
+        <script src="scriptname.js"></script>
+    </ul>
+</div>
+<div class="item__list">
+    <script>
+        var k = 10;
+        for(var i = 0; i<k; i++){
+            document.write(`
+            <div class=\"list__obj\">
+                <a href="/info_item">
+                <img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="listobj_textarea">
+                    <div class="listobj_place">포관11</div>
+                    <div class="listobj_title">부스명</div>
+                    <div class="listobj_desc">부스설명</div>
+                </div>
+            </div>
+            `);
+        }
+    </script>
+</div>
+<div class="pagenation">
+    <script>
+        document.write("<button>\<</button>")
+        for(var j = 1; j<=5; j++){
+            document.write("<a href=\"\"> "+j+" </a>")
+        }
+        document.write("<button>\></button>")
+    </script>
+</div>
+{% endblock section %}
