@@ -11,5 +11,9 @@ def hello():
 def view_list():
     return render_template("season.html")
 
+@application.route("/review")
+def view_review():
+    return render_template("review.html")
+
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=Ture)
