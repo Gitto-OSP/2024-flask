@@ -1,0 +1,30 @@
+*{
+    background-color:white;
+}
+p{
+    text-align:center;
+    color:black;
+    font-size: 30px;
+    font-weight:550;
+    padding-top:150px;
+
+    
+}
+.container{
+    align-items:center;
+    display:grid;
+    padding-left:20px;
+    grid-template-rows:1fr 1fr;
+    grid-template-columns:500px 500px 500px;
+}
+
+div.item{
+    background-color:#F1F5F2;
+    border-radius: 10%;
+    width:400px;
+    height:300px;
+    margin:10px;
+    padding:10px;
+    align-items: center;
+}
+
