@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar__topbox">
+            <div class="navbar__top">
+                <a class="logo" href="">벗터</a>
+                <ul class="account__logout">
+                    <li><a href="/login">로그인</a>
+                    <li><a href="/signin">회원가입</a>
+                </ul>
+                <ul class="account__login">
+                    <li><a href="/logout">로그아웃</a>
+                    <li><a href="/mypage">마이페이지</a>
+                    <li><img src ="/static/image/user_img.png" width="48px;" height="48px" style="background-color: white;">
+                </ul>
+            </div>
+        </div>
+        <div class="navbar__under">
+            <ul class="category">
+                <li><a href="/season">시즌/대동제</a>
+                <li><a href="/fleamarket">중고거래</a>
+                <li><a href="/gonggu">공동구매</a>
+                <li><a href="/graduatebrands">동문브랜드</a>
+            </ul>
+        </div>
+    </nav>
+    <section>
+        <div class="content__area">
+            {%block section%}
+            {%endblock section%}
+        </div>
+    </section>
+</body>
+<footer>
+    <div class="footerbar">
+        <ul class="footer__btns">
+            <li><a href="">회사소개</a>
+            <li><a>|</a>
+            <li><a href="">이용약관</a>
+            <li><a>|</a>
+            <li><a href="">개인정보처리방침</a>
+            <li><a>|</a>
+            <li><a href="">고객센터</a>
+            <li><a>|</a>
+            <li><a href="">입점/제휴문의</a>
+            <li><a>|</a>
+            <li><a href="">이화인인증</a>
+        </ul>
+    </div>
+</footer>
+</html>
