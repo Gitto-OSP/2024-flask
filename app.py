@@ -5,7 +5,8 @@ application = Flask(__name__)
 
 @application.route("/")
 def hello():
-    return render_template("index.html")
+    render_template("index.html")
+    return render_template("season.html")
 
 @application.route("/season")
 def view_list():
