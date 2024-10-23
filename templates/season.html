@@ -5,18 +5,18 @@
     <a class="register__btn" href="/reg_items">부스 등록하기</a>
     <h1>시즌/대동제</h1>
 </div>
-<img src ="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
+<img src="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
 <div class="filter__area">
     <ul>
         <li>총 <span id="number_itms"></span>86 개 상품
         <li>필터 <span id="filter_str"></span>
-        <script src="scriptname.js"></script>
+            <script src="scriptname.js"></script>
     </ul>
 </div>
 <div class="item__list">
     <script>
         var k = 10;
-        for(var i = 0; i<k; i++){
+        for (var i = 0; i < k; i++) {
             document.write(`
             <div class=\"list__obj\">
                 <a href="/info_item">
@@ -35,8 +35,8 @@
 <div class="pagenation">
     <script>
         document.write("<button>\<</button>")
-        for(var j = 1; j<=5; j++){
-            document.write("<a href=\"\"> "+j+" </a>")
+        for (var j = 1; j <= 5; j++) {
+            document.write("<a href=\"\"> " + j + " </a>")
         }
         document.write("<button>\></button>")
     </script>
