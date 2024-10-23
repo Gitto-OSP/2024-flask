@@ -9,7 +9,8 @@
 </head>
 
 <body>
-    <!--header-->
+    {%extends "index.html"%}
+    {%block section%}
 
     <div id="writeContainer">
         <h1>상품 등록하기</h1>
@@ -100,8 +101,7 @@
         </form>
     </div>
 
-    <!--footer-->
-
+    {%endblock section%}
     <script src="../static/reg.js"></script>
 </body>
 

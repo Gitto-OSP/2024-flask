@@ -80,10 +80,11 @@
   /* 마켓 메뉴 네비게이션 바 */
   .navbar__under{
     background-color: white;
-    width: 700px;
+    width: 830px;
     height:55px;
     margin:0 auto;
   }
+
   .navbar__under ul{
     height: 0px;
     list-style-type: none;
