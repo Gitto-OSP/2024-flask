@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sys
 
 application = Flask(__name__)
@@ -47,6 +47,28 @@ def view_regreviews():
 @application.route("/signin")
 def view_signin():
     return render_template("signin.html")
+
+
+@application.route("/submit_item")
+def reg_item_submit():
+    idInput=request.args.get("idInput")
+    productNameInput=request.args.get("productNameInput")
+    priceInput=request.args.get("priceInput")
+    reginInput=request.args.get("tradeRegions[]")
+    productStateInput=request.args.get("choice")
+    description=request.args.get("description")
+
+    print(idInput,productNameInput,priceInput,reginInput,productStateInput)
+    #return render_template("reg_items.html")
+
+
+@application.route("/submit_item_post",methods=['POST'])
+def reg_item_submit_post():
+    image_file=request.files["file"]
+    image_file.save("static/image/{}".format(image_file.filename))
+    data=request.form
+    print(data)
+    return render_template("submit_item_result.html",data=data,img_path="static/image/{}".format(image_file.filename))
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=Ture)
