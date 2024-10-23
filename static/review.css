@@ -27,4 +27,7 @@ div.item{
     padding:10px;
     align-items: center;
 }
+div.item:hover{
+    background-color:gray;
+}
 
