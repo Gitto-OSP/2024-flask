@@ -41,7 +41,7 @@ def view_regitems():
 
 @application.route("/reg_reviews")
 def view_regreviews():
-    return render_template("reg_revies.html")
+    return render_template("reg_reviews.html")
 
 @application.route("/signin")
 def view_signin():
