@@ -15,53 +15,53 @@
     <div id="writeContainer">
         <h1>상품 등록하기</h1>
 
-        <form>
+        <form action="/submit_item_post" enctype="multipart/form-data" method="post">
             <div>
                 <h2>기본 정보</h2>
                 <div id="basicInfoContainer">
-                    <label for="idInput">ID</label>
-                    <input type="text" id="idInput" placeholder="입력" required>
+                    <label for="seller">ID</label>
+                    <input type="text" name="seller" id="seller" placeholder="입력" required>
 
-                    <label for="productNameInput">상품 이름</label>
-                    <input type="text" id="productNameInput" placeholder="입력" required>
+                    <label for="name">상품 이름</label>
+                    <input type="text" name="name" id="name" placeholder="입력" required>
 
-                    <label for="priceInput">가격</label>
-                    <input type="number" id="priceInput" placeholder="입력" required>
+                    <label for="price">가격</label>
+                    <input type="number" name="price" id="priceInput" placeholder="입력" required>
 
-                    <label for="regionInput">거래 지역</label>
+                    <label for="tradeRegions">거래 지역</label>
                     <div id="checkboxContainer">
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="engineering">
+                            <input type="checkbox" name="tradeRegions" value="engineering">
                             공대
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="posko">
+                            <input type="checkbox" name="tradeRegions" value="posko">
                             포관
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="ecc">
+                            <input type="checkbox" name="tradeRegions" value="ecc">
                             ECC
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="studentCC">
+                            <input type="checkbox" name="tradeRegions" value="studentCC">
                             학문관
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="frontEntrance">
+                            <input type="checkbox" name="tradeRegions" value="frontEntrance">
                             정문
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="post">
+                            <input type="checkbox" name="tradeRegions" value="post">
                             택배
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions[]" value="etc">
+                            <input type="checkbox" name="tradeRegions" value="etc">
                             기타
                         </label>
                     </div>
@@ -88,21 +88,22 @@
 
             <div>
                 <h2>상품 사진</h2>
-                <input type="file" id="imageUpload" accept="image/*" multiple required>
+                <input type="file" name="file" id="imageUpload" multiple required>
                 <div id="previewContainer"></div>
             </div>
 
             <div>
                 <h2>상품 설명</h2>
-                <textarea id="write-description" placeholder="상품에 대한 자세한 설명을 입력하세요." required></textarea>
+                <textarea id="write-description" name="userComments" placeholder="상품에 대한 자세한 설명을 입력하세요."
+                    required></textarea>
             </div>
 
             <input class="submit-btn" type="submit" value="등록하기">
         </form>
     </div>
 
-    {%endblock section%}
     <script src="../static/reg.js"></script>
+    {%endblock section%}
 </body>
 
 </html>

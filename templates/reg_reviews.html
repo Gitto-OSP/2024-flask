@@ -1,4 +1,69 @@
-{%extends "index.html"%}
-{%block section%}
-리뷰 등록 화면입니다. 
-{% endblock section %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/reg.css">
+    <link rel="stylesheet" href="../static/reviewStar.css">
+</head>
+
+<body>
+    {%extends "index.html"%}
+    {%block section%}
+
+    <div id="writeContainer">
+        <h1>리뷰 작성하기</h1>
+
+        <form action="/submit_review_post" enctype="multipart/form-data" method="post">
+            <div>
+                <h2>기본 정보</h2>
+                <div id="basicInfoContainer">
+                    <label for="seller">ID</label>
+                    <input type="text" name="seller" id="seller" placeholder="입력" required>
+
+                    <label for="name">상품 이름</label>
+                    <input type="text" name="name" id="name" placeholder="입력" required>
+
+                    <label for="price">리뷰 제목</label>
+                    <input type="number" name="price" id="priceInput" placeholder="입력" required>
+
+                    <label>배꽃 점수</label>
+                    <div id="rating">
+                        <input type="radio" name="star" id="star1" class="startInput" value="1">
+                        <label for="star1" id="rating1" class="starLabel"></label>
+
+                        <input type="radio" name="star" id="star2" class="startInput" value="2">
+                        <label for="star2" id="rating2" class="starLabel"> </label>
+
+                        <input type="radio" name="star" id="star3" class="startInput" value="3">
+                        <label for="star3" id="rating3" class="starLabel"> </label>
+
+                        <input type="radio" name="star" id="star4" class="startInput" value="4">
+                        <label for="star4" id="rating4" class="starLabel"> </label>
+
+                        <input type="radio" name="star" id="star5" class="startInput" value="5">
+                        <label for="star5" id="rating5" class="starLabel"> </label>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div>
+                <h2>리뷰 사진</h2>
+                <input type="file" name="file" id="imageUpload" multiple required>
+                <div id="previewContainer"></div>
+            </div>
+
+            <div>
+                <h2>리뷰 글</h2>
+                <textarea id="write-description" name="userComments" placeholder="상품에 대한 자세한 설명을 입력하세요."
+                    required></textarea>
+            </div>
+
+            <input class="submit-btn" type="submit" value="등록하기">
+        </form>
+    </div>
+    <script src="../static/reg.js"></script>
+    <script src="../static/reviewStar.js"></script>
+    {% endblock section %}
+</body>
