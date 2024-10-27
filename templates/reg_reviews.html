@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../static/reg.css">
+    <link rel="stylesheet" href="../static/reviewStar.css">
 </head>
 
 <body>
@@ -25,9 +26,22 @@
                     <label for="price">리뷰 제목</label>
                     <input type="number" name="price" id="priceInput" placeholder="입력" required>
 
-
+                    <label>배꽃 점수</label>
                     <div id="rating">
+                        <input type="radio" name="star" id="star1" class="startInput" value="1">
+                        <label for="star1" id="rating1" class="starLabel"></label>
 
+                        <input type="radio" name="star" id="star2" class="startInput" value="2">
+                        <label for="star2" id="rating2" class="starLabel"> </label>
+
+                        <input type="radio" name="star" id="star3" class="startInput" value="3">
+                        <label for="star3" id="rating3" class="starLabel"> </label>
+
+                        <input type="radio" name="star" id="star4" class="startInput" value="4">
+                        <label for="star4" id="rating4" class="starLabel"> </label>
+
+                        <input type="radio" name="star" id="star5" class="startInput" value="5">
+                        <label for="star5" id="rating5" class="starLabel"> </label>
                     </div>
 
 
@@ -50,5 +64,6 @@
         </form>
     </div>
     <script src="../static/reg.js"></script>
+    <script src="../static/reviewStar.js"></script>
     {% endblock section %}
 </body>
