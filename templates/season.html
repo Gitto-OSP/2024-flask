@@ -1,3 +1,10 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Butteo:Season</title>
+    <link rel="stylesheet" href="../static/itemList.css">
+</head>
+
 {% extends "index.html" %}
 {% block section %}
 
@@ -38,12 +45,16 @@
         var curr_page = 1;
         document.write("<button>\<</button>");
         for (var j = 1; j <= 5; j++) {
-            document.write("<a id=\"page"+j+"\" href=\"\"> " + j + " </a>");
+            document.write("<button id=\"page"+j+"\" onClick=\"clickPagenation(this)\">" + j + " </a>");
             if(curr_page == j){
                 document.getElementById("page"+j).setAttribute("style","text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
             }
         }
         document.write("<button>\></button>");
+        function clickPagenation(element){
+            var id = $(element).attr('id');
+            document.getElementById("page"+id).setAttribute("style","text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
+        }
     </script>
 </div>
 {% endblock section %}
