@@ -8,8 +8,9 @@
 <img src="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
 <div class="filter__area">
     <ul>
-        <li>총 <span id="number_itms"></span>86 개 상품
-        <li>필터 <span id="filter_str"></span>
+        <li>총 <span id="number_itms">00</span> 개 상품
+        <li>필터 <span id="filter_str"> > 필터이름</span>
+            <!---필터 드롭다운 메뉴 추가--->
             <script src="scriptname.js"></script>
     </ul>
 </div>
@@ -34,11 +35,15 @@
 </div>
 <div class="pagenation">
     <script>
-        document.write("<button>\<</button>")
+        var curr_page = 1;
+        document.write("<button>\<</button>");
         for (var j = 1; j <= 5; j++) {
-            document.write("<a href=\"\"> " + j + " </a>")
+            document.write("<a id=\"page"+j+"\" href=\"\"> " + j + " </a>");
+            if(curr_page == j){
+                document.getElementById("page"+j).setAttribute("style","text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
+            }
         }
-        document.write("<button>\></button>")
+        document.write("<button>\></button>");
     </script>
 </div>
 {% endblock section %}
