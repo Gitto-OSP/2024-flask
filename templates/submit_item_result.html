@@ -1,0 +1,48 @@
+<p>
+    판매자 {{data.seller}}<br>
+    상품 이름 {{data.name}}<br>
+    가격 {{data.price}}<br>
+<ul>
+    {% for region in data.getlist('tradeRegions') %}
+    {% if region == "engineering" %}
+    <li>공대</li>
+    {% endif %}
+    {% if region == "posko" %}
+    <li>포관</li>
+    {% endif %}
+    {% if region == "ecc" %}
+    <li>ECC</li>
+    {% endif %}
+    {% if region == "studentCC" %}
+    <li>학문관</li>
+    {% endif %}
+    {% if region == "frontEntrance" %}
+    <li>정문</li>
+    {% endif %}
+    {% if region == "post" %}
+    <li>택배</li>
+    {% endif %}
+    {% if region == "etc" %}
+    <li>기타</li>
+    {% endif %}
+    {% endfor %}
+</ul>
+<br>
+
+상태는
+{% if data['choice'] == "optionBrandNew" %}
+새 상품
+{% endif %}
+{% if data['choice'] == "optionLikeNew" %}
+거의 새 것
+{% endif %}
+{% if data['choice'] == "optionUsed" %}
+중고 상품
+{% endif %}
+</p>
+<img src="{{img_path}}" />
+
+<p>
+    상세 설명::
+    {{data.userComments}}
+</p>
