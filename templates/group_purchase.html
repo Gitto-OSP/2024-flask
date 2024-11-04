@@ -14,19 +14,19 @@
     <div class="container">
         <section class="product-section">
             <div class="product-image">
-                <img src="../static/image/학잠썸네일.jpg" alt="Jacket Image">
+                <img src="{{img_path}}" alt="Image">
             </div>
             <div class="product-details">
-                <h1>한문 교표 학잠 공구합니다!!!!</h1>
-                <p class="price">55,000원</p>
+                <h1>{{data.head}}</h1>
+                <p class="price">{{data.priceInput}}원</p>
                 <div class="supplier-info">
-                    <p><strong>공구자:</strong> ewha123</p>
-                    <p><strong>물품:</strong> 4온스 이화그린 학잠</p>
-                    <p><strong>업체:</strong> 팀팩토리</p>
-                    <p><strong>설명:</strong> 31장 구매 시 총대에게 1벌 무료로 들어가시는 분 들어와주세요!</p>
+                    <p><strong>공구자: </strong>{{data.idInput}}</p>
+                    <p><strong>물품: </strong>{{data.productNameInput}}</p>
+                    <p><strong>업체: </strong>{{data.company}}</p>
+                    <p><strong>설명: </strong>{{data.description}}</p>
                 </div>
                 <div class="size-options">
-                    <label for="size">옵션:</label>
+                    <label for="size">옵션: </label>
                     <select id="size">
                         <option value="S">S</option>
                         <option value="M">M</option>
@@ -51,12 +51,10 @@
         </section>
 
         <!-- 상세 정보 -->
-        <section class="additional-info">
-            <img src="../static/image/한문교표.jpg" alt="Additional Product Info">
-        </section>
+        <!-- <section class="additional-info">
+            <img src="{{img_path}}" alt="Additional Product Info">
+        </section> -->
     </div>
-
-    <script src="scripts.js"></script>
 </body>
 </html>
 {% endblock section %}
