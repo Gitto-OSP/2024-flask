@@ -1,8 +1,7 @@
 {% extends "index.html" %}
 
 {% block section %}
-    아이템 상세 조회 화면입니다.
-{% endblock section %}    
+    
 <!DOCTYPE html>
 <html lang="kor">
 <head>
@@ -18,22 +17,21 @@
             <div class="image-gallery">
                 <!-- 썸네일 리스트 -->
                 <div class="thumbnail-container">
-                    <img src="../static/image/계산기.jpeg" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
-                    <!-- <img src="small-image2.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage('large-image2.jpg')">
-                    <img src="small-image3.jpg" alt="Thumbnail 3" class="thumbnail" onclick="changeImage('large-image3.jpg')"> -->
+                    <img src="{{img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
                 </div>
                 <!-- 큰 이미지 -->
                 <div class="large-image-container">
-                    <img id="largeImage" src="../static/image/계산기.jpeg" alt="Large Product Image">
+                    <img id="largeImage" src="{{img_path}}" alt="상품 사진">
                 </div>
             </div>
         
             <div class="product-info">
-                <h2>공학용 계산기</h2>
-                <p>가격: 20000원</p>
-                <p>판매자: abc100</p>
-                <p>직거래 장소: 공학관</p>
-                <p>설명: 한 학기 썼고 작동 잘 됩니다!</p>
+                <h2>{{data.productNameInput}}</h2>
+                <p>가격: {{data.priceInput}}원</p>
+                <p>판매자: {{data.idInput}}</p>
+                <p>직거래 장소: {{data.tradeRegions[]}}</p>
+                <p>상품 상태: {{data.choice}}</p>
+                <p>설명: {{data.description}}</p>
                 <div class="button-container">
                     <button>관심</button>
                     <button>바로 구매</button>
@@ -44,16 +42,4 @@
     
 </body>
 </html>
-<p>
-    Seller {{data.idInput}} sells {{data.productNameInput}} 
-    and its price is {{data.priceInput}}.
-
-    Seller wants to make a deal at
-    {{data.tradeRegions[]}}
-
-    The item is 
-    {{data.choice}}
-
-    The more description about the item is below
-    {{data.description}}
-</p>
+{% endblock section %}
