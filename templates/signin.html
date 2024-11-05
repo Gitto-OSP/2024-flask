@@ -1,4 +1,188 @@
-{%extends "index.html"%}
-{%block section%}
-회원가입 화면입니다.
-{% endblock section %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <!-- <link rel="stylesheet" href="static/signin.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
+</head>
+<body>
+
+    <div class="signup-container">
+        <h2>회원가입</h2>
+
+        <form id="signupForm">
+            <!-- 아이디 입력 -->
+            <label for="id"><span class="required">*</span> <span class="label-text">ID</span></label>
+            <div class="input-group">
+                <input type="text" id="id" placeholder="아이디" required>
+                <button type="button" id="checkIdButton">중복체크</button>
+            </div>
+            <small id="idMessage" class="message"></small>
+
+            <!-- 비밀번호 입력 -->
+            <label for="password"><span class="required">*</span> <span class="label-text">비밀번호</span></label>
+            <input type="password" id="password" placeholder="비밀번호" required>
+            <small id="passwordMessage" class="message"></small>
+            <div class="password-criteria">
+                <label><input type="checkbox" id="hasUpperCase" disabled> 영문 대문자</label>
+                <label><input type="checkbox" id="hasNumber" disabled> 숫자</label>
+                <label><input type="checkbox" id="hasSpecialChar" disabled> 특수문자 (~!@#$%^_)</label>
+                <label><input type="checkbox" id="minLength" disabled> 8자리 이상</label>
+            </div>
+
+            <!-- 비밀번호 확인 -->
+            <label for="confirmPassword"><span class="required">*</span> <span class="label-text">비밀번호 확인</span></label>
+            <input type="password" id="confirmPassword" placeholder="비밀번호 확인" required>
+            <small id="confirmMessage" class="message"></small>
+
+            <!-- 이메일 입력 -->
+            <label for="email"><span class="required">*</span> <span class="label-text">이메일</span></label>
+            <div class="email-container">
+                <input type="text" id="email" placeholder="이메일" required>
+                <select id="emailDomain">
+                    <option value="@ewhain.net">@ewhain.net</option>
+                    <option value="@ewha.ac.kr">@ewha.ac.kr</option>
+                </select>
+            </div>
+            <small id="emailMessage" class="message email-info">이화 도메인(@ewhain.net, @ewha.ac.kr)만 가입 가능합니다.</small>
+
+            <!-- 핸드폰 번호 입력 -->
+            <label for="phone"><span class="required">*</span> <span class="label-text">핸드폰 번호</span></label>
+            <input type="tel" id="phone" placeholder="핸드폰 번호" required pattern="[0-9]{10,11}">
+            <small id="phoneMessage" class="message"></small>
+
+            <!-- 회원가입 버튼 -->
+            <button type="submit" id="signupButton">회원가입</button>
+        </form>
+    </div>
+
+    <script>
+    // 중복 아이디 리스트 예시
+    const existingIds = ["user1", "user2", "admin", "test123"];
+
+    // ID 중복 검사 로직
+    document.getElementById("checkIdButton").addEventListener("click", function() {
+        const idInput = document.getElementById("id").value.trim();
+        const idMessage = document.getElementById("idMessage");
+
+        if (idInput === "") {
+            idMessage.textContent = "아이디를 입력해주세요.";
+            idMessage.style.color = "red";
+            return;
+        }
+
+        // ID 중복 검사
+        if (existingIds.includes(idInput)) {
+            idMessage.textContent = "사용 불가능한 아이디입니다.";
+            idMessage.style.color = "red";
+        } else {
+            idMessage.textContent = "사용 가능한 아이디입니다.";
+            idMessage.style.color = "green";
+        }
+    });
+
+    // 비밀번호 유효성 검사
+    document.getElementById("password").addEventListener("input", function() {
+        const passwordInput = document.getElementById("password").value;
+
+        const hasUpperCase = /[A-Z]/.test(passwordInput);
+        const hasNumber = /[0-9]/.test(passwordInput);
+        const hasSpecialChar = /[~!@#$%^_]/.test(passwordInput);
+        const minLength = passwordInput.length >= 8;
+
+        document.getElementById("hasUpperCase").checked = hasUpperCase;
+        document.getElementById("hasNumber").checked = hasNumber;
+        document.getElementById("hasSpecialChar").checked = hasSpecialChar;
+        document.getElementById("minLength").checked = minLength;
+
+        const passwordMessage = document.getElementById("passwordMessage");
+        if (!(hasUpperCase && hasNumber && hasSpecialChar && minLength)) {
+            passwordMessage.style.color = "red";
+            passwordMessage.textContent = "비밀번호가 조건에 맞지 않습니다.";
+        } else {
+            passwordMessage.style.color = "green";
+            passwordMessage.textContent = "비밀번호가 조건에 맞습니다.";
+        }
+    });
+
+    // 비밀번호 확인 유효성 검사
+    document.getElementById("confirmPassword").addEventListener("input", function() {
+        const passwordInput = document.getElementById("password").value;
+        const confirmPasswordInput = document.getElementById("confirmPassword").value;
+
+        const confirmMessage = document.getElementById("confirmMessage");
+        if (passwordInput !== confirmPasswordInput) {
+            confirmMessage.style.color = "red";
+            confirmMessage.textContent = "비밀번호와 일치하지 않습니다.";
+        } else {
+            confirmMessage.style.color = "green";
+            confirmMessage.textContent = "비밀번호가 일치합니다.";
+        }
+    });
+
+    // 회원가입 버튼 클릭 시 전체 유효성 검사
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const idInput = document.getElementById("id").value.trim();
+        const idMessage = document.getElementById("idMessage");
+        const passwordInput = document.getElementById("password").value;
+        const passwordMessage = document.getElementById("passwordMessage");
+        const confirmMessage = document.getElementById("confirmMessage");
+        const emailInput = document.getElementById("email").value.trim();
+        const emailMessage = document.getElementById("emailMessage");
+        const phoneInput = document.getElementById("phone").value.trim();
+        const phoneMessage = document.getElementById("phoneMessage");
+
+        // 아이디 중복 체크 확인
+        if (!idMessage || idMessage.textContent !== "사용 가능한 아이디입니다.") {
+            alert("아이디 중복 체크를 해주세요.");
+            return;
+        }
+
+        // 비밀번호 유효성 검사
+        const hasUpperCase = document.getElementById("hasUpperCase").checked;
+        const hasNumber = document.getElementById("hasNumber").checked;
+        const hasSpecialChar = document.getElementById("hasSpecialChar").checked;
+        const minLength = document.getElementById("minLength").checked;
+
+        if (!(hasUpperCase && hasNumber && hasSpecialChar && minLength)) {
+            alert("비밀번호 조건을 모두 만족해야 합니다.");
+            return;
+        }
+
+        // 비밀번호 확인 검사
+        if (passwordInput !== document.getElementById("confirmPassword").value) {
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        // 이메일 유효성 검사
+        if (emailInput === "") {
+            emailMessage.textContent = "이메일을 입력해주세요.";
+            emailMessage.style.color = "red";
+            return;
+        } else {
+            emailMessage.style.color = "gray";
+        }
+
+        // 핸드폰 번호 유효성 검사
+        const phonePattern = /^[0-9]{10,11}$/;
+        if (!phonePattern.test(phoneInput)) {
+            phoneMessage.textContent = "올바른 핸드폰 번호를 입력해주세요.";
+            phoneMessage.style.color = "red";
+            return;
+        } else {
+            phoneMessage.textContent = "";
+        }
+
+        // 모든 조건을 만족하면 회원가입 성공
+        alert("회원가입이 완료되었습니다.");
+        // 여기서 폼을 실제로 제출하거나 추가적인 작업을 수행
+    });
+    </script>
+
+</body>
+</html>
