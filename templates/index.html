@@ -5,21 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar__topbox">
             <div class="navbar__top">
                 <a class="logo" href="">벗터</a>
-                <ul class="account__logout">
-                    <li><a href="/login">로그인</a>
+                <ul id="account_out">
+                    <li class="account_btn" id="login_btn"><!---<a href="/login">--->로그인<!---</a>---></li>
                     <li><a href="/signin">회원가입</a>
                 </ul>
-                <ul class="account__login">
-                    <li><a href="">로그아웃</a>
-                    <li><a href="/mypage">마이페이지</a>
+                <ul id="account_in">
+                    <li class="account_btn" id="logout_btn">로그아웃
+                    <li><a href="/mypage.html">마이페이지</a>
                     <li><img src ="/static/image/user_img.png" width="48px;" height="48px" style="background-color: white;">
                 </ul>
             </div>
@@ -58,4 +57,5 @@
         </ul>
     </div>
 </footer>
+<script src="../static/navbar.js"></script>
 </html>

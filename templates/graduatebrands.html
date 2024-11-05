@@ -1,4 +1,44 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Butteo:Graduates</title>
+    <link rel="stylesheet" href="../static/itemList.css">
+</head>
+
 {%extends "index.html"%}
 {%block section%}
-동문 브랜드 전체조회 화면입니다.
+<div class="content__header">
+    <a class="register__btn" href="/reg_items">브랜드 등록하기</a>
+    <h1>동문 브랜드</h1>
+</div>
+<div class="item__list">
+    <script>
+        var k = 12;
+        for (var i = 0; i < k; i++) {
+            //머지 후 브랜드 상세조회 페이지 등록 필요
+            document.write(`
+            <a href="/info_item">
+                <div class=\"brand__obj\">
+                    <div class="listobj_textarea">
+                        <div class="brandobj_title">브랜드명</div>
+                        <div class="brandobj_event">제휴혜택</div>
+                    </div>
+                </div>
+            </a>
+            `);
+            //<img src="/static/image/tmp_brand_img.jpg" alt="브랜드 이미지" width="300" height="300" style="padding: 10px; border-radius:20px;">
+        }
+    </script>
+</div>
+<div class="pagenation">
+    <script>
+        var curr_page = 1;
+        document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
+        for (var j = 1; j <= 5; j++) {
+            document.write("<span class=\"page_btn\" id=\"page"+j+"\">"+j+"</span>");
+        }
+        document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
+    </script>
+</div>
+<script src="../static/pagenation.js"></script>
 {% endblock section %}
