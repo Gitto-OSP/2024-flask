@@ -45,14 +45,12 @@
 <div class="pagenation">
     <script>
         var curr_page = 1;
-        document.write("<button>\<</button>");
+        document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
         for (var j = 1; j <= 5; j++) {
-            document.write("<button id=\"page"+j+"\" onClick=function() {this.setAttribute(\"style\",\"text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;\")}> " + j + " </a>");
-            if(curr_page == j){
-                document.getElementById("page"+j).setAttribute("style","text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
-            }
+            document.write("<span class=\"page_btn\" id=\"page"+j+"\">"+j+"</span>");
         }
-        document.write("<button>\></button>");
+        document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
     </script>
 </div>
+<script src="../static/pagenation.js"></script>
 {% endblock section %}

@@ -9,14 +9,13 @@
 {%block section%}
 <div class="content__header">
     <a class="register__btn" href="/reg_items">상품 등록하기</a>
-    <h1>중고거래</h1>
+    <h1 id="tmp">중고거래</h1>
 </div>
 <div class="filter__area" style="margin-bottom:20px;">
     <ul>
         <li>총 <span id="number_itms">00</span> 개 상품
         <li>필터 <span id="filter_str"> > 필터이름</span>
             <!---필터 드롭다운 메뉴 추가--->
-            <script src="scriptname.js"></script>
     </ul>
 </div>
 <div class="item__list">
@@ -42,14 +41,12 @@
 <div class="pagenation">
     <script>
         var curr_page = 1;
-        document.write("<button>\<</button>");
+        document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
         for (var j = 1; j <= 5; j++) {
-            document.write("<button id=\"page"+j+"\" onClick=function() {this.setAttribute(\"style\",\"text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;\")}> " + j + " </a>");
-            if(curr_page == j){
-                document.getElementById("page"+j).setAttribute("style","text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
-            }
+            document.write("<span class=\"page_btn\" id=\"page"+j+"\">"+j+"</span>");
         }
-        document.write("<button>\></button>");
+        document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
     </script>
 </div>
+<script src="../static/pagenation.js"></script>
 {% endblock section %}

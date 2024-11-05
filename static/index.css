@@ -13,7 +13,7 @@ ul{
   margin:0px;
 }
 
-ul li a {
+ul li a, .account_btn {
   float:left;
   display: block;
   color: #767676;
@@ -49,11 +49,11 @@ nav {
   list-style-type: none;
 }
 
-.navbar__top ul li{
+.navbar__top ul li, .account__area li{
   float: left;
 }
 
-.navbar__top li a:hover {
+.navbar__top li a:hover, .account__area li:hover, .account_btn:hover {
   color:#191919;
 }
 
@@ -67,15 +67,6 @@ nav {
   padding: 14px 16px;
   text-decoration: none;
 }
-.account__login{
-  /* 로그인, 회원가입 - 로그아웃 상태일 때 활성화*/
-}
-
-.account__logout{
-  /* 로그아웃, 마이페이지 - 로그인 상태일 떄 활성화*/
-  display: none;
-}
-
 
 /* 마켓 메뉴 네비게이션 바 */
 .navbar__under{

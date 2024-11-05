@@ -62,6 +62,7 @@ overflow: hidden;
 .list__obj img{
     width:100%;
     height: auto;
+    border-radius: 20px;
 }
 .list__obj:hover{
     background-color:#D9D9D9;
@@ -94,12 +95,12 @@ overflow: hidden;
     margin: 10px;
     border-radius: 20px;
     background-image: linear-gradient(to top, #107413e6 10%,#00000000 33%),
-    url(./image/tmp_brand_img.jpg);
+    url(./image/item_img.png);
     background-size: contain;
 }
 .brand__obj:hover{
     background-image: linear-gradient(to top, #004702,#00000000 80%),
-        url(./image/tmp_brand_img.jpg);
+        url(./image/item_img.png);
 }
 .brandobj_title{
     font-size: larger;
@@ -118,13 +119,12 @@ overflow: hidden;
     height:50px;
     margin:50px auto;
 }
-.pagenation button{
+.page_btn, .prev_btn, .next_btn{
     float:left;
     display: block;
     padding: 10px;
     margin:10px;
     text-decoration: none;
-    background-color: white;
     border-width: 0px;
 }
 .pagenation button:hover{
