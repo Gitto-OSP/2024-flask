@@ -70,5 +70,13 @@ def reg_items_submit():
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
 
+@application.route("/group_purchase")
+def view_grouppurchase():
+    return render_template("group_purchase.html")
+
+@application.route("/brand_1")
+def view_brand1():
+    return render_template("brand_1.html")
+
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)
