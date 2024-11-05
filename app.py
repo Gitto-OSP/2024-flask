@@ -78,5 +78,9 @@ def view_grouppurchase():
 def view_brand1():
     return render_template("brand_1.html")
 
+@application.route("/mygroup_purchase")
+def mygroup_purchase():
+    return render_template("mygroup_purchase.html")
+
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)
