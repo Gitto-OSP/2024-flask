@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+
+{% block section %}
+    
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중고거래</title>
+    <link rel="stylesheet" href="../static/trans_styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="product-detail">
+            <div class="image-gallery">
+                <!-- 썸네일 리스트 -->
+                <div class="thumbnail-container">
+                    <img src="{{img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
+                </div>
+                <!-- 큰 이미지 -->
+                <div class="large-image-container">
+                    <img id="largeImage" src="{{img_path}}" alt="상품 사진">
+                </div>
+            </div>
+        
+            <div class="product-info">
+                <h2>{{data.productNameInput}}</h2>
+                <p>가격: {{data.priceInput}}원</p>
+                <p>판매자: {{data.idInput}}</p>
+                <p>직거래 장소: {{data.tradeRegions[]}}</p>
+                <p>상품 상태: {{data.choice}}</p>
+                <p>설명: {{data.description}}</p>
+                <div class="button-container">
+                    <button>관심</button>
+                    <button>바로 구매</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+{% endblock section %}
