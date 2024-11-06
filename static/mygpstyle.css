@@ -14,12 +14,11 @@ a{text-decoration:none}
 
 .tab{display:none}
 .tab.on{display:block}
-.tab-container{display:flex;justify-content:center;gap:20px;margin-top:50px;font-size:18px}
-.tabs{padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;background:#f2f2f2;transition:all .3s}
+.tab-container{display:flex;justify-content:center;margin-top:50px;font-size:18px}
+.tabs{width: 100%; padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;background:#f2f2f2;transition:all .3s}
 .tabs:hover{padding:10px 30px}
 .tabs.on{color:#fff;background:#0F4012}
 .tab_wrap{margin-top:30px;padding:50px;text-align:center;background:#f2f2f2}
-
 
 .bar{
   color: #008813;
