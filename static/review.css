@@ -46,3 +46,20 @@ a{
 a:hover{
     color:gray;
 }
+
+.writer, .title{
+    float: left;
+    background:none;
+    margin: 10px;
+    font-size:18px;
+    position:relative;
+    left:40px;
+    top:200px;
+}
+.writer{
+    font-weight:bolder;
+}
+
+.writer:hover, .title:hover{
+    color:#F1F5F2;
+}
