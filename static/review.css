@@ -43,8 +43,8 @@ a{
     
 }
 
-a:hover{
-    color:grey;
+.title:hover{
+    color:gray;
 }
 
 .writer, .title{
