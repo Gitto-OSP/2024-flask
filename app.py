@@ -48,9 +48,13 @@ def view_regreviews():
 def view_signin():
     return render_template("signin.html")
 
-@application.route('/')
-def index():
+@application.route('/specificReview')
+def specificReview():
     return render_template('specificReview.html')
+
+@application.route('/writerReview')
+def writerReview():
+    return render_template('writerReview.html')
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
