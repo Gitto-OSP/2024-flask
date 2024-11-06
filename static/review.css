@@ -4,9 +4,9 @@
 p{
     text-align:center;
     position:center;
-    color:black;
+    color:grey;
     font-size: 30px;
-    font-weight:550;
+    font-weight:500;
     align-items:center;
 }
 .container{
@@ -44,17 +44,18 @@ a{
 }
 
 a:hover{
-    color:gray;
+    color:grey;
 }
 
 .writer, .title{
     float: left;
     background:none;
+    border:none;
     margin: 10px;
     font-size:18px;
     position:relative;
-    left:40px;
-    top:200px;
+    left:20px;
+    top:180px;
 }
 .writer{
     font-weight:bolder;
