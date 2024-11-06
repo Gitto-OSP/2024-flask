@@ -3,26 +3,26 @@
 }
 p{
     text-align:center;
+    position:center;
     color:black;
     font-size: 30px;
     font-weight:550;
-    padding-top:0px;
-
-    
+    align-items:center;
 }
 .container{
-    align-items: left;
-    padding-left:200px;
+    align-items: center;
+    margin-left:90px;
     display:grid;
     grid-template-rows:300px 300px;
-    grid-template-columns:300px 300px 0px;
+    grid-template-columns:400px 400px 400px;
 }
 
 div.item{
+    flex-direction: row;
     background-color:#F1F5F2;
     border-radius: 10%;
-    width:250px;
-    height:200px;
+    width:300px;
+    height:250px;
     align-items: center;
 }
 div.item:hover{

@@ -48,6 +48,10 @@ def view_regreviews():
 def view_signin():
     return render_template("signin.html")
 
+@application.route('/')
+def index():
+    return render_template('specificReview.html')
+
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
     form_data = request.form
@@ -69,6 +73,18 @@ def reg_items_submit():
     addr=request.args.getlist("tradeRegions")
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
+
+@application.route("/group_purchase")
+def view_grouppurchase():
+    return render_template("group_purchase.html")
+
+@application.route("/brand_1")
+def view_brand1():
+    return render_template("brand_1.html")
+
+@application.route("/mygroup_purchase")
+def mygroup_purchase():
+    return render_template("mygroup_purchase.html")
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)
