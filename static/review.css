@@ -29,3 +29,37 @@ div.item:hover{
     background-color:gray;
 }
 
+div.page{
+    position:absolute;
+    padding-left:630px;
+}
+
+.title {
+    text-align: center;
+    font-weight:bold;
+    color:black;
+    font-family:sans-serif;
+    padding:20px;
+    
+}
+
+.title:hover{
+    color:gray;
+}
+
+.writer, .title{
+    float: left;
+    background:none;
+    margin: 10px;
+    font-size:18px;
+    position:relative;
+    left:40px;
+    top:200px;
+}
+.writer{
+    font-weight:bolder;
+}
+
+.writer:hover, .title:hover{
+    color:#F1F5F2;
+}

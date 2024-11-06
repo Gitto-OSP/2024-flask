@@ -1,22 +1,30 @@
-
-{%extends "index.html"%}
-{%block section%}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="../static/review.css">
-    <script src="../static/review.js"></script>
-    <title>리뷰 전체조회-동문브랜드</title>
-</head>
-<body>
-    <p>리뷰</p>
-    <div class="container">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-    </div>
-</body>
-{%endblock section%}
+<!DOCTYPE html>
+<html lang="ko">
+    {% extends "index.html" %}
+    {% block section %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="../static/review.css">
+        <title>리뷰 전체조회</title>
+    </head>
+    <body>
+        <!--페이지 상단 중앙 제목-->
+        <p>리뷰</p>
+        <!--리뷰 섹션-->
+        <div class="container">
+            <div class="item">
+                <div class="key">
+                    <p class="writer">이화연 |</p>
+                    <a class="title" href=".\specificReview.html">리뷰제목</a>
+                </div>
+            </div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </body>
+    {% endblock section %}
+</html>
