@@ -1,0 +1,78 @@
+/*탭 메뉴 구현*/
+
+*{
+  margin:0; padding:0;
+  font-size:15px; 
+  line-height:1.3;
+}
+body,html {height:100%;margin:0;padding:0;font-family:'Pretendard'}
+ul, li, dl, dt, dd, p, span{margin:0;padding:0}
+a{text-decoration:none}
+li{list-style:none}
+a{text-decoration:none}
+*, :after, :before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+
+.tab{display:none}
+.tab.on{display:block}
+.tab-container{display:flex;justify-content:center;margin-top:50px;font-size:18px}
+.tabs{width: 100%; padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;background:#f2f2f2;transition:all .3s}
+.tabs:hover{padding:10px 30px}
+.tabs.on{color:#fff;background:#0F4012}
+.tab_wrap{margin-top:30px;padding:50px;text-align:center;background:#f2f2f2}
+
+.bar{
+  color: #008813;
+  width : 10px;
+}
+/*tab 1의 css*/
+.list__openedgp{
+  overflow : auto;
+  font-size:15px; 
+  line-height:2.0;
+}
+.btn {
+  position : relative;
+  left: 20px;
+  background : #114B19;
+  color : #ffffff;
+  height : 20px;
+  padding : 0px 10px;
+  border-radius : 5px;
+}
+
+/*tab 2의 css*/
+.list__partedgp{
+  overflow : auto;
+  font-size:15px; 
+  line-height:2.0;
+}
+
+.p2pmail{
+  color:#ffffff;
+}
+
+.listobj_textarea{
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 50px;
+}
+
+.progressbar_container { 
+  width: 100%; background-color: #e0e0e0; height: 20px; border-radius: 10px; position: relative; margin-top: 50px;
+}
+
+.listobj_pbar {
+  width : 20%; background-color: #0F4012; height: 100%; border-radius: 10px;
+} 
+
+.progress_steps {
+  display: flex; justify-content: space-between; width: 100%; position : absolute; top:-20px; font-size: 10px; color: #A9A9A9;
+}
+
+.progress_steps span { position: absolute; } 
+
+.progress_steps span:nth-child(1) { left: 20%; transform: translateX(-50%); } 
+.progress_steps span:nth-child(2) { left: 40%; transform: translateX(-50%); }
+.progress_steps span:nth-child(3) { left: 60%; transform: translateX(-50%); }  
+.progress_steps span:nth-child(4) { left: 80%; transform: translateX(-50%); }
+.progress_steps span:nth-child(5) { right: 0; transform: translateX(-50%); }

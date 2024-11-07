@@ -6,7 +6,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="stylesheet" href="../static/review.css">
-        <script src="../static/review.js"></script>
         <title>리뷰 전체조회</title>
     </head>
     <body>
@@ -16,8 +15,9 @@
         <div class="container">
             <div class="item">
                 <div class="key">
-                    <p class="writer">이화연 |</p>
-                    <a class="title" href=".\specificReview.html">리뷰제목</a>
+                    <button class="writer" onclick="window.location.href='/specificReview'">
+                        이화연 |
+                    <button class="title" onclick="window.location.href='/writerReview'">리뷰제목</a>
                 </div>
             </div>
             <div class="item"></div>
