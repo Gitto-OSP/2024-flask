@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+
+<body>   
+
+    <div class="login-container">
+        <h2 class="title">로그인</h2>
+        <form id="loginForm" onsubmit="return loginUser()">
+            <input type="text" id="userId" class="input-field" placeholder="아이디" required>
+            <input type="password" id="password" class="input-field" placeholder="비밀번호" required>
+            
+            <div class="login-options">
+                <input type="checkbox" id="keepLogin" onclick="toggleKeepLogin()">
+                <label for="keepLogin">로그인 상태 유지</label>
+            </div>
+            
+            <button type="submit" class="login-button">로그인</button>
+        </form>
+        
+        <div class="links">
+            <a href="signin.html">회원가입</a>
+            <a href="find_idpw.html">아이디/비밀번호 찾기</a>
+        </div>
+    </div>
+
+    <script>
+        // 로그인 상태 유지 체크박스 색상 변경
+        function toggleKeepLogin() {
+            const checkbox = document.getElementById("keepLogin");
+            if (checkbox.checked) {
+                checkbox.style.accentColor = "#00462A";
+            } else {
+                checkbox.style.accentColor = "";
+            }
+        }
+
+        // 로그인 기능 구현
+        function loginUser() {
+            const userId = document.getElementById("userId").value;
+            const password = document.getElementById("password").value;
+
+            window.location.href = "index.html";//일치여부 상관없이 일단 이동
+          
+/*             if (userId && password) {
+                alert("로그인 성공");
+                if (document.getElementById("keepLogin").checked) {
+                    localStorage.setItem("keepLoggedIn", "true");
+                }
+                // 로그인 성공 시 login.html 페이지로 이동
+                window.location.href = "index.html";
+            } else {
+                alert("아이디와 비밀번호를 입력하세요.");
+                return false;
+            } */
+           //추후에 일치 여부 추가
+
+            return false; // 페이지 리프레시 방지
+        }
+    </script>
+    
+</body>
+</html>
+
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매글</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mySale.css') }}">
+</head>
+<body>
+
+    <div class="signup-container">
+        <h2>판매글</h2>
+
+        
+    </div>
+
+    <script>
+    </script>
+
+</body>
+</html> {% endcomment %}
