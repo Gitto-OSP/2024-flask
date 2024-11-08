@@ -36,6 +36,22 @@ def view_login():
 def view_mypage():
     return render_template("mypage.html")
 
+@application.route("/myBookmark")
+def view_myBookmark():
+    return render_template("myBookmark.html")
+
+@application.route("/myGroupBuy")
+def view_myGroupBuy():
+    return render_template("myGroupBuy.html")
+
+@application.route("/myReview")
+def view_myReview():
+    return render_template("myReview.html")
+
+@application.route("/mySale")
+def view_mySale():
+    return render_template("mySale.html")
+
 @application.route("/reg_items")
 def view_regitems():
     return render_template("reg_items.html")
