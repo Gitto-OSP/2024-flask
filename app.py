@@ -36,6 +36,10 @@ def view_login():
 def view_mypage():
     return render_template("mypage.html")
 
+@application.route("/editProfile")
+def view_editProfile():
+    return render_template("editProfile.html")
+
 @application.route("/reg_items")
 def view_regitems():
     return render_template("reg_items.html")
