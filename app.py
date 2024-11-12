@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flask, redirect, url_for, session
 from database import DBhandler
+import hashlib
 import sys
 
 application = Flask(__name__)
+application.config["SECRET_KEY"] = "helloosp"
 
 DB=DBhandler()
 
@@ -35,6 +37,21 @@ def view_graduatebrands():
 def view_login():
     return render_template("login.html")
 
+@application.route("/signup")
+def view_signup():
+    return render_template("signup.html")
+
+@application.route("/signup_post", methods=['POST'])
+def register_user():
+    data=request.form
+    pw=request.form['pw']
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+    if DB.insert_user(data,pw_hash):
+        return render_template("login.html")
+    else:
+        flash("user id already exist!")
+    return render_template("signup.html")
+
 @application.route("/mypage")
 def view_mypage():
     return render_template("mypage.html")
@@ -62,11 +79,6 @@ def view_regitems():
 @application.route("/reg_reviews")
 def view_regreviews():
     return render_template("reg_reviews.html")
-
-@application.route("/signup")
-def view_signup():
-    return render_template("signup.html")
-
 
 @application.route('/specificReview')
 def specificReview():
