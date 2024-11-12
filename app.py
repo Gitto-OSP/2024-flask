@@ -63,9 +63,10 @@ def view_regitems():
 def view_regreviews():
     return render_template("reg_reviews.html")
 
-@application.route("/signin")
-def view_signin():
-    return render_template("signin.html")
+@application.route("/signup")
+def view_signup():
+    return render_template("signup.html")
+
 
 @application.route('/specificReview')
 def specificReview():
