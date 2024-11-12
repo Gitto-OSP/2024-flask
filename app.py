@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request
+from database import DBhandler
 import sys
 
 application = Flask(__name__)
+
+DB=DBhandler()
 
 @application.route("/")
 def hello():
@@ -39,6 +42,21 @@ def view_mypage():
 @application.route("/editProfile")
 def view_editProfile():
     return render_template("editProfile.html")
+@application.route("/myBookmark")
+def view_myBookmark():
+    return render_template("myBookmark.html")
+
+@application.route("/myGroupBuy")
+def view_myGroupBuy():
+    return render_template("myGroupBuy.html")
+
+@application.route("/myReview")
+def view_myReview():
+    return render_template("myReview.html")
+
+@application.route("/mySale")
+def view_mySale():
+    return render_template("mySale.html")
 
 @application.route("/reg_items")
 def view_regitems():
@@ -52,9 +70,13 @@ def view_regreviews():
 def view_signin():
     return render_template("signin.html")
 
-@application.route('/')
-def index():
+@application.route('/specificReview')
+def specificReview():
     return render_template('specificReview.html')
+
+@application.route('/writerReview')
+def writerReview():
+    return render_template('writerReview.html')
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
@@ -67,6 +89,7 @@ def reg_item_submit_post():
     image_file=request.files["file"]
     image_file.save("static/images/{}".format(image_file.filename))
     data=request.form
+    DB.insert_item(data['name'],data,image_file.filename)
     return render_template("submit_item_result.html", data=data,  img_path="static/images/{}".format(image_file.filename))
 
 @application.route("/submit_items")

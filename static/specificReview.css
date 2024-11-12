@@ -5,9 +5,9 @@
 .pageTitle{
     text-align:center;
     position:center;
-    color:black;
+    color:grey;
     font-size: 30px;
-    font-weight:550;
+    font-weight:500;
     align-items:center;
 }
 
@@ -17,7 +17,6 @@
     font-weight:bolder;
     border-style:hidden;
     position:relative;
-    left:40px;
 }
 .back:hover{
     color:gray;
@@ -34,12 +33,16 @@
 
 .reviewSum{
     display:flex;
+    align-items: baseline;
     text-indent: 20px;
     position:relative;
     font-weight:bold;
     font-size:20px;
     left:200px;
     background:none;
+}
+.reviewObj{
+    font-size:30px;
 }
 
 .title{
@@ -59,9 +62,13 @@
     font-weight:bolder;
     font-size:20px;
 }
+.star{
+    position:relative;
+    top:20px;
+}
 section{
     display:flex;
-    width:80%;
+    width:100%;
     justify-content: space-between;
 }
 
@@ -73,8 +80,7 @@ section{
 
 .card2{
     width:50%;
-    flex:2;
-    padding-right:80px;
+    flex:1;
 }
 .card2{
     display:flex;
@@ -96,8 +102,9 @@ section{
     height:300px;
 }
 
+
 @media screen and (max-width: 800px) {
-    .left .right {   
+    .card1 .card2 {   
       width: 80%;
       padding: 0;
     }
