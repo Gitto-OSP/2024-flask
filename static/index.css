@@ -4,8 +4,8 @@
   
 body {
   font-family: Arial;
-  padding: 10px;
   padding-top: 0px;
+  margin:0px;
 }
 
 /* General elements default style */
@@ -99,6 +99,9 @@ nav {
   padding: 14px 16px;
 }
 
+.content__section{
+  width:100%;
+}
 
 /* content area styles */
 .content__area{
