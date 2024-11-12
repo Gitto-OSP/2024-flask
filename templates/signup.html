@@ -11,13 +11,22 @@
     <div class="signup-container">
         <h2>회원가입</h2>
 
-        {% with mesg = get_flashed_messages() %}
-        {% if mesg != [] %}
-        <script>alert("{{ mesg[0] }}")</script>
+        <!-- 플래시 메시지 표시 --> {# 11주차 부분 #}
+        {# {% block section %} #}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
         {% endwith %}
+        {# {% endblock %} #}
 
-        <form id="signupForm">
+        <form id="signupForm" action="/signup_post" method="POST">
             <!-- 아이디 입력 -->
             <label for="id"><span class="required">*</span> <span class="label-text">ID</span></label>
             <div class="input-group">
@@ -64,10 +73,10 @@
     </div>
 
     <script>
-    // 중복 아이디 리스트 예시
+    // 테스트용 중복 아이디    
     const existingIds = ["user1", "user2", "admin", "test123"];
 
-    // ID 중복 검사 로직
+    // ID 중복 검사
     document.getElementById("checkIdButton").addEventListener("click", function() {
         const idInput = document.getElementById("id").value.trim();
         const idMessage = document.getElementById("idMessage");
@@ -78,14 +87,24 @@
             return;
         }
 
-        // ID 중복 검사
-        if (existingIds.includes(idInput)) {
-            idMessage.textContent = "사용 불가능한 아이디입니다.";
-            idMessage.style.color = "red";
-        } else {
-            idMessage.textContent = "사용 가능한 아이디입니다.";
-            idMessage.style.color = "green";
-        }
+        // ID 중복 체크 요청
+        fetch(`/check_id?id=${encodeURIComponent(idInput)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    idMessage.textContent = "사용 가능한 아이디입니다.";
+                    idMessage.style.color = "green";
+                } 
+                else {
+                    idMessage.textContent = "사용 불가능한 아이디입니다.";
+                    idMessage.style.color = "red";
+                }
+            })
+            .catch(error => {
+                console.error("아이디 중복 검사 오류:", error);
+                idMessage.textContent = "서버 오류. 다시 시도해주세요.";
+                idMessage.style.color = "red";
+            });
     });
 
     // 비밀번호 유효성 검사
@@ -183,9 +202,31 @@
             phoneMessage.textContent = "";
         }
 
-        // 모든 조건을 만족하면 회원가입 성공
-        alert("회원가입이 완료되었습니다.");
-        // 여기서 폼을 실제로 제출하거나 추가적인 작업을 수행
+
+        // fetch API, 비동기로 서버에 데이터 전송
+        fetch("/signup_post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({
+                id: idInput,
+                pw: passwordInput,
+                email: emailInput,
+                phone: phoneInput
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("회원가입이 완료되었습니다.");
+                window.location.href = "/index";  // 홈 화면으로 이동
+            } else {
+                alert(data.message);  // 서버에서 받은 에러 메시지 표시
+            }
+        })
+        .catch(error => console.error("Error:", error));
+ 
     });
     </script>
 

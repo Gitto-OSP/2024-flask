@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flask, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
 from database import DBhandler
 import hashlib
 import sys
@@ -46,11 +46,27 @@ def register_user():
     data=request.form
     pw=request.form['pw']
     pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+    
     if DB.insert_user(data,pw_hash):
-        return render_template("login.html")
+        flash("successful signup") #추가
+        return render_template("index.html")
     else:
-        flash("user id already exist!")
+        flash("user id already exist")
     return render_template("signup.html")
+
+#아이디 중복체크
+@application.route("/check_id", methods=['GET'])
+def check_id():
+    user_id = request.args.get('id')
+    if not user_id:
+        return jsonify({"success": False, "message": "아이디를 제공해야 합니다."}), 400
+
+    # Firebase에서 중복 아이디 확인
+    result = DB.user_duplicate_check(user_id)
+    if result:
+        return jsonify({"success": True, "message": "사용 가능한 아이디입니다."})
+    else:
+        return jsonify({"success": False, "message": "이미 존재하는 아이디입니다."})
 
 @application.route("/mypage")
 def view_mypage():
