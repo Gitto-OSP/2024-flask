@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
-    <!-- <link rel="stylesheet" href="static/signup.css"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
 </head>
 <body>
 
     <div class="signup-container">
         <h2>회원가입</h2>
+
+        {% with mesg = get_flashed_messages() %}
+        {% if mesg != [] %}
+        <script>alert("{{ mesg[0] }}")</script>
+        {% endif %}
+        {% endwith %}
 
         <form id="signupForm">
             <!-- 아이디 입력 -->
