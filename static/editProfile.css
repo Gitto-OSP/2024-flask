@@ -94,3 +94,16 @@ input[type=file]::file-selector-button{
     background-color: #00462A;
     border-radius: 5px;
 }
+
+.password-criteria {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9em;
+    color: #666666;
+    margin-top: 5px;
+    margin-left: 40px;
+}
+.message{
+    display: none;
+    margin-left: 40px;
+}
