@@ -20,7 +20,8 @@ class DBhandler:
         self.db.child("item").child(name).set(item_info)
         print(data,img_path)
         return True
-    
+
+    # 회원가입
     def insert_user(self, data, pw):
         user_info = {
             "id": data['id'],
@@ -37,7 +38,7 @@ class DBhandler:
         else:
             return False
 
-
+    # 회원가입 중복체크
     def user_duplicate_check(self, id_string):
         users = self.db.child("user").get()
         
@@ -48,4 +49,19 @@ class DBhandler:
             if res.val().get('id') == id_string:
                 return False
         return True    
-    
+
+    # 로그인
+    def find_user(self, id_, pw_):
+        users = self.db.child("user").get()
+        target_value=[]
+        for res in users.each():
+            value = res.val()
+            if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
+                return True
+        return False
+
+
+
+
+
+
