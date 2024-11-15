@@ -12,6 +12,13 @@
 
     <div class="login-container">
         <h2 class="title">로그인</h2>
+        
+        {% with mesg = get_flashed_messages() %}
+        {% if mesg != [] %}
+        <script>alert("{{ mesg[0] }}")</script>
+        {% endif %}
+        {% endwith %}      
+        
         <form id="loginForm" onsubmit="return loginUser()">
             <input type="text" id="userId" class="input-field" placeholder="아이디" required>
             <input type="password" id="password" class="input-field" placeholder="비밀번호" required>
@@ -25,13 +32,13 @@
         </form>
         
         <div class="links">
-            <a href="/signin">회원가입</a>
+            <a href="/signup">회원가입</a>
             <a href="/find_idpw">아이디/비밀번호 찾기</a>
         </div>
     </div>
 
     <script>
-        // 로그인 상태 유지 체크박스 색상 변경
+        // 로그인 상태 유지 체크박스
         function toggleKeepLogin() {
             const checkbox = document.getElementById("keepLogin");
             if (checkbox.checked) {
