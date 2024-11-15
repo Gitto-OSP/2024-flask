@@ -15,11 +15,12 @@
         
         {% with mesg = get_flashed_messages() %}
         {% if mesg != [] %}
-        <script>alert("{{ mesg[0] }}")</script>
+            <script>alert("{{ mesg[0] }}")</script> <!-- 탭; 들여쓰기 -->
         {% endif %}
         {% endwith %}      
-        
-        <form id="loginForm" onsubmit="return loginUser()">
+
+        <!--  밑에 form 수정 form action = "/login_confirm" method="post" -->
+        <form id="loginForm" onsubmit="return loginUser()"> 
             <input type="text" id="userId" class="input-field" placeholder="아이디" required>
             <input type="password" id="password" class="input-field" placeholder="비밀번호" required>
             
