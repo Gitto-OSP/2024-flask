@@ -49,7 +49,14 @@ def view_login_user():
     else:
         flash("Wrong ID or PW!")    #db에 매칭 정보가 없으면 플래시 메세지 생성
         return render_template("login.html")
-#여기까지
+
+# 로그아웃
+@application.route("/logout")
+def logout_user():
+    session.clear()    #session에 셋팅한 값들 모두 클리어, session id값 지워짐.
+    return redirect(url_for('view_list'))
+
+#여기까지(p9까지 완료)
 
 @application.route("/signup")
 def view_signup():
