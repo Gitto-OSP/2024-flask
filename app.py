@@ -37,6 +37,20 @@ def view_graduatebrands():
 def view_login():
     return render_template("login.html")
 
+#로그인: id,pw 대조
+@application.route("/login_confirm", methods=['POST'])
+def view_login_user():
+    id_=request.form['id']
+    pw=request.form['pw']
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()    # db에 저장된 비밀번호 해시값으로 비교위한 해시값 생성
+    if DB.find_user(id_,pw_hash):
+        session['id']=id_    # session에 id 정보 삽입
+        return redirect(url_for('view_list'))
+    else:
+        flash("Wrong ID or PW!")    #db에 매칭 정보가 없으면 플래시 메세지 생성
+        return render_template("login.html")
+#여기까지
+
 @application.route("/signup")
 def view_signup():
     return render_template("signup.html")
