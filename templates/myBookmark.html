@@ -4,18 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관심 글</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='myBookmark.css') }}">
+    <link rel="stylesheet" href="../static/myBookmark.css">
 </head>
-<body>
 
-    <div class="signup-container">
-        <h2>관심 글</h2>
+{%extends "index.html"%}
+{%block section%}
 
-        
-    </div>
+<div class="content_header">
+    <h1>관심 글</h1>
+</div>
+<div class="filter__area" style="margin-bottom:20px;">
+    <button onclick="showCategory('used')">중고거래</button>
+    <button onclick="showCategory('group')">공동구매</button>
+    <button onclick="showCategory('brand')">동문브랜드</button>
+</div>
 
+<div id="used" class="item__list">
     <script>
+        var k = 15;
+        for (var i = 0; i < k; i++) {
+            document.write(`
+            <div class=\"list__obj\">
+                <a href="/info_item">
+                <img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="listobj_textarea">
+                    <div class="listobj_place">직거래장소</div>
+                    <div class="listobj_title">상품제목</div>
+                    <div class="listobj_price">가격</div>
+                    <div class="listobj_seller">판매자</div>
+                </div>
+            </div>
+            `);
+        }
     </script>
+</div>
 
-</body>
+
+<div id="group" class="item__list">
+    <script>
+        var k = 15;
+        for (var i = 0; i < k; i++) {
+            document.write(`
+            <div class=\"list__obj\">
+                <a href="/group_purchase">
+                <img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="listobj_textarea">
+                    <div class="listobj_title">상품제목</div>
+                    <div class="listobj_price">가격</div>
+                    <div class="listobj_seller">판매자:sellerID</div>
+                    <div class="listobj_status">상태:공구진행상태</div>
+                </div>
+            </div>
+            `);
+        }
+    </script>
+</div>
+
+<div id="brand" class="item__list">
+    <script>
+        var k = 12;
+        for (var i = 0; i < k; i++) {
+            //머지 후 브랜드 상세조회 페이지 등록 필요
+            document.write(`
+            <a href="/brand_1">
+                <div class=\"brand__obj\">
+                    <div class="listobj_textarea">
+                        <div class="brandobj_title">브랜드명</div>
+                        <div class="brandobj_event">제휴혜택</div>
+                    </div>
+                </div>
+            </a>
+            `);
+            //<img src="/static/image/tmp_brand_img.jpg" alt="브랜드 이미지" width="300" height="300" style="padding: 10px; border-radius:20px;">
+        }
+    </script>
+</div>
+
+<div class="pagenation">
+    <script>
+        var curr_page = 1;
+        document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
+        for (var j = 1; j <= 5; j++) {
+            document.write("<span class=\"page_btn\" id=\"page"+j+"\">"+j+"</span>");
+        }
+        document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
+    </script>
+</div>
+<script src="../static/pagenation.js"></script>
+<script src="../static/myBookmark.js"></script>
+{% endblock section %}
 </html>
