@@ -39,6 +39,9 @@ def view_login():
 def view_mypage():
     return render_template("mypage.html")
 
+@application.route("/editProfile")
+def view_editProfile():
+    return render_template("editProfile.html")
 @application.route("/myBookmark")
 def view_myBookmark():
     return render_template("myBookmark.html")

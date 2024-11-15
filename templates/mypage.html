@@ -19,7 +19,7 @@
             <img src="/static/image/profile.png" alt="프로필 사진" class="profile-img">
             <div class="profile-info">
                 <h2>닉네임 <span class="nickname-tag">#아이스티노중독자</span></h2>
-                <button class="edit-profile-button">프로필 수정</button>
+                <button class="edit-profile-button" id="editProfile" onclick="navigateToPage(this.id)">프로필 수정</button>
             </div>
         </div>
 
@@ -63,6 +63,9 @@
                         break;
                     case 'myGroupBuy':
                         url = '/mygroup_purchase';
+                        break;
+                    case 'editProfile':
+                        url = '/editProfile'
                         break;
                     default:
                         url = '#';
