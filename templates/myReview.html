@@ -7,15 +7,38 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='myReview.css') }}">
 </head>
 <body>
-
-    <div class="signup-container">
-        <h2>작성한 리뷰</h2>
-
-        
+    {% extends "index.html" %}
+    {% block section %}
+    <!--페이지 상단 중앙 제목-->
+    <p class="title">나의 리뷰</p>
+    <button class="back" onclick="window.location.href='/mypage'">> 마이페이지</button>
+    <!--리뷰 섹션-->
+    <div class="container">
+        <div class="item">
+            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
+                리뷰제목</button>
+        </div>
+        <div class="item">
+            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
+                리뷰제목</button>
+        </div>
+        <div class="item">
+            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
+                리뷰제목</button>
+        </div>
+        <div class="item">
+            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
+                리뷰제목</button>
+        </div>
+        <div class="item">
+            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
+                리뷰제목</button>
+        </div>
+        <div class="item">
+            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
+                리뷰제목</button>
+        </div>
     </div>
-
-    <script>
-    </script>
-
 </body>
+{% endblock section %}
 </html>

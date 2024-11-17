@@ -1,94 +1,52 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-</head>
-
-<body>   
-
-    <div class="login-container">
-        <h2 class="title">로그인</h2>
-        <form id="loginForm" onsubmit="return loginUser()">
-            <input type="text" id="userId" class="input-field" placeholder="아이디" required>
-            <input type="password" id="password" class="input-field" placeholder="비밀번호" required>
-            
-            <div class="login-options">
-                <input type="checkbox" id="keepLogin" onclick="toggleKeepLogin()">
-                <label for="keepLogin">로그인 상태 유지</label>
-            </div>
-            
-            <button type="submit" class="login-button">로그인</button>
-        </form>
-        
-        <div class="links">
-            <a href="signup.html">회원가입</a>
-            <a href="find_idpw.html">아이디/비밀번호 찾기</a>
-        </div>
-    </div>
-
-    <script>
-        // 로그인 상태 유지 체크박스 색상 변경
-        function toggleKeepLogin() {
-            const checkbox = document.getElementById("keepLogin");
-            if (checkbox.checked) {
-                checkbox.style.accentColor = "#00462A";
-            } else {
-                checkbox.style.accentColor = "";
-            }
-        }
-
-        // 로그인 기능 구현
-        function loginUser() {
-            const userId = document.getElementById("userId").value;
-            const password = document.getElementById("password").value;
-
-            window.location.href = "index.html";//일치여부 상관없이 일단 이동
-          
-/*             if (userId && password) {
-                alert("로그인 성공");
-                if (document.getElementById("keepLogin").checked) {
-                    localStorage.setItem("keepLoggedIn", "true");
-                }
-                // 로그인 성공 시 login.html 페이지로 이동
-                window.location.href = "index.html";
-            } else {
-                alert("아이디와 비밀번호를 입력하세요.");
-                return false;
-            } */
-           //추후에 일치 여부 추가
-
-            return false; // 페이지 리프레시 방지
-        }
-    </script>
-    
-</body>
-</html>
-
-
-
-
-{% comment %} <!DOCTYPE html>
-<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>판매글</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='mySale.css') }}">
+    <link rel="stylesheet" href="../static/itemList.css">
 </head>
-<body>
-
-    <div class="signup-container">
-        <h2>판매글</h2>
-
-        
-    </div>
-
+{%extends "index.html"%}
+{%block section%}
+<div class="content__header">
+    <h1 id="tmp">내 판매글</h1>
+</div>
+<div class="filter__area" style="margin-bottom:20px;">
+    <ul>
+        <li>총 <span id="number_itms">8</span> 개 상품
+            <!---필터 드롭다운 메뉴 추가--->
+    </ul>
+</div>
+<div class="item__list">
     <script>
+        var k = 8;
+        for (var i = 0; i < k; i++) {
+            document.write(`
+            <div class=\"list__obj\">
+                <a href="/info_item">
+                <img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="listobj_textarea">
+                    <div class="listobj_title">상품제목</div>
+                    <div class="listobj_price">가격</div>
+                </div>
+            </div>
+            `);
+        }
     </script>
+</div>
+<div class="pagenation">
+    <script>
+        var curr_page = 1;
+        document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
+        for (var j = 1; j <= 5; j++) {
+            document.write("<span class=\"page_btn\" id=\"page" + j + "\">" + j + "</span>");
+        }
+        document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
+    </script>
+</div>
+<script src="../static/pagenation.js"></script>
+{% endblock section %}
 
-</body>
-</html> {% endcomment %}
+</html>

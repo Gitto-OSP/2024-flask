@@ -7,6 +7,11 @@
     height: 200px;
 }
 
+#boothComments {
+    width: 490px;
+    height: 100px;
+}
+
 .submit-btn {
     background-color: #114B19;
     color: white;
