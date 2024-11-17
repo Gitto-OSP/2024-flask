@@ -67,13 +67,12 @@ def register_user():
     data=request.form
     pw=request.form['pw']
     pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-    
     if DB.insert_user(data,pw_hash):
         flash("successful signup") #추가
-        return render_template("index.html")
+        return render_template("login.html")    #index.html
     else:
-        flash("user id already exist")
-    return render_template("signup.html")
+        flash("user id already exist!")
+        return render_template("signup.html")
 
 #아이디 중복체크
 @application.route("/check_id", methods=['GET'])

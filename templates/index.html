@@ -13,23 +13,20 @@
             <div class="navbar__top">
                 <a class="logo" href="">벗터</a>
                 
-                <!-- session id 없으면 account_out, 있으면 account_in이 실행되도록 index.html과 navbar.js파일 숮ㅇ -->
-                
-                <!--{% if session['id'] %}
-                <li><a href="/logout"><b>{{session['id']}}님 반갑습니다!</b> logout</a></li>
+                <!-- session id 있으면 account_in, 없으면 account_out -->
+                {% if session['id'] %}
+                <ul id="account_in">
+                    <li><a class="account_btn" href="/logout"><b>{{session['id']}}님 반갑습니다!</b> 로그아웃</a></li>
+                    <li><a href='/mypage'>마이페이지</a></li>
+                    <li><img src="/static/image/user_img.png" width="48px;" height="48px" style="background-color: white;"></li>
+                </ul>
                 {% else %}
-                <li><a href="/login">login</a></li>
-                {% endif %}-->
-                
                 <ul id="account_out">
                     <li><a class="account_btn" id="login_btn" href="/login">로그인</a></li>
                     <li><a href="/signup">회원가입</a></li>
                 </ul>
-                <ul id="account_in">
-                    <li class="account_btn" id="logout_btn">로그아웃</li>
-                    <li><a href='/mypage'>마이페이지</a></li>
-                    <li><img src ="/static/image/user_img.png" width="48px;" height="48px" style="background-color: white;"></li>
-                </ul>
+                {% endif %}
+
             </div>
         </div>
         <div class="navbar__under">
