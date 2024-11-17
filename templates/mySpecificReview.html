@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내가 작성한 리뷰 상세조회화면</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mySpecificReview.css') }}">
+</head>
+<body>
+    {% extends "index.html" %}
+    {% block section %}
+    <!--페이지 상단 중앙 제목-->
+    <p class="pageTitle">리뷰</p>
+
+        
+    <!--다시 리뷰 전체조회 화면으로 돌아가는 버튼-->
+    <button class="back" onclick="window.location.href='/myReview'">> 전체목록</button>
+    
+    <div class="option">
+        <button class="revise">수정하기</button>
+        <button class="delete">삭제하기</button>
+    </div>
+
+    <!--리뷰 대상의 대표사진. 브랜드 대표이미지 등-->
+    <div class="container">
+        <img class="mainImg" src="..\static\image\brand_img.png" alt="리뷰대상 대표사진">
+    </div>
+
+    <!--무엇에 대한 리뷰인지-->
+    <div class="reviewSum">
+        <p class="reviewclass">동문 브랜드</p>
+        <p class="reviewObj">브랜드명(예:멜릭서)</p>
+    </div>
+    <hr style="float:left; border:solid 3px #F1F5F2; width:50%;">
+
+        <!--리뷰 제목-->
+        <p class="title">Review Title</p>
+<section>
+        <!--리뷰 내용-->
+    <div class="card1">
+        <!--작성자-->
+        <div class="writerContainer">
+            <p class="writer">작성자 |</p>
+            <p class="writer_">이화연</p>
+        </div>
+        <!--별점-->
+        <div class="rateContainer">
+            <p class="rate">별점 |</p>
+            <div class="star">
+                <img src="..\static\image\filledStar.svg" style="width:30px;height:30px;">
+                <img src="..\static\image\filledStar.svg" style="width:30px;height:30px;">
+                <img src="..\static\image\filledStar.svg" style="width:30px;height:30px;">
+                <img src="..\static\image\filledStar.svg" style="width:30px;height:30px;">
+                <img src="..\static\image\filledStar.svg" style="width:30px;height:30px;">
+            </div>
+        </div>
+        <!--날짜-->
+        <div class="dateContainer">
+            <p class="date">작성일 |</p>
+            <p class="date_">2024/10/12</p>
+        </div>
+        
+    </div>
+        
+    <div id="card2">
+        <!--리뷰 등록 사진-->
+        <div class="item"></div>
+
+        <div class="review">리뷰내용</div>
+
+
+    </div>
+</section>
+
+</body>
+{% endblock section %}
+</html>

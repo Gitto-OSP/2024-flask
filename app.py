@@ -91,9 +91,21 @@ def view_myReview():
 def view_mySale():
     return render_template("mySale.html")
 
+@application.route("/reg_season")
+def view_regseason():
+    return render_template("reg_season.html")
+
 @application.route("/reg_items")
 def view_regitems():
     return render_template("reg_items.html")
+
+@application.route("/reg_group_purchase")
+def view_regGroupPurchase():
+    return render_template("reg_group_purchase.html")
+
+@application.route("/reg_brand")
+def view_regbrand():
+    return render_template("reg_brand.html")
 
 @application.route("/reg_reviews")
 def view_regreviews():
@@ -106,6 +118,22 @@ def specificReview():
 @application.route('/writerReview')
 def writerReview():
     return render_template('writerReview.html')
+
+@application.route("/group_purchase")
+def view_grouppurchase():
+    return render_template("group_purchase.html")
+
+@application.route("/brand_1")
+def view_brand1():
+    return render_template("brand_1.html")
+
+@application.route("/mygroup_purchase")
+def mygroup_purchase():
+    return render_template("mygroup_purchase.html")
+
+@application.route("/mySpecificReview")
+def mySpecificReview():
+    return render_template("mySpecificReview.html")
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
@@ -129,18 +157,6 @@ def reg_items_submit():
     addr=request.args.getlist("tradeRegions")
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
-
-@application.route("/group_purchase")
-def view_grouppurchase():
-    return render_template("group_purchase.html")
-
-@application.route("/brand_1")
-def view_brand1():
-    return render_template("brand_1.html")
-
-@application.route("/mygroup_purchase")
-def mygroup_purchase():
-    return render_template("mygroup_purchase.html")
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)

@@ -9,7 +9,7 @@
 {% block section %}
 
 <div class="content__header">
-    <a class="register__btn" href="/reg_items">부스 등록하기</a>
+    <a class="register__btn" href="/reg_season">부스 등록하기</a>
     <h1>시즌/대동제</h1>
 </div>
 <img src="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
@@ -45,7 +45,7 @@
         var curr_page = 1;
         document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
         for (var j = 1; j <= 5; j++) {
-            document.write("<span class=\"page_btn\" id=\"page"+j+"\">"+j+"</span>");
+            document.write("<span class=\"page_btn\" id=\"page" + j + "\">" + j + "</span>");
         }
         document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
     </script>
