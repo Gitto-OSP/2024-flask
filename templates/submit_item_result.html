@@ -1,3 +1,4 @@
+<!--상품리스트 -> 동적라우팅에 연결되어있음-->
 {% extends "index.html" %}
 
 {% block section %}
@@ -8,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>중고거래</title>
-    <link rel="stylesheet" href="../static/trans_styles.css">
+    <link rel="stylesheet" href="../../static/trans_styles.css">
 </head>
 
 <body>
@@ -17,11 +18,11 @@
             <div class="image-gallery">
                 <!-- 썸네일 리스트 -->
                 <div class="thumbnail-container">
-                    <img src="{{img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
+                    <img src="../../static/images/{{data.img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
                 </div>
                 <!-- 큰 이미지 -->
                 <div class="large-image-container">
-                    <img id="largeImage" src="{{img_path}}" alt="상품 사진">
+                    <img id="largeImage" src="../../static/images/{{data.img_path}}" alt="상품 사진">
                 </div>
             </div>
         
@@ -30,24 +31,7 @@
                 <p>가격: {{data.price}}원</p>
                 <p>판매자: {{data.seller}}</p>
                 <p>직거래 장소:
-                    {% for region in data.getlist('tradeRegions') %}
-                        {% if region == "engineering" %}
-                            공대
-                        {% elif region == "posko" %}
-                            포관
-                        {% elif region == "ecc" %}
-                            ECC
-                        {% elif region == "studentCC" %}
-                            학문관
-                        {% elif region == "frontEntrance" %}
-                            정문
-                        {% elif region == "post" %}
-                            택배
-                        {% elif region == "etc" %}
-                            기타
-                        {% endif %}
-                        {% if not loop.last %}, {% endif %}
-                    {% endfor %}
+                    
                 </p>
                 
                 
