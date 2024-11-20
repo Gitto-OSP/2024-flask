@@ -59,7 +59,7 @@ class DBhandler:
             if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
                 return True
         return False
- def get_items(self):
+     def get_items(self):
         # item 노드 아래 값들 가져오기
         items = self.db.child("item").get().val()
         return items
@@ -72,7 +72,6 @@ class DBhandler:
             key_value = res.key()
             if key_value==name:
                 target_value=res.val()
-                
         return target_value
 
 
