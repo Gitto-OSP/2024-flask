@@ -19,7 +19,7 @@
             <img src="/static/image/profile.png" alt="프로필 사진" class="profile-img">
             <div class="profile-info">
                 <h2>닉네임 <span class="nickname-tag">#아이스티노중독자</span></h2>
-                <button class="edit-profile-button">프로필 수정</button>
+                <button class="edit-profile-button" id="editProfile" onclick="navigateToPage(this.id)">프로필 수정</button>
             </div>
         </div>
 
@@ -28,23 +28,53 @@
                 <div class="flower-score">
                     <span>배꽃지수</span>
                     <div class="flower-icons">
-                        <img src="/static/image/flower.png" alt="꽃 아이콘">
-                        <img src="/static/image/flower.png" alt="꽃 아이콘">
-                        <img src="/static/image/flower.png" alt="꽃 아이콘">
-                        <img src="/static/image/flower.png" alt="꽃 아이콘">
+                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
+                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
+                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
+                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
+                        <img src="/static/image/filledStar.svg" alt="초록색 꽃 아이콘">
                     </div>
                 </div>
-                <span class="score">4.9</span>
+                <span class="score">4.2</span>
             </div>
 
             <div class="buttons">
-                <button class="sale-button">판매글 <span class="sale-count">8</span>개</button>
-                <button class="post-button">관심글</button>
-                <button class="scrap-button">작성한 리뷰</button>
-                <button class="manner-button" onclick="location.href='/mygroup_purchase'">공동구매</button>
+
+                <button class="mySale-button" id="mySale" onclick="navigateToPage(this.id)">판매글 <span class="mySale-count">8</span>개</button>
+                <button class="myBookmark-button" id="myBookmark" onclick="navigateToPage(this.id)">관심글</button>
+                <button class="myReview-button" id="myReview" onclick="navigateToPage(this.id)">작성한 리뷰</button>
+                <button class="myGroupBuy-button" id="myGroupBuy" onclick="navigateToPage(this.id)">공동구매</button>
+
             </div>
         </div>
+
+        <script>
+            function navigateToPage(buttonId) {
+                let url;
+                switch (buttonId) {
+                    case 'mySale':
+                        url = '/mySale';
+                        break;
+                    case 'myBookmark':
+                        url = '/myBookmark';
+                        break;
+                    case 'myReview':
+                        url = '/myReview';
+                        break;
+                    case 'myGroupBuy':
+                        url = '/mygroup_purchase';
+                        break;
+                    case 'editProfile':
+                        url = '/editProfile'
+                        break;
+                    default:
+                        url = '#';
+                }
+                window.location.href = url;
+            }
+        </script>
     </section>
+    
     {% endblock section %}
 
 </body>

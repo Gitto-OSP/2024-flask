@@ -1,32 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Butteo:Graduates</title>
+    <title>판매글</title>
     <link rel="stylesheet" href="../static/itemList.css">
 </head>
-
 {%extends "index.html"%}
 {%block section%}
 <div class="content__header">
-    <a class="register__btn" href="/reg_brand">브랜드 등록하기</a>
-    <h1>동문 브랜드</h1>
+    <h1 id="tmp">내 판매글</h1>
+</div>
+<div class="filter__area" style="margin-bottom:20px;">
+    <ul>
+        <li>총 <span id="number_itms">8</span> 개 상품
+            <!---필터 드롭다운 메뉴 추가--->
+    </ul>
 </div>
 <div class="item__list">
     <script>
-        var k = 12;
+        var k = 8;
         for (var i = 0; i < k; i++) {
-            //머지 후 브랜드 상세조회 페이지 등록 필요
             document.write(`
-            <a href="/brand_1">
-                <div class=\"brand__obj\">
-                    <div class="listobj_textarea">
-                        <div class="brandobj_title">브랜드명</div>
-                        <div class="brandobj_event">제휴혜택</div>
-                    </div>
+            <div class=\"list__obj\">
+                <a href="/info_item">
+                <img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="listobj_textarea">
+                    <div class="listobj_title">상품제목</div>
+                    <div class="listobj_price">가격</div>
                 </div>
-            </a>
+            </div>
             `);
-            //<img src="/static/image/tmp_brand_img.jpg" alt="브랜드 이미지" width="300" height="300" style="padding: 10px; border-radius:20px;">
         }
     </script>
 </div>
@@ -42,3 +48,5 @@
 </div>
 <script src="../static/pagenation.js"></script>
 {% endblock section %}
+
+</html>

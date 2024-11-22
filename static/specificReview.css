@@ -1,0 +1,111 @@
+*{
+    background-color:white;
+}
+
+.pageTitle{
+    text-align:center;
+    position:center;
+    color:grey;
+    font-size: 30px;
+    font-weight:500;
+    align-items:center;
+}
+
+.back{
+    color:black;
+    font-size:18px;
+    font-weight:bolder;
+    border-style:hidden;
+    position:relative;
+}
+.back:hover{
+    color:gray;
+}
+
+.mainImg{
+    width:170px;
+    height:140px;
+    position:relative;
+    top:100px;
+    left:30px;
+  
+}
+
+.reviewSum{
+    display:flex;
+    align-items: baseline;
+    text-indent: 20px;
+    position:relative;
+    font-weight:bold;
+    font-size:20px;
+    left:200px;
+    background:none;
+}
+.reviewObj{
+    font-size:30px;
+}
+
+.title{
+    font-family:sans-serif;
+    font-size:30px;
+    font-weight:bolder;
+    position:relative;
+    left:250px;
+    top:40px;
+}
+
+.writerContainer, .rateContainer, .dateContainer{
+    display:flex;
+    padding:40px;
+    color:gray;
+    text-indent:20px;
+    font-weight:bolder;
+    font-size:20px;
+}
+.star{
+    position:relative;
+    top:20px;
+}
+section{
+    display:flex;
+    width:100%;
+    justify-content: space-between;
+}
+
+.card1{
+    width:50%;
+    padding-left:80px;
+    flex:1;
+}
+
+.card2{
+    width:50%;
+    flex:1;
+}
+.card2{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review{
+    width:600px;
+    height:100px;
+    border-style:solid;
+    border-radius:10px;
+    border-color:lightgrey;
+}
+.item{
+    background-color:#F1F5F2;
+    border-radius: 10%;
+    width:600px;
+    height:300px;
+}
+
+
+@media screen and (max-width: 800px) {
+    .card1 .card2 {   
+      width: 80%;
+      padding: 0;
+    }
+  }

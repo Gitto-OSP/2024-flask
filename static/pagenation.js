@@ -9,11 +9,13 @@ for(var i = 0; i<page_btn.length; i++){
 prev_btn.addEventListener("click",prevClick);
 next_btn.addEventListener("click",nextClick);
 
-var curr_page = 1;
+var curr_page = window.location.search.split('=')[1];
 var curr_idx = 0;
 var max_page = 13;  // 나중에 DB 데이터 양으로 계산하는 코드 추가 필요
 var page_len = page_btn.length;
-setPage(curr_page);
+
+var btn = document.getElementById("page"+curr_page);
+btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
 
 function pageClick(){
     var pg_num = Number(this.getAttribute("id").split("page")[1]);
