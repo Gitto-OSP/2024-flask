@@ -8,8 +8,14 @@
 {%extends "index.html"%}
 {%block section%}
 <div class="content__header">
+    {% if session['id'] %}
     <a class="register__btn" href="/reg_group_purchase">공구 등록하기</a>
     <h1>공동구매</h1>
+    {% else %}
+    <a class="register__btn" onclick="alert('로그인 후 이용해주세요.');">공구 등록하기</a>
+    <h1>공동구매</h1>
+    {% endif %}
+    
 </div>
 <div class="filter__area" style="margin-bottom:20px;">
     <ul>

@@ -8,8 +8,13 @@
 {%extends "index.html"%}
 {%block section%}
 <div class="content__header">
+    {% if session['id'] %}
     <a class="register__btn" href="/reg_brand">브랜드 등록하기</a>
     <h1>동문 브랜드</h1>
+    {% else %}
+    <a class="register__btn" onclick="alert('로그인 후 이용해주세요.');">브랜드 등록하기</a>
+    <h1>동문 브랜드</h1>
+    {% endif %}
 </div>
 <div class="item__list">
     <script>
