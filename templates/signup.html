@@ -11,20 +11,22 @@
     <div class="signup-container">
         <h2>회원가입</h2>
 
-        <!-- 플래시 메시지 표시 --> {# 11주차 부분 #}
-        {# {% block section %} #}
+        <!-- 플래시 메세지  -->
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="flash-messages">
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+            {% if messages %}
+                <script>
+                    alert("{{ messages[0] }}");
+                </script>
+            
+                <div class="flash-messages">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         {% endwith %}
-        {# {% endblock %} #}
 
         <form id="signupForm" action="/signup_post" method="POST">
             <!-- 아이디 입력 -->
@@ -74,7 +76,7 @@
 
     <script>
     // 테스트용 중복 아이디    
-    const existingIds = ["user1", "user2", "admin", "test123"];
+    //const existingIds = ["user1", "user2", "admin", "test123"];
 
     // ID 중복 검사
     document.getElementById("checkIdButton").addEventListener("click", function() {
@@ -98,6 +100,7 @@
                 else {
                     idMessage.textContent = "사용 불가능한 아이디입니다.";
                     idMessage.style.color = "red";
+                    alert("ID already exists!");
                 }
             })
             .catch(error => {

@@ -8,7 +8,7 @@
 {%extends "index.html"%}
 {%block section%}
 <div class="content__header">
-    <a class="register__btn" href="/reg_items">브랜드 등록하기</a>
+    <a class="register__btn" href="/reg_brand">브랜드 등록하기</a>
     <h1>동문 브랜드</h1>
 </div>
 <div class="item__list">
@@ -35,7 +35,7 @@
         var curr_page = 1;
         document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
         for (var j = 1; j <= 5; j++) {
-            document.write("<span class=\"page_btn\" id=\"page"+j+"\">"+j+"</span>");
+            document.write("<span class=\"page_btn\" id=\"page" + j + "\">" + j + "</span>");
         }
         document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
     </script>
