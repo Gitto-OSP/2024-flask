@@ -48,10 +48,62 @@
                 </p>
                 <p>설명: {{data.userComments}}</p>
                 <div class="button-container">
-                    <button>관심</button>
+                    <button class="bookmark-button" id="bookmark">관심</button>
                     <button>바로 구매</button>
                 </div>
             </div>
+            <script>
+                function showBookmark() {
+                    $.ajax({
+                        type: 'GET',
+                        url:'/show_bookmark/{{data.name}}/',
+                        data: {},
+                        success: function (response) {
+                            let my_bookmark = response['my_bookmark'];
+                            if (my_bookmark['interested'] == 'Y') {
+                                $("#bookmark").css("background-color","grey");
+                                $("#bookmark").attr("onclick","unlike()");
+                            }
+            
+                            else {
+                                $("#bookmark").css("background-color","#00462A");
+                                $("#bookmark").attr("onclick","like()");
+                            }
+                            //alert("showbookmark!")
+                        }
+                    });
+                }
+            
+                function like() {
+                    $.ajax({
+                        type: 'POST',
+                        url:'/like/{{data.name}}/',
+                        data: {
+                            interested : "Y"
+                        },
+                        success: function (response) {
+                            alert(response['msg']);
+                            window.location.reload()
+                        }
+                    });
+                }
+                function unlike() {
+                   $.ajax({
+                        type: 'POST',
+                        url: '/unlike/{{data.name}}/',
+                        data: {
+                            interested : "N"
+                        },
+                        success: function (response) {
+                            alert(response['msg']);
+                            window.location.reload()
+                        }
+                    });
+                }
+                $(document).ready(function () {
+                    showBookmark();
+                });
+            </script>
         </div>
     </div>
     
