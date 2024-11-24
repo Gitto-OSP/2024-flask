@@ -27,7 +27,7 @@
             </div>
         
             <div class="product-info">
-                <h2>{{data.name}}</h2>
+                <h1>{{data.name}}</h1>
                 <p>가격: {{data.price}}원</p>
                 <p>판매자: {{data.seller}}</p>
                 <p>직거래 장소:
@@ -61,12 +61,12 @@
                         success: function (response) {
                             let my_bookmark = response['my_bookmark'];
                             if (my_bookmark['interested'] == 'Y') {
-                                $("#bookmark").css("background-color","grey");
+                                $("#bookmark").css("background-color","#00462A");
                                 $("#bookmark").attr("onclick","unlike()");
                             }
             
                             else {
-                                $("#bookmark").css("background-color","#00462A");
+                                $("#bookmark").css("background-color","grey");
                                 $("#bookmark").attr("onclick","like()");
                             }
                             //alert("showbookmark!")
