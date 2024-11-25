@@ -1,65 +1,76 @@
-*{
-    background-color:white;
-}
-p{
+
+.review{
     text-align:center;
     position:center;
-    color:grey;
+    color:black;
     font-size: 30px;
-    font-weight:500;
+    font-weight:bolder;
     align-items:center;
 }
-.container{
-    align-items: center;
-    margin-left:90px;
-    display:grid;
-    grid-template-rows:300px 300px;
-    grid-template-columns:400px 400px 400px;
-}
-
-div.item{
-    flex-direction: row;
-    background-color:#F1F5F2;
-    border-radius: 10%;
-    width:300px;
-    height:250px;
-    align-items: center;
-}
-div.item:hover{
-    background-color:gray;
-}
-
-div.page{
-    position:absolute;
-    padding-left:630px;
-}
-
-.title {
-    text-align: center;
-    font-weight:bold;
-    color:black;
-    font-family:sans-serif;
-    
-}
-
-.title:hover{
-    color:gray;
-}
-
-.writer, .title{
-    float: left;
-    background:none;
-    border:none;
-    margin: 10px;
-    font-size:18px;
+.count{
+    text-align:left;
     position:relative;
-    left:20px;
-    top:180px;
-}
-.writer{
-    font-weight:bolder;
+    top:-10px;
+    color:grey;
+    font-size: 25px;
+    font-weight:500;
 }
 
-.writer:hover, .title:hover{
-    color:#F1F5F2;
+/*리뷰 리스트*/
+.review_list {
+    display: block;
+    width: max-content;
+    margin: 0px auto;
+    overflow: hidden;
+}
+.list {
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 230px;
+    overflow: hidden;
+}
+.list img {
+    width: 210px;
+    height: 200px;
+    border-radius: 20px;
+}
+.list:hover {
+    background-color: #D9D9D9;
+}
+.review_info {
+    padding: 0px 15px;
+}
+.title {
+    color: #191919;
+    width: 100%;
+    font-size: larger;
+    margin: 0;
+}
+.writer {
+    color: #767676;
+    margin: 0;
+}
+
+
+/*페이지네이션*/
+.pagenation{
+    width: fit-content;
+    height:50px;
+    margin:50px auto;
+}
+.page_btn, .prev_btn, .next_btn{
+    float:left;
+    display: block;
+    padding: 10px;
+    margin:10px;
+    width: 30px;
+    height: 30px;
+    text-decoration: none;
+    border-radius: 10%;
+    border-width: 0px;
+}
+.pagenation a:hover{
+    background-color: #D9D9D9;
 }
