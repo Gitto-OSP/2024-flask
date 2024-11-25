@@ -60,7 +60,8 @@ body {
     justify-content: flex-start;
 }
 
-.product-info h2 {
+.product-info h1 {
+    text-align: center;
     margin-bottom: 10px;
 }
 
@@ -69,16 +70,28 @@ body {
 }
 
 .product-info button {
-    padding: 8px 16px;
-    background-color: darkgreen;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    flex: 1;
+    width: 45%;
     margin: 0 5px;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 40px;
+    background-color: grey;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    flex: 1;
 }
 
 .product-info button:hover {
     background-color: darkolivegreen;
+}
+
+#bookmark {
+    color: white;
+    background-color: green;
+    width: 45%
+}
+
+#bookmark.green {
+    background-color:#00462A;
 }

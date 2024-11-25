@@ -76,6 +76,26 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+    
+    def get_bookmark_byname(self,uid,name):
+        bookmarks = self.db.child("bookmark").child(uid).get()
+        target_value=""
+        if bookmarks.val() == None:
+            return target_value
+        
+        for res in bookmarks.each():
+            key_value = res.key()
+
+            if key_value == name:
+                target_value = res.val()
+        return target_value
+    
+    def update_bookmark(self,user_id,isBookmark,item):
+        bookmark_info = {
+            "interested": isBookmark
+        }
+        self.db.child("bookmark").child(user_id).child(item).set(bookmark_info)
+        return True
     #리뷰작성
     def reg_review(self,data,img_path):
         review_info={
