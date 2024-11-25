@@ -1,0 +1,20 @@
+.starLabel {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    background-image: url(./image/emptyStar.svg);
+    transition: background-image 0.1s ease-in-out;
+}
+
+.filledStar {
+    width: 30px;
+    height: 30px;
+    background-image: url(./image/filledStar.svg);
+}
+
+.startInput {
+    display: none;
+}

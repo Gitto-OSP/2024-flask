@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/reg.css">
+</head>
+
+<body>
+    {%extends "index.html"%}
+    {%block section%}
+
+    <div id="writeContainer">
+        <h1>부스 등록하기</h1>
+
+        <form action="/submit_item_post" enctype="multipart/form-data" method="post">
+            <div>
+                <h2>기본 정보</h2>
+                <div id="basicInfoContainer">
+                    <label for="seller">동아리/팀명</label>
+                    <input type="text" name="seller" id="seller" placeholder="입력" required>
+
+                    <label for="name">부스 이름</label>
+                    <input type="text" name="name" id="name" placeholder="입력" required>
+
+                    <label for="boothLocation">부스 위치</label>
+                    <div id="dropdownContainer">
+                        <select id="boothLocation" name="boothLocation">
+                            <option value="frontEntrance">정문</option>
+                            <option value="studentCC">학문관</option>
+                            <option value="shkwan">생활관</option>
+                            <option value="posko">포스코관</option>
+                            <option value="huyut">후윳길</option>
+                            <option value="edu">교육관</option>
+                        </select>
+                        <label for="boothNum">부스 번호</label>
+                        <input type="number" name="boothNum" id="boothNum" placeholder="입력" required>
+                    </div>
+
+                    <label for="openTime">오픈 시간</label>
+                    <div id="dropdownContainer">
+                        <select id="openTime" name="openTime">
+                            <option value="1">8:00</option>
+                        </select>
+                    </div>
+
+                    <label for="closingTime">종료 시간</label>
+                    <div id="dropdownContainer">
+                        <select id="closingTime" name="closingTime">
+                            <option value="1">12:00</option>
+                        </select>
+                    </div>
+                    <script>
+                        const openSelect = document.getElementById("openTime");
+                        const closingSelect = document.getElementById("closingTime");
+
+                        //9 to 6
+                        function generateThirtyGapTime(e, start, end) {
+                            for (let i = start; i < end; i++) {
+                                const option00 = document.createElement("option");
+                                const option30 = document.createElement("option");
+
+                                const content00 = i + ":00";
+                                const content30 = i + ":30";
+                                option00.value = content00;
+                                option30.value = content30;
+                                option00.innerHTML = content00;
+                                option30.innerHTML = content30;
+
+                                e.appendChild(option00);
+                                e.appendChild(option30);
+                            }
+
+                            const option00 = document.createElement("option");
+                            const content00 = end + ":00";
+                            option00.value = content00;
+                            option00.innerHTML = content00;
+                            e.appendChild(option00);
+                        }
+
+                        generateThirtyGapTime(openSelect, 8, 16);
+                        generateThirtyGapTime(closingSelect, 12, 18);
+                    </script>
+                </div>
+            </div>
+
+            <div>
+                <h2>부스 소개</h2>
+                <textarea id="boothComments" name="boothComments" placeholder="부스에 대한 소개 문구를 입력해주세요."
+                    required></textarea>
+            </div>
+
+            <div>
+                <h2>상품 등록</h2>
+                <label for="productNum">상품 개수</label>
+                <input type="number" name="productNum" id="productNum" placeholder="입력" required
+                    oninput="addFileInputs()">
+
+                <div id="fileInputContainer"></div>
+                <!-- <input type="file" name="file" id="imageUpload" multiple required> -->
+                <!-- <div id="previewContainer"></div> -->
+
+                <script>
+                    function addFileInputs() {
+                        const numberInput = document.getElementById('productNum').value;
+                        const fileInputContainer = document.getElementById('fileInputContainer');
+
+                        // Clear previous file inputs
+                        fileInputContainer.innerHTML = '';
+
+                        // Add new file inputs based on the number entered
+                        for (let i = 0; i < numberInput; i++) {
+                            const fileInput = document.createElement('input');
+                            fileInput.type = 'file';
+                            fileInput.name = `boothImg${i + 1}`;
+                            fileInput.class = 'boothImg';
+                            fileInput.accept = "image/*";
+                            fileInputContainer.appendChild(fileInput);
+                            fileInputContainer.appendChild(document.createElement('br'));
+                        }
+                    }
+                </script>
+            </div>
+
+
+            <input class="submit-btn" type="submit" value="등록하기">
+        </form>
+    </div>
+
+    <script src="../static/reg.js"></script>
+    {%endblock section%}
+</body>
+
+</html>

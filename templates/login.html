@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+
+<body>   
+
+    <div class="login-container">
+        <h2 class="title">로그인</h2>
+        
+        {% with mesg = get_flashed_messages() %}
+        {% if mesg != [] %}
+            <script>
+                alert("{{ mesg[0] }}");
+            </script>
+        {% endif %}
+        {% endwith %}      
+
+        <form id="loginForm" action="/login_confirm" method="post">
+            <input type="text" id="userId" class="input-field" name="id" placeholder="아이디" required>
+            <input type="password" id="password" class="input-field" name="pw" placeholder="비밀번호" required>
+            
+            <div class="login-options">
+                <input type="checkbox" id="keepLogin" onclick="toggleKeepLogin()">
+                <label for="keepLogin">로그인 상태 유지</label>
+            </div>
+            
+            <button type="submit" class="login-button">로그인</button>
+        </form>
+        
+        <div class="links">
+            <a href="/signup">회원가입</a>
+            <a href="/find_idpw">아이디/비밀번호 찾기</a>
+        </div>
+    </div>
+
+    <script>
+        // 로그인 상태 유지 체크박스
+        function toggleKeepLogin() {
+            const checkbox = document.getElementById("keepLogin");
+            if (checkbox.checked) {
+                checkbox.style.accentColor = "#00462A";
+            } else {
+                checkbox.style.accentColor = "";
+            }
+        }
+
+/*        // 로그인 기능 구현
+        function loginUser() {
+            const userId = document.getElementById("userId").value;
+            const password = document.getElementById("password").value;
+
+            window.location.href = "index.html";
+
+            return false; // 페이지 리프레시 방지
+        }
+            */
+    </script>
+    
+</body>
+</html>

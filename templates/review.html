@@ -1,26 +1,61 @@
 <!DOCTYPE html>
-{% extends "index.html"%}
-
-{% block section %}
-    전체 리뷰조회 화면입니다.
-{% endblock section%}
 <html lang="ko">
+    {% extends "index.html" %}
+    {% block section %}
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="stylesheet" href="../static/review.css">
-        <title>리뷰 전체조회-동문브랜드</title>
+        <title>리뷰 전체조회</title>
     </head>
     <body>
+        <!--페이지 상단 중앙 제목-->
         <p>리뷰</p>
+        <!--리뷰 섹션-->
         <div class="container">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
+            <div class="item">
+                <div class="key">
+                    <button class="writer" onclick="window.location.href='/writerReview'">
+                        이화연 |
+                    <button class="title" onclick="window.location.href='/specificReview'">리뷰제목
+                </div>
+            </div>
+            <div class="item">
+                <div class="key">
+                    <button class="writer" onclick="window.location.href='/writerReview'">
+                        이화연 |
+                    <button class="title" onclick="window.location.href='/specificReview'">리뷰제목
+                </div>
+            </div>
+            <div class="item">
+                <div class="key">
+                    <button class="writer" onclick="window.location.href='/writerReview'">
+                        이화연 |
+                    <button class="title" onclick="window.location.href='/specificReview'">리뷰제목
+                </div>
+            </div>
+            <div class="item">
+                <div class="key">
+                    <button class="writer" onclick="window.location.href='/writerReview'">
+                        이화연 |
+                    <button class="title" onclick="window.location.href='/specificReview'">리뷰제목
+                </div>
+            </div>
+            <div class="item">
+                <div class="key">
+                    <button class="writer" onclick="window.location.href='/writerReview'">
+                        이화연 |
+                    <button class="title" onclick="window.location.href='/specificReview'">리뷰제목
+                </div>
+            </div>
+            <div class="item">
+                <div class="key">
+                <button class="writer" onclick="window.location.href='/writerReview'">
+                    이화연 |
+                <button class="title" onclick="window.location.href='/specificReview'">리뷰제목
+                </div>
+            </div>
         </div>
-        <script src="templates\review.js"></script>
     </body>
+    {% endblock section %}
 </html>

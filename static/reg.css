@@ -7,6 +7,11 @@
     height: 200px;
 }
 
+#boothComments {
+    width: 490px;
+    height: 100px;
+}
+
 .submit-btn {
     background-color: #114B19;
     color: white;
@@ -17,6 +22,7 @@
     outline: none;
     font-size: 1rem;
     margin-top: 1rem;
+    margin-bottom: 3rem;
 }
 
 #previewContainer {
