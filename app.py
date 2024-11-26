@@ -256,3 +256,18 @@ def view_review_detail(name):
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)
+
+@application.route('/show_bookmark/<name>/', methods=['GET'])
+def show_bookmark(name):
+    my_bookmark = DB.get_bookmark_byname(session['id'],name)
+    return jsonify({'my_bookmark': my_bookmark})
+
+@application.route('/like/<name>/', methods=['POST'])
+def like(name):
+    my_bookmark = DB.update_bookmark(session['id'],'Y',name)
+    return jsonify({'msg': '관심글에 추가하였습니다.'})
+
+@application.route('/unlike/<name>/', methods=['POST'])
+def unlike(name):
+    my_bookmark = DB.update_bookmark(session['id'],'N',name)
+    return jsonify({'msg': '관심글에서 삭제되었습니다.'})

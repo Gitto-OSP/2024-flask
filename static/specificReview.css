@@ -33,7 +33,7 @@
     align-items: flex-start;
     gap: 20px;
 }
-.writerContainer, .rateContainer, .review{
+.writerContainer, .rateContainer, .review, .productContainer{
     display:flex;
     color:black;
     text-indent:20px;
