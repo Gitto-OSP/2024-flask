@@ -99,10 +99,11 @@ class DBhandler:
     #리뷰작성
     def reg_review(self,data,img_path):
         review_info={
-            "writer":data['writer'],
-            "title":data['title'],
-            "rate":data['reviewStar'],
-            "review":data['reviewContents'],
+            "name":data['name'], #상품이름
+            "writer":data['seller'], #작성자
+            "title":data['price'], #리뷰제목
+            "rate":data['star'],
+            "review":data['userComments'],
             "img_path":img_path
         }
         self.db.child("review").child(data['name']).set(review_info)
