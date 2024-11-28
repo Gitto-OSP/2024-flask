@@ -28,13 +28,13 @@ ul li a,ul li b, .account_btn {
 nav {
   width:100%;
   overflow: hidden;
-  margin-top: 20px;
 }
 
 .navbar__topbox{
   /* 테두리 박스 */
   width:100%;
   border-bottom: 1px solid #D9D9D9;
+  padding: 10px 0px;
 }
 
 .navbar__top{
@@ -62,12 +62,11 @@ nav {
 .logo{
   /* 로고 */
   float:left;
-  display: block;
   color: black;
   font-size: larger;
   text-align: center;
-  padding: 14px 16px;
   text-decoration: none;
+  vertical-align: middle;
 }
 
 /* 마켓 메뉴 네비게이션 바 */
