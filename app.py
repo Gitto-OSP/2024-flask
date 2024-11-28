@@ -30,7 +30,7 @@ def view_list():
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
-    return render_template("season.html", 
+    return render_template("./itemlist/season.html", 
                            datas=data.items(), 
                            row1 = locals()['data_0'].items(),
                            row2 = locals()['data_1'].items(),
@@ -56,7 +56,7 @@ def view_review():
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
-    return render_template("review.html", 
+    return render_template("./itemlist/review.html", 
                            datas=data.items(), 
                            row1 = locals()['data_0'].items(),
                            row2 = locals()['data_1'].items(),
@@ -84,7 +84,7 @@ def view_fleamarket():
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
         rows.append(locals()['data_{}'.format(i)].items())
-    return render_template("fleamarket.html", 
+    return render_template("./itemlist/fleamarket.html", 
                            datas=data.items(), 
                            rows = rows,
                            limit=per_page,
@@ -94,11 +94,11 @@ def view_fleamarket():
 
 @application.route("/gonggu")
 def view_gonggu():
-    return render_template("gonggu.html")
+    return render_template("./itemlist/gonggu.html")
 
 @application.route("/graduatebrands")
 def view_graduatebrands():
-    return render_template("graduatebrands.html")
+    return render_template("./itemlist/graduatebrands.html")
 
 @application.route("/login")
 def view_login():
@@ -157,78 +157,78 @@ def check_id():
 
 @application.route("/mypage")
 def view_mypage():
-    return render_template("mypage.html")
+    return render_template("./mypage/mypage.html")
 
 @application.route("/editProfile")
 def view_editProfile():
-    return render_template("editProfile.html")
+    return render_template("./mypage/editProfile.html")
 @application.route("/myBookmark")
 def view_myBookmark():
-    return render_template("myBookmark.html")
+    return render_template("./mypage/myBookmark.html")
 
 @application.route("/myGroupBuy")
 def view_myGroupBuy():
-    return render_template("myGroupBuy.html")
+    return render_template("./mypage/myGroupBuy.html")
 
 @application.route("/myReview")
 def view_myReview():
-    return render_template("myReview.html")
+    return render_template("./mypage/myReview.html")
 
 @application.route("/mySale")
 def view_mySale():
-    return render_template("mySale.html")
+    return render_template("./mypage/mySale.html")
 
 @application.route("/reg_season")
 def view_regseason():
-    return render_template("reg_season.html")
+    return render_template("./register/reg_season.html")
 
 @application.route("/reg_items")
 def view_regitems():
-    return render_template("reg_items.html")
+    return render_template("./register/reg_items.html")
 
 @application.route("/reg_group_purchase")
 def view_regGroupPurchase():
-    return render_template("reg_group_purchase.html")
+    return render_template("./register/reg_group_purchase.html")
 
 @application.route("/reg_brand")
 def view_regbrand():
-    return render_template("reg_brand.html")
+    return render_template("./register/reg_brand.html")
 #리뷰쓰기
 @application.route("/reg_review_init/<name>/")
 def reg_review_init(name):
-    return render_template("reg_reviews.html",name=name)
+    return render_template("./register/reg_reviews.html",name=name)
 #등록된 리뷰 DB 등록
 @application.route("/reg_review",methods=['POST'])
 def reg_review():
     data=request.form
     image_file=request.files["file"]
-    image_file.save("static/images/{}".format(image_file.filename))
+    image_file.save("static/DBimage/{}".format(image_file.filename))
     DB.reg_review(data,image_file.filename)
     return redirect(url_for('view_review'))
 
 @application.route('/specificReview')
 def specificReview():
-    return render_template('specificReview.html')
+    return render_template('./details/specificReview.html')
 
 @application.route('/writerReview')
 def writerReview():
-    return render_template('writerReview.html')
+    return render_template('./itemlist/writerReview.html')
 
 @application.route("/group_purchase")
 def view_grouppurchase():
-    return render_template("group_purchase.html")
+    return render_template("./details/group_purchase.html")
 
 @application.route("/brand_1")
 def view_brand1():
-    return render_template("brand_1.html")
+    return render_template("./details/brand_1.html")
 
 @application.route("/mygroup_purchase")
 def mygroup_purchase():
-    return render_template("mygroup_purchase.html")
+    return render_template("./mypage/mygroup_purchase.html")
 
 @application.route("/mySpecificReview")
 def mySpecificReview():
-    return render_template("mySpecificReview.html")
+    return render_template("./mypage/mySpecificReview.html")
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
@@ -239,10 +239,10 @@ def reg_item_submit_post():
     print(form_data.getlist('tradeRegions'))
     
     image_file=request.files["file"]
-    image_file.save("static/images/{}".format(image_file.filename))
+    image_file.save("static/DBimage/{}".format(image_file.filename))
     data=request.form
     DB.insert_item(data['name'],data,image_file.filename)
-    return render_template("submit_item.html", data=data,  img_path="static/images/{}".format(image_file.filename))
+    return render_template("./details/submit_item.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
 
 @application.route("/submit_items")
 def reg_items_submit():
@@ -271,7 +271,7 @@ def view_item_detail(name):
     print("###name:",name)
     data=DB.get_item_byname(str(name))
     print("####data:",data)
-    return render_template("submit_item_result.html",name=name,data=data)
+    return render_template("./details/submit_item_result.html",name=name,data=data)
 #리뷰 상세조회
 
 @application.route("/submit_reviews")
@@ -288,7 +288,7 @@ def view_review_detail(name):
     print("###name:",name)
     data=DB.get_review_byname(str(name))
     print("####data:",data)
-    return render_template("specificReview.html",name=name,data=data)
+    return render_template("./details/specificReview.html",name=name,data=data)
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)

@@ -14,7 +14,7 @@ ul{
   margin:0px;
 }
 
-ul li a, .account_btn {
+ul li a,ul li b, .account_btn {
   float:left;
   display: block;
   color: #767676;

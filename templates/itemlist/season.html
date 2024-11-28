@@ -1,21 +1,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Butteo:Flea Market</title>
-    <link rel="stylesheet" href="../static/itemList.css">
+    <title>Butteo:Season</title>
+    <link rel="stylesheet" href="../../static/styles/itemList.css">
 </head>
 
-{%extends "index.html"%}
-{%block section%}
+{% extends "index.html" %}
+{% block section %}
+
 <div class="content__header">
-    {% if session['id'] %}
-    <a class="register__btn" href="/reg_items">상품 등록하기</a>
-    <h1 id="tmp">중고거래</h1>
-    {% else %}
-    <a class="register__btn" onclick="alert('로그인 후 이용해주세요.');">상품 등록하기</a>
-    <h1 id="tmp">중고거래</h1>
-    {% endif %}
+    <a class="register__btn" href="/reg_season">부스 등록하기</a>
+    <h1>시즌/대동제</h1>
 </div>
+<img src="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
 {% if total > 0 %}
 <div class="filter__area" style="margin-bottom:20px;">
     <ul>
@@ -26,11 +23,10 @@
     </ul>
 </div>
 <div class="item__list">
-    {% for row in rows %}
-    {% for key,value in row %}
+    {% for key,value in row1 %}
     <div class="list__obj">
         <a href="/info_item/{{key}}/">
-        <img src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
         </a>
         <div class="listobj_textarea">
             <div class="listobj_place">{{value.tradeRegions}}</div>
@@ -40,6 +36,17 @@
     </div>
     {% endfor %}
     <div style="display: block;"></div>
+    {% for key,value in row2 %}
+    <div class="list__obj">
+        <a href="/info_item/{{key}}/">
+        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+        </a>
+        <div class="listobj_textarea">
+            <div class="listobj_place">{{value.tradeRegions}}</div>
+            <div class="listobj_title">{{key}}</div>
+            <div class="listobj_desc">{{value.price}} 원</div>
+        </div>
+    </div>
     {% endfor %}
 </div>
 <div class="page-wrap">
@@ -71,5 +78,4 @@
     등록된 상품이 없습니다. 
 </p>
 {% endif %}
-<script src="../static/pagenation.js"></script>
 {% endblock section %}

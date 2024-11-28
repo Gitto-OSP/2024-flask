@@ -1,32 +1,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Butteo:Season</title>
-    <link rel="stylesheet" href="../static/itemList.css">
+    <title>Butteo:Flea Market</title>
+    <link rel="stylesheet" href="../../static/styles/itemList.css">
 </head>
 
-{% extends "index.html" %}
-{% block section %}
-
+{%extends "index.html"%}
+{%block section%}
 <div class="content__header">
-    <a class="register__btn" href="/reg_season">부스 등록하기</a>
-    <h1>시즌/대동제</h1>
+    {% if session['id'] %}
+    <a class="register__btn" href="/reg_items">상품 등록하기</a>
+    <h1 id="tmp">중고거래</h1>
+    {% else %}
+    <a class="register__btn" onclick="alert('로그인 후 이용해주세요.');">상품 등록하기</a>
+    <h1 id="tmp">중고거래</h1>
+    {% endif %}
 </div>
-<img src="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
 {% if total > 0 %}
 <div class="filter__area" style="margin-bottom:20px;">
     <ul>
         <li>총 <span id="number_itms">{{total}}</span> 개 상품
         <li>필터 <span id="filter_str"> > 필터이름</span>
             <!---필터 드롭다운 메뉴 추가--->
-            <script src="scriptname.js"></script>
+            <script src="scripts/scriptname.js"></script>
     </ul>
 </div>
 <div class="item__list">
-    {% for key,value in row1 %}
+    {% for row in rows %}
+    {% for key,value in row %}
     <div class="list__obj">
         <a href="/info_item/{{key}}/">
-        <img src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
         </a>
         <div class="listobj_textarea">
             <div class="listobj_place">{{value.tradeRegions}}</div>
@@ -36,17 +40,6 @@
     </div>
     {% endfor %}
     <div style="display: block;"></div>
-    {% for key,value in row2 %}
-    <div class="list__obj">
-        <a href="/info_item/{{key}}/">
-        <img src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
-        </a>
-        <div class="listobj_textarea">
-            <div class="listobj_place">{{value.tradeRegions}}</div>
-            <div class="listobj_title">{{key}}</div>
-            <div class="listobj_desc">{{value.price}} 원</div>
-        </div>
-    </div>
     {% endfor %}
 </div>
 <div class="page-wrap">
@@ -54,7 +47,7 @@
         <ul style="list-style: none;">
             <li>
                 {% for i in range(page_count) %}
-                <a id="page{{i}}"class="page_btn" href="{{url_for('view_list',page=i)}}" color="black">{{i+1}}</a>
+                <a id="page{{i}}"class="page_btn" href="{{url_for('view_fleamarket',page=i)}}" color="black">{{i+1}}</a>
                 {% endfor %}
             </li>
         </ul>
@@ -78,5 +71,4 @@
     등록된 상품이 없습니다. 
 </p>
 {% endif %}
-<script src="../static/pagenation.js"></script>
 {% endblock section %}

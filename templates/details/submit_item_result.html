@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>중고거래</title>
-    <link rel="stylesheet" href="../../static/trans_styles.css">
+    <link rel="stylesheet" href="../../static/styles/trans_styles.css">
 </head>
 
 <body>
@@ -18,11 +18,11 @@
             <div class="image-gallery">
                 <!-- 썸네일 리스트 -->
                 <div class="thumbnail-container">
-                    <img src="../../static/images/{{data.img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
+                    <img src="../../static/DBimage/{{data.img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
                 </div>
                 <!-- 큰 이미지 -->
                 <div class="large-image-container">
-                    <img id="largeImage" src="../../static/images/{{data.img_path}}" alt="상품 사진">
+                    <img id="largeImage" src="../../static/DBimage/{{data.img_path}}" alt="상품 사진">
                 </div>
             </div>
         
