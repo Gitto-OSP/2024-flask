@@ -54,6 +54,9 @@
             </ul>
             <script>
                 var curr_page = window.location.search.split('=')[1];
+                if(curr_page == null){
+                    curr_page=0;
+                }
                 var btn = document.getElementById("page"+curr_page);
                 btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
             </script>
