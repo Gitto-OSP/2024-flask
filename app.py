@@ -253,6 +253,19 @@ def reg_items_submit():
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
 
+@application.route("/submit_season_post")
+def reg_season_submit():
+    name=request.args.get("name")
+    seller=request.args.get("seller")
+    boothLocation = request.args.get("boothLocation")
+    boothNum=request.args.get("boothNum")
+    openTime=request.args.get("openTime")
+    closingTime=request.args.get("closingTime")
+    # price=request.args.get("price")
+    addr=request.args.getlist("tradeRegions")
+    status=request.args.get("choice")
+    # print(name, seller, addr, price, status)
+
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
     print("###name:",name)
