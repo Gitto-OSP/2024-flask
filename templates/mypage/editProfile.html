@@ -14,7 +14,7 @@
 
     <form class="mypage-content" id="editForm">
         <div class="profile-img-section">
-            <img src="/static/image/profile.png" alt="프로필 사진" class="profile-img">
+            <img src="/static/image/profile.png" alt="프로필 사진" class="profile-img" id="previewContainer">
             <div class="profile-img-input">
                 <h3>프로필 사진 변경</h3>
                 <input type="file" name="file" id="imageUpload">
@@ -37,8 +37,8 @@
             <small id="confirmMessage" class="message"></small>
             <h4>휴대폰 번호:  <input type="tel" id="phone" class="info-input" placeholder="010-1234-5678" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"></input></h4>
             <small id="phoneMessage" class="message"></small>
-            <button class="edit-button" id="editForm" type=submit>프로필 수정</section>
-            </div>
+            <button class="edit-button" type=submit>프로필 수정</section>
+        </div>
         
     </form>
     
@@ -148,6 +148,7 @@
         // 여기서 폼을 실제로 제출하거나 추가적인 작업을 수행
     });
 </script>
+<script src="../../static/scripts/editProfile.js"></script>
 {% endblock section %}
 </body>
 </html>
