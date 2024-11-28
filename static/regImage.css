@@ -1,0 +1,80 @@
+#image-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+}
+
+.add-image-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 1rem;
+    border-radius: 10px;
+}
+
+.add-button {
+    font-weight: bold;
+    color: grey;
+    cursor: pointer;
+}
+
+.image-file-input {
+    display: none;
+    ;
+}
+
+.preview-container {
+    display: none;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 1rem;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+.remove-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: gray;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.regSeasonImgContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.regSeasonImgContainer input[type="text"],
+.regSeasonImgContainer input[type="number"] {
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    width: 8rem;
+}
