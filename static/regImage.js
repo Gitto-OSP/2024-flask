@@ -76,6 +76,43 @@ function generateImageAddElement(i) {
     return divContainer;
 }
 
+function imgPreviewHandler(event) {
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+    const divContainer = fileInput.closest(".image-upload-container");
+    const divPreviewContainer = divContainer.querySelector(".preview-container");
+    const imagePreview = divContainer.querySelector(".image-preview");
+    const addImageLabel = divContainer.querySelector(".add-image-label");
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            divPreviewContainer.style.display = 'block';
+            addImageLabel.style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeImg(event) {
+    const removeBtn = event.target;
+    const divContainer = removeBtn.closest(".image-upload-container");
+    const fileInput = divContainer.querySelector(".image-file-input");
+    const divPreviewContainer = divContainer.querySelector(".preview-container");
+    const imagePreview = divContainer.querySelector(".image-preview");
+    const addImageLabel = divContainer.querySelector(".add-image-label");
+
+    const newFileInput = fileInput.cloneNode(true);
+    newFileInput.value = '';
+    newFileInput.id = 'newone';
+    addImageLabel.replaceChild(newFileInput, fileInput);
+
+    imagePreview.src = '';
+    divPreviewContainer.style.display = 'none';
+    addImageLabel.style.display = 'flex';
+}
+
 function generateImageElement(i) {
     const div = document.createElement('div');
     div.className = "regSeasonImgContainer";

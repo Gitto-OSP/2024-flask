@@ -2,17 +2,17 @@
     --text-color: #797979;
 }
 
-#write-description {
-    width: 490px;
+.descTextarea {
+    width: 688px;
     height: 200px;
 }
 
 #boothComments {
-    width: 490px;
     height: 100px;
 }
 
 .submit-btn {
+    display: block;
     background-color: #114B19;
     color: white;
     border-radius: 12px;
@@ -21,8 +21,7 @@
     height: 50px;
     outline: none;
     font-size: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 3rem;
+    margin: 3rem auto;
 }
 
 #previewContainer {
@@ -32,7 +31,9 @@
 }
 
 #writeContainer {
-    margin: 0 30vw 0 30vw;
+    max-width: 728px;
+    padding: 0 20px;
+    margin: 0 auto;
     white-space: nowrap;
 }
 
