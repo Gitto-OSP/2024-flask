@@ -27,28 +27,59 @@
 
                     <!-- SNS 추가 :: 인스타, 트위터, 링크(스토어)-->
 
-                    <label for="productStateInput">상품 상태</label>
-                    <div id="productStateContainer">
-                        <label>
-                            <input type="radio" name="choice" value="optionBrandNew">
-                            새상품
-                        </label>
+                    <label for="socials">SNS 주소</label>
+                    <div id="snsContainer">
+                        <div>
+                            <button onclick="addInstagram(event)">
+                                <img class="socialLogo" src="../static/image/LogoInstagram.png" title="인스타그램 주소 추가" />
+                            </button>
+                            <button onclick="addX(event)">
+                                <img class="socialLogo" src="../static/image/LogoXTwitter.png" title="X(트위터) 주소 추가" />
+                            </button>
+                            <button onclick="addLink('기타링크', 'link')">
+                                <img class="socialLogo" src="../static/image/LogoLink.png" title="기타 링크 주소 추가" />
+                            </button>
+                        </div>
+                        <div id="snsInputs">
 
-                        <label>
-                            <input type="radio" name="choice" value="optionLikeNew">
-                            거의 새 것
-                        </label>
+                        </div>
+                        <script>
+                            function addLink(snsType, id) {
+                                const inputContainer = document.getElementById('snsInputs');
+                                const label = document.createElement('label');
+                                const input = document.createElement('input');
+                                input.type = "url";
+                                input.name = "socials";
+                                input.placeholder = "https://example.com";
+                                input.required = true;
+                                const button = document.createElement('button');
+                                button.innerHTML = "x";
+                                const span = document.createElement('span');
+                                span.innerHTML = snsType;
 
-                        <label>
-                            <input type="radio" name="choice" value="optionUsed" required>
-                            중고
-                        </label>
+                                label.appendChild(span);
+                                label.appendChild(input);
+                                label.appendChild(button);
+                                inputContainer.appendChild(label);
+                            }
+
+                            function addInstagram(e) {
+                                addLink("인스타그램", "instagram");
+                                e.currentTarget.disabled = true;
+                            }
+
+                            function addX(e) {
+                                addLink("X(트위터)", "xtwitter");
+                                e.currentTarget.disabled = true;
+                            }
+                        </script>
+
                     </div>
                 </div>
             </div>
 
             <div>
-                <h2>상품 사진</h2>
+                <h2>브랜드 사진</h2>
                 <input type="file" name="file" id="imageUpload" multiple required>
                 <div id="previewContainer"></div>
             </div>
