@@ -4,6 +4,7 @@
   
 body {
   width: 100%;
+  min-width: 1280px;
   font-family: Arial;
   padding-top: 0px;
   margin:0px;
