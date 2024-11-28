@@ -67,7 +67,30 @@ def view_review():
 
 @application.route("/fleamarket")
 def view_fleamarket():
-    return render_template("fleamarket.html")
+    page = request.args.get("page",0,type=int)
+    per_page = 25 #item count to display per page
+    per_row = 5 #item count to display per row
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+    data = DB.get_items() #read the table
+    item_counts = tot_count = len(data)
+    data = dict(list(data.items())[start_idx:end_idx])
+    rows=[]
+    
+    for i in range(row_count): #last row
+        if(i == row_count-1) and (tot_count%per_row!=0):
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+        rows.append(locals()['data_{}'.format(i)].items())
+    return render_template("fleamarket.html", 
+                           datas=data.items(), 
+                           rows = rows,
+                           limit=per_page,
+                           page = page,
+                           page_count = int((item_counts/per_page)+1),
+                           total=item_counts)
 
 @application.route("/gonggu")
 def view_gonggu():
