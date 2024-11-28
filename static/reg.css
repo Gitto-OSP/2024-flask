@@ -39,7 +39,7 @@
 #basicInfoContainer {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    row-gap: 1rem;
+    row-gap: 1.5rem;
 }
 
 #checkboxContainer {
@@ -80,4 +80,38 @@ h2 {
 
 label {
     color: var(--text-color);
+}
+
+.regSelect {
+    min-width: 6rem;
+    min-height: 2rem;
+    text-indent: 10px;
+}
+
+#boothNumLabel {
+    margin-left: 1rem;
+}
+
+#productNum {
+    margin-bottom: 1rem;
+}
+
+#fileInputContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.boothProductContainer {
+    display: grid;
+    gap: 10px;
+}
+
+#snsContainer {
+    display: grid;
+}
+
+.socialLogo {
+    width: 25px;
+    cursor: pointer;
+    margin-right: 10px;
 }
