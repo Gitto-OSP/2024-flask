@@ -23,7 +23,7 @@ function generateImageAddElement(i) {
 
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.name = `boothProductImg${i}`;
+    fileInput.name = `productImg${i}`;
     fileInput.className = 'image-file-input';
     fileInput.accept = "image/*";
 
@@ -44,7 +44,7 @@ function generateImageAddElement(i) {
     imagePreview.alt = "Preview";
 
     const removeButton = document.createElement('div');
-    removeButton.className = "remove-button";
+    removeButton.className = "remove-button remove-button-design";
     removeButton.innerHTML = "X";
 
     divPreviewContainer.appendChild(imagePreview);

@@ -1,0 +1,21 @@
+#snsBtnContainer {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.socialAddingBtn {
+    margin-right: 20px;
+}
+
+#snsInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-container {
+    color: gray;
+    display: grid;
+    grid-template-columns: 100px 200px 100px;
+    gap: 10px;
+}

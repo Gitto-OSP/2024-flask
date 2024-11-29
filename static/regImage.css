@@ -54,10 +54,7 @@
     border-radius: 10px;
 }
 
-.remove-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+.remove-button-design {
     background-color: gray;
     color: white;
     border-radius: 50%;
@@ -65,6 +62,12 @@
     height: 20px;
     cursor: pointer;
     text-align: center;
+}
+
+.remove-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 .regSeasonImgContainer {
@@ -78,4 +81,9 @@
     margin-bottom: 1rem;
     margin-left: 1rem;
     width: 8rem;
+}
+
+.side-adding-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
