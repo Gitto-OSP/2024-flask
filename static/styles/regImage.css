@@ -1,7 +1,11 @@
 #image-upload-wrapper {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+/* gap: 50px;
     width: 500px;
     overflow-y: scroll;
 
@@ -14,7 +18,7 @@
 #image-upload-wrapper::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 3px;
-}
+} */
 
 .image-upload-container {
     display: flex;
