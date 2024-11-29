@@ -1,20 +1,24 @@
 #image-upload-wrapper {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+/* gap: 50px;
     width: 500px;
-    overflow-y:scroll;
+    overflow-y: scroll;
 
 }
 
-#image-upload-wrapper::-webkit-scrollbar{
+#image-upload-wrapper::-webkit-scrollbar {
     width: 10px;
 }
 
-#image-upload-wrapper::-webkit-scrollbar-thumb{
+#image-upload-wrapper::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 3px;
-}
+} */
 
 .image-upload-container {
     display: flex;
@@ -65,10 +69,7 @@
     border-radius: 10px;
 }
 
-.remove-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+.remove-button-design {
     background-color: gray;
     color: white;
     border-radius: 50%;
@@ -76,6 +77,12 @@
     height: 20px;
     cursor: pointer;
     text-align: center;
+}
+
+.remove-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 .regSeasonImgContainer {
@@ -89,4 +96,9 @@
     margin-bottom: 1rem;
     margin-left: 1rem;
     width: 8rem;
+}
+
+.side-adding-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }

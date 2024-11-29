@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../static/styles/reg.css">
+    <link rel="stylesheet" href="../../static/styles/reg.css">
+    <link rel="stylesheet" href="../../static/styles/regImage.css">
+    <link rel="stylesheet" href="../../static/styles/reg_brand.css">
 </head>
 
 <body>
@@ -25,69 +27,43 @@
                     <label for="name">브랜드 이름</label>
                     <input type="text" name="name" id="name" placeholder="입력" required>
 
-                    <!-- SNS 추가 :: 인스타, 트위터, 링크(스토어)-->
-
-                    <label for="socials">SNS 주소</label>
+                    <label for="socials">SNS 링크 추가하기</label>
                     <div id="snsContainer">
-                        <div>
-                            <button onclick="addInstagram(event)">
+                        <div id="snsBtnContainer">
+                            <div class="socialAddingBtn" onclick="addLink('인스타그램')">
                                 <img class="socialLogo" src="../static/image/LogoInstagram.png" title="인스타그램 주소 추가" />
-                            </button>
-                            <button onclick="addX(event)">
+                            </div>
+                            <div class="socialAddingBtn" onclick="addLink('X(트위터)')">
                                 <img class="socialLogo" src="../static/image/LogoXTwitter.png" title="X(트위터) 주소 추가" />
-                            </button>
-                            <button onclick="addLink('기타링크', 'link')">
+                            </div>
+                            <div class="socialAddingBtn" onclick="addLink('기타링크')">
                                 <img class="socialLogo" src="../static/image/LogoLink.png" title="기타 링크 주소 추가" />
-                            </button>
+                            </div>
                         </div>
                         <div id="snsInputs">
 
                         </div>
-                        <script>
-                            function addLink(snsType, id) {
-                                const inputContainer = document.getElementById('snsInputs');
-                                const label = document.createElement('label');
-                                const input = document.createElement('input');
-                                input.type = "url";
-                                input.name = "socials";
-                                input.placeholder = "https://example.com";
-                                input.required = true;
-                                const button = document.createElement('button');
-                                button.innerHTML = "x";
-                                const span = document.createElement('span');
-                                span.innerHTML = snsType;
-
-                                label.appendChild(span);
-                                label.appendChild(input);
-                                label.appendChild(button);
-                                inputContainer.appendChild(label);
-                            }
-
-                            function addInstagram(e) {
-                                addLink("인스타그램", "instagram");
-                                e.currentTarget.disabled = true;
-                            }
-
-                            function addX(e) {
-                                addLink("X(트위터)", "xtwitter");
-                                e.currentTarget.disabled = true;
-                            }
-                        </script>
-
                     </div>
                 </div>
             </div>
 
             <div>
                 <h2>브랜드 사진</h2>
-                <input type="file" name="file" id="imageUpload" multiple required>
-                <div id="previewContainer"></div>
+                <div class="">
+                    <div class="image-upload-container side-adding-container">
+                        <label class="add-image-label" style="display: flex;">
+                            <span class="add-button">+</span>
+                            <input type="file" name="file" id="imageUpload" class="image-file-input" accept="image/*"
+                                multiple required>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div>
                 <h2>브랜드 설명</h2>
-                <textarea id="write-description" name="userComments" placeholder="상품에 대한 자세한 설명을 입력하세요."
-                    required></textarea>
+                <textarea id="write-description" class="descTextarea" name="userComments"
+                    placeholder="상품에 대한 자세한 설명을 입력하세요." required></textarea>
             </div>
 
             <input class="submit-btn" type="submit" value="등록하기">
@@ -95,6 +71,7 @@
     </div>
 
     <script src="../../static/scripts/reg.js"></script>
+    <script src="../../static/scripts/regSocials.js"></script>
     {%endblock section%}
 </body>
 

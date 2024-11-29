@@ -88,9 +88,24 @@
             </div>
 
             <div>
+                <h2>부스 대표 사진</h2>
+                <div class="image-upload-container static">
+                    <label class="add-image-label" style="display: flex;">
+                        <span class="add-button">+</span>
+                        <input type="file" name="boothMainImg" class="image-file-input" accept="image/*"
+                            onchange="imgPreviewHandler(event)">
+                    </label>
+                    <div class="preview-container" style="display: none;">
+                        <img class="image-preview" alt="Preview" src="">
+                        <div class="remove-button remove-button-design" onclick="removeImg(event)">X</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
                 <h2>부스 소개</h2>
-                <textarea id="boothComments" name="boothComments" placeholder="부스에 대한 소개 문구를 입력해주세요."
-                    required></textarea>
+                <textarea id="boothComments" class="descTextarea" name="boothComments"
+                    placeholder="부스에 대한 소개 문구를 입력해주세요." required></textarea>
             </div>
 
             <div>
@@ -108,7 +123,6 @@
         </form>
     </div>
 
-    <script src="../../static/scripts/reg.js"></script>
     <script src="../../static/scripts/regImage.js"></script>
     {%endblock section%}
 </body>
