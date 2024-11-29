@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename='specificReview.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='./styles/specificReview.css') }}">
         <script src="../static/specificReview"></script>
         <title>리뷰내용 상세 조회</title>
         <!--리뷰 전체조회화면에서 item요소를 클릭했을 시 리뷰 내용을 상세하게 보여주는
@@ -45,7 +45,7 @@
                 <!-- 리뷰 이미지 및 내용 -->
                 <div class="card2">
                     <div class="item">
-                        <img src="../../static/images/{{data.img_path}}" alt="리뷰첨부사진" class="mainImg">
+                        <img src="../../static/DBimage/{{data.img_path}}" alt="리뷰첨부사진" class="mainImg">
                     </div>
             </section>
     {% endblock section %}

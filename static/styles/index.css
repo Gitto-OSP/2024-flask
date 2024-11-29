@@ -4,6 +4,7 @@
   
 body {
   width: 100%;
+  min-width: 1280px;
   font-family: Arial;
   padding-top: 0px;
   margin:0px;
@@ -14,7 +15,7 @@ ul{
   margin:0px;
 }
 
-ul li a, .account_btn {
+ul li a,ul li b, .account_btn {
   float:left;
   display: block;
   color: #767676;
@@ -27,19 +28,20 @@ ul li a, .account_btn {
 nav {
   width:100%;
   overflow: hidden;
-  margin-top: 20px;
 }
 
 .navbar__topbox{
   /* 테두리 박스 */
   width:100%;
   border-bottom: 1px solid #D9D9D9;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 
 .navbar__top{
   /* 로고 및 계정 navigation bar */
   background-color: white;
-  width: 80%;
+  width: 90%;
   height:60px;
   vertical-align:middle;
   margin:0px auto;
@@ -58,15 +60,33 @@ nav {
   color:#191919;
 }
 
+#profileImg{
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 50px;
+}
+
 .logo{
   /* 로고 */
   float:left;
-  display: block;
   color: black;
   font-size: larger;
   text-align: center;
-  padding: 14px 16px;
   text-decoration: none;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.logo img{
+  height: 100%; 
+  object-fit: cover;
+}
+
+.logo p{
+  margin:0px;
+  padding: 14px 16px;
 }
 
 /* 마켓 메뉴 네비게이션 바 */
