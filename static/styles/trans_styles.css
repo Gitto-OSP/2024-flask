@@ -70,7 +70,7 @@ body {
 }
 
 .product-info button {
-    width: 45%;
+    width: 30%;
     margin: 0 5px;
     border: none;
     border-radius: 10px;
@@ -83,13 +83,13 @@ body {
 }
 
 .product-info button:hover {
-    background-color: darkolivegreen;
+    background-color: #00462A;
 }
 
 #bookmark {
     color: white;
-    background-color: green;
-    width: 45%
+    background-color: #00462A;
+    width: 30%
 }
 
 #bookmark.green {
