@@ -15,12 +15,12 @@
     <div id="writeContainer">
         <h1>공동구매 등록하기</h1>
 
-        <form action="/submit_item_post" enctype="multipart/form-data" method="post">
+        <form action="/submit_gpitem_post" enctype="multipart/form-data" method="post">
             <div>
                 <h2>기본 정보</h2>
                 <div id="basicInfoContainer">
-                    <label for="seller">ID</label>
-                    <input type="text" name="seller" id="seller" placeholder="입력" required>
+                    <label for="seller">주최자 ID</label>
+                    <input type="text" name="seller" id="seller" value="{{session['id']}}" readonly>
 
                     <label for="name">상품 이름</label>
                     <input type="text" name="name" id="name" placeholder="입력" required>
@@ -28,60 +28,64 @@
                     <label for="price">가격</label>
                     <input type="number" name="price" id="priceInput" placeholder="입력" required>
 
-                    <label for="tradeRegions">거래 지역</label>
+                    <label for="company">업체명</label>
+                    <input type="text" name="company" id="company" placeholder="입력" required>
+
+                    <div>
+                        <label for="period">공동구매 기간</label>
+                        <input type="date" name="startDate" id="startDate" onChange="setendmin(this.value)" required> ~ <input type="date" name="endDate" id="endDate" required>
+                    </div><br>
+
+                    <label for="status">진행 상황</label>
+                    <input type="text" id="status" name="status" value="모집" readonly>
+
+                    <label for="provideRegions">수령 장소</label>
                     <div id="checkboxContainer">
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="engineering">
+                            <input type="checkbox" name="provideRegions" value="engineering">
                             공대
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="posko">
+                            <input type="checkbox" name="provideRegions" value="posko">
                             포관
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="ecc">
+                            <input type="checkbox" name="provideRegions" value="ecc">
                             ECC
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="studentCC">
+                            <input type="checkbox" name="provideRegions" value="studentCC">
                             학문관
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="frontEntrance">
+                            <input type="checkbox" name="provideRegions" value="frontEntrance">
                             정문
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="post">
+                            <input type="checkbox" name="provideRegions" value="post">
                             택배
                         </label>
 
                         <label>
-                            <input type="checkbox" name="tradeRegions" value="etc">
+                            <input type="checkbox" name="provideRegions" value="etc">
                             기타
                         </label>
                     </div>
 
-                    <label for="productStateInput">상품 상태</label>
-                    <div id="productStateContainer">
-                        <label>
-                            <input type="radio" name="choice" value="optionBrandNew">
-                            새상품
-                        </label>
-
-                        <label>
-                            <input type="radio" name="choice" value="optionLikeNew">
-                            거의 새 것
-                        </label>
-
-                        <label>
-                            <input type="radio" name="choice" value="optionUsed" required>
-                            중고
-                        </label>
+                    <div>
+                        <h2>상품 옵션</h2>
+                        <div id="optionContainer">
+                            <div class="option">
+                                <input type="text" name="options[]" placeholder="옵션명 입력">
+                                <button type="button" class="remove-option">삭제</button>
+                            </div>
+                        </div>
+                        <button type="button" id="addOption">옵션 추가</button>
                     </div>
                 </div>
             </div>
@@ -103,6 +107,34 @@
     </div>
 
     <script src="../../static/scripts/reg.js"></script>
+    <script>
+        // 옵션 추가/삭제 기능
+        document.getElementById('addOption').addEventListener('click', function () {
+            const container = document.getElementById('optionContainer');
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.innerHTML = `
+                <input type="text" name="options[]" placeholder="옵션명 입력">
+                <button type="button" class="remove-option">삭제</button>
+            `;
+            container.appendChild(optionDiv);
+        });
+
+        document.getElementById('optionContainer').addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-option')) {
+                e.target.parentElement.remove();
+            }
+        });
+
+        var now_utc = Date.now()
+        var timeOff = new Date().getTimezoneOffset()*60000;
+        var today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+        document.getElementById("startDate").setAttribute("min", today);
+        function setendmin(e){
+            console.log(e);
+            document.getElementById("endDate").setAttribute("min", e);
+            }
+    </script>
     {%endblock section%}
 </body>
 

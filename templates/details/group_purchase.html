@@ -17,13 +17,13 @@
                 <img src="/static/image/item_img.png" alt="Image">
             </div>
             <div class="product-details">
-                <h1>웨체비 학잠 공구</h1>
-                <p class="price">50000원</p>
+                <h1>{{data.name}}</h1>
+                <p class="price">가격: {{data.price}}원</p>
                 <div class="supplier-info">
-                    <p><strong>공구자: </strong>abc</p>
-                    <p><strong>물품: </strong>학잠</p>
-                    <p><strong>업체: </strong>팀팩토리</p>
-                    <p><strong>설명: </strong>공구합니다</p>
+                    <p><strong>공구자: </strong>{{data.seller}}</p>
+                    <p><strong>물품: </strong>{{data.name}}</p>
+                    <p><strong>업체: </strong>{{data.company}}</p>
+                    <p><strong>설명: </strong>{{data.userComments}}</p>
                 </div>
                 <div class="size-options">
                     <label for="size">옵션: </label>
