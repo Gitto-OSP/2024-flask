@@ -21,6 +21,12 @@ class DBhandler:
         self.db.child("item").child(name).set(item_info)
         print(data,img_path)
         return True
+    
+    def insert_booth(self, data):
+        booth_name = data['name']
+        self.db.child("season").child(booth_name).set(data)
+        print(data)
+        return True
 
     # 회원가입
     def insert_user(self, data, pw):

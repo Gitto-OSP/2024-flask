@@ -244,6 +244,55 @@ def reg_item_submit_post():
     DB.insert_item(data['name'],data,image_file.filename)
     return render_template("./details/submit_item.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
 
+def process_form_data(form_data, form_files):
+    main_image_file=form_files["boothMainImg"]
+    main_image_path = f"static/DBimage/{form_data['name']}{form_data['boothNum']}{main_image_file.filename}"
+    main_image_file.save(main_image_path)
+
+    booth_data = {
+        "name": form_data["name"],
+        "boothLocation": form_data["boothLocation"],
+        "boothNum": form_data["boothNum"],
+        "openTime": form_data["openTime"],
+        "closingTime": form_data["closingTime"],
+        "boothComments": form_data["boothComments"],
+        "boothMainImgPath" : main_image_path,
+        "products": []
+    }
+
+    product_count = int(form_data["productNum"])
+
+    for i in range(product_count):
+        product_name = form_data[f"product{i}Name"]
+        product_price = int(form_data[f"product{i}Price"])
+
+        product_image_file = form_files.get(f"productImg{i}")
+        product_img_path = f"static/DBimage/{booth_data['name']}{booth_data['boothNum']}{product_image_file.filename}"
+        product_image_file.save(product_img_path)
+
+        booth_data["products"].append({
+            "name": product_name,
+            "price": product_price,
+            "img_path" : product_img_path
+        })
+
+    return booth_data
+
+
+@application.route("/submit_season_post", methods=['POST'])
+def reg_season_submit_post():
+    form_data = request.form
+    files_data = request.files
+    
+    print("POST로 수신된 데이터:")
+    for key, value in form_data.items():
+        print(f"{key}: {value}")
+    
+    booth_data = process_form_data(form_data, files_data)  # 데이터 정제
+    DB.insert_booth(booth_data)
+    return render_template("./details/submit_item.html", data=booth_data,  img_path=booth_data['boothMainImgPath'])
+
+
 @application.route("/submit_items")
 def reg_items_submit():
     name=request.args.get("name")
@@ -253,7 +302,7 @@ def reg_items_submit():
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
 
-@application.route("/submit_season_post")
+@application.route("/submit_season")
 def reg_season_submit():
     name=request.args.get("name")
     seller=request.args.get("seller")
@@ -261,10 +310,9 @@ def reg_season_submit():
     boothNum=request.args.get("boothNum")
     openTime=request.args.get("openTime")
     closingTime=request.args.get("closingTime")
-    # price=request.args.get("price")
     addr=request.args.getlist("tradeRegions")
     status=request.args.get("choice")
-    # print(name, seller, addr, price, status)
+    print(name, seller, addr, boothLocation, status)
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
