@@ -335,9 +335,7 @@ def view_liked_list():
     
     data = data[start_idx:end_idx]
     rows = [data[i:i + per_row] for i in range(0, len(data), per_row)]
-    print(data)  # 각 항목이 딕셔너리인지 확인
 
-    
     return render_template("mypage/myBookmark.html", 
                            datas=data, 
                            rows = rows,
