@@ -304,6 +304,14 @@ def reg_season_submit():
     status=request.args.get("choice")
     # print(name, seller, addr, price, status)
 
+@application.route("/submit_gpitem_post", methods=['POST'])
+def reg_gpitem_submit_post(): 
+    image_file=request.files["file"]
+    image_file.save("static/DBimage/{}".format(image_file.filename))
+    data=request.form
+    DB.insert_gp_item(data['name'],data,image_file.filename)
+    return render_template("./details/group_purchase.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
+
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
     print("###name:",name)
