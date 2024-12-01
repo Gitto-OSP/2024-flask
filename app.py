@@ -128,6 +128,7 @@ def logout_user():
 
 # DBhandler 인스턴스를 생성하고, 닉네임을 생성
 db_handler = DBhandler()
+
 # 랜덤 닉네임 생성
 def generate_random_nickname(db_handler):
     while True:
@@ -149,6 +150,7 @@ def success():
 
 @application.route('/signup_post', methods=['POST'])
 def register_user():
+    
     user_data = {
         'id': request.form['id'],
         'email': request.form['email'],
@@ -162,9 +164,14 @@ def register_user():
     # 디폴트 프로필 이미지 경로 추가
     default_profile_path = '/static/image/profile.png'
     user_data['profile_image'] = default_profile_path
-
     
-    if db_handler.insert_user(user_data, request.form['pw']):
+
+    # 비밀번호 해시화
+    password = request.form['password']
+    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    
+    if db_handler.insert_user(user_data, password_hash):
+        
         flash("회원가입 성공!", "success")
         return redirect(url_for('view_login'))  
     else:
@@ -179,8 +186,8 @@ def check_id():
     if not user_id:
         return jsonify({"success": False, "message": "아이디를 제공해야 합니다."}), 400
 
-    # Firebase에서 중복 아이디 확인
-    result = DB.user_duplicate_check(user_id)
+    # 중복 아이디 확인
+    result = db_handler.user_duplicate_check(user_id)
     if result:
         return jsonify({"success": True, "message": "사용 가능한 아이디입니다."})
     else:
