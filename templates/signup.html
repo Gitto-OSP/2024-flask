@@ -12,23 +12,16 @@
         <h2>회원가입</h2>
 
         <!-- 플래시 메세지  -->
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <script>
-                    alert("{{ messages[0] }}");
-                </script>
-            
-                <div class="flash-messages">
-                    <ul>
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
             {% endif %}
         {% endwith %}
 
         <form id="signupForm" action="/signup_post" method="POST">
+            
             <!-- 아이디 입력 -->
             <label for="id"><span class="required">*</span> <span class="label-text">ID</span></label>
             <div class="input-group">
@@ -157,6 +150,7 @@
         const idMessage = document.getElementById("idMessage");
         const passwordInput = document.getElementById("password").value;
         const passwordMessage = document.getElementById("passwordMessage");
+        const confirmPasswordInput = document.getElementById("confirmPassword").value;
         const confirmMessage = document.getElementById("confirmMessage");
         const emailInput = document.getElementById("email").value.trim();
         const emailMessage = document.getElementById("emailMessage");
@@ -181,7 +175,7 @@
         }
 
         // 비밀번호 확인 검사
-        if (passwordInput !== document.getElementById("confirmPassword").value) {
+        if (passwordInput !== confirmPasswordInput){
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
@@ -205,7 +199,6 @@
             phoneMessage.textContent = "";
         }
 
-
         // fetch API, 비동기로 서버에 데이터 전송
         fetch("/signup_post", {
             method: "POST",
@@ -223,13 +216,15 @@
         .then(data => {
             if (data.success) {
                 alert("회원가입이 완료되었습니다.");
-                window.location.href = "/index";  // 홈 화면으로 이동
+                window.location.href = "/login";  // 로그인 화면으로 이동
             } else {
                 alert(data.message);  // 서버에서 받은 에러 메시지 표시
             }
         })
-        .catch(error => console.error("Error:", error));
- 
+        .catch(error => {
+            console.error("Error:", error);
+            alert("회원가입 중 오류가 발생하였습니다.");
+        });
     });
     </script>
 
