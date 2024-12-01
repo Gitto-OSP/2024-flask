@@ -53,7 +53,8 @@
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+.input-style {
     border: none;
     border-bottom: 1px solid gray;
     height: 30px;
@@ -105,14 +106,4 @@ label {
 .boothProductContainer {
     display: grid;
     gap: 10px;
-}
-
-#snsContainer {
-    display: grid;
-}
-
-.socialLogo {
-    width: 25px;
-    cursor: pointer;
-    margin-right: 10px;
 }

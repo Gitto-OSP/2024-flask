@@ -22,6 +22,18 @@ class DBhandler:
         print(data,img_path)
         return True
     
+    def insert_booth(self, data):
+        booth_name = data['name']
+        self.db.child("season").child(booth_name).set(data)
+        print(data)
+        return True
+    
+    def insert_brand(self, data):
+        brand_name = data['name']
+        self.db.child("brand").child(brand_name).set(data)
+        print(data)
+        return True
+
     def get_items(self):
         # item 노드 아래 값들 가져오기
         items = self.db.child("item").get().val()

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../static/styles/reg.css">
+    <link rel="stylesheet" href="../../static/styles/regImage.css">
 </head>
 
 <body>
@@ -88,8 +89,13 @@
 
             <div>
                 <h2>상품 사진</h2>
-                <input type="file" name="file" id="imageUpload" multiple required>
-                <div id="previewContainer"></div>
+                <div class="image-upload-container side-adding-container">
+                    <label class="add-image-label" style="display: flex;">
+                        <span class="add-button">+</span>
+                        <input type="file" name="file" id="imageUpload" class="image-file-input" accept="image/*"
+                            multiple required>
+                    </label>
+                </div>
             </div>
 
             <div>
