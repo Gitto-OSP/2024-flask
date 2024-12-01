@@ -233,16 +233,22 @@ def mySpecificReview():
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
     form_data = request.form
+    files_data = request.files.getlist('selectedFile')
+    img_path_list = []
+
     print("POST로 수신된 데이터:")
     for key, value in form_data.items():
         print(f"{key}: {value}")
     print(form_data.getlist('tradeRegions'))
     
-    image_file=request.files["file"]
-    image_file.save("static/DBimage/{}".format(image_file.filename))
-    data=request.form
-    DB.insert_item(data['name'],data,image_file.filename)
-    return render_template("./details/submit_item.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/fleamarket{form_data['name']}{form_data['seller']}{file.filename}"
+            file.save(img_path_format)
+            img_path_list.append(img_path_format)
+
+    DB.insert_item(form_data['name'], form_data, img_path_list)
+    return render_template("./details/submit_item.html", data=form_data, img_path=img_path_list[0])
 
 def process_season_data(form_data, form_files):
     main_image_file=form_files["boothMainImg"]
