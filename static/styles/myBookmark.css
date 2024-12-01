@@ -75,33 +75,6 @@ button:hover {
     color:#D9D9D9;
 }
 
-.brand__obj{
-    position:relative;
-    width: 300px;
-    height: 300px;
-    color:white;
-    float:left;
-    margin: 10px;
-    border-radius: 20px;
-    background-image: linear-gradient(to top, #107413e6 10%,#00000000 33%),
-    url(./image/item_img.png);
-    background-size: contain;
-}
-.brand__obj:hover{
-    background-image: linear-gradient(to top, #004702,#00000000 80%),
-        url(./image/item_img.png);
-}
-.brandobj_title{
-    font-size: larger;
-    position:absolute;
-    bottom: 40px;
-}
-.brandobj_event{
-    font-size: large;
-    position: absolute;
-    bottom: 15px;
-}
-
 /* 페이지네이션 */
 .pagenation{
     width: fit-content;

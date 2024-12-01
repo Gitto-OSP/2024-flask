@@ -122,3 +122,19 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+
+    def get_liked_items(self, user_id):
+        bookmarks = self.db.child("bookmark").child(user_id).get()
+        linked_items = []
+        if bookmarks.val():
+            for res in bookmarks.each():
+                if res.val().get("interested") == "Y":
+                    item = {
+                        "id": res.key(),  # 각 항목의 고유 ID
+                        "img_path": res.val().get("img_path", ""),  # 이미지 경로
+                        "tradeRegions": res.val().get("tradeRegions", ""),  # 거래 지역
+                        "title": res.val().get("title", ""),  # 상품 이름
+                        "price": res.val().get("price", 0)  # 가격
+                    }
+                    linked_items.append(item)
+        return linked_items or []
