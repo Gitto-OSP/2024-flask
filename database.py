@@ -34,6 +34,21 @@ class DBhandler:
         print(data)
         return True
 
+    def get_items(self):
+        # item 노드 아래 값들 가져오기
+        items = self.db.child("item").get().val()
+        return items
+    
+    def get_item_byname(self,name):
+        items=self.db.child("item").get()
+        target_value=""
+        print("###########",name)
+        for res in items.each():
+            key_value = res.key()
+            if key_value==name:
+                target_value=res.val()
+        return target_value
+
     # 회원가입
     def insert_user(self, data, pw):
         user_info = {
@@ -72,22 +87,6 @@ class DBhandler:
             if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
                 return True
         return False
-
-    
-    def get_items(self):
-        # item 노드 아래 값들 가져오기
-        items = self.db.child("item").get().val()
-        return items
-    
-    def get_item_byname(self,name):
-        items=self.db.child("item").get()
-        target_value=""
-        print("###########",name)
-        for res in items.each():
-            key_value = res.key()
-            if key_value==name:
-                target_value=res.val()
-        return target_value
     
     def get_bookmark_byname(self,uid,name):
         bookmarks = self.db.child("bookmark").child(uid).get()
@@ -134,3 +133,21 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+    
+    #공동구매
+    def insert_gp_item(self,name,data,img_path):
+        gp_item_info={
+            "name":data['name'],
+            "seller":data['seller'],
+            "price":data['price'],
+            "company":data['company'],
+            "provideRegions":data['provideRegions'],
+            "options":data['options[]'],
+            "startDate":data['startDate'],
+            "endDate":data['endDate'],
+            "status":data['status'],
+            "img_path":img_path,
+            "userComments":data['userComments']
+        }
+        self.db.child("gp_item").child(name).set(gp_item_info)
+        return True
