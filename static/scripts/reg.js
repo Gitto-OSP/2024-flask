@@ -52,3 +52,32 @@ inputFile.addEventListener('change', function (event) {
         }
     });
 });
+
+const form = document.querySelector('form');
+form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const formData = new FormData();
+    selectedFiles.forEach(file => {
+        formData.append('selectedFile', file);
+    });
+
+    const form = document.querySelector('form');
+    const formInputData = new FormData(form);
+    formInputData.forEach((value, key) => {
+        formData.append(key, value);
+    });
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())  // 응답이 HTML인 경우
+        .then(data => {
+            console.log('Response:', data); // HTML 데이터를 콘솔에 출력
+            document.body.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});

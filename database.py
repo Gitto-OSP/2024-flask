@@ -27,6 +27,12 @@ class DBhandler:
         self.db.child("season").child(booth_name).set(data)
         print(data)
         return True
+    
+    def insert_brand(self, data):
+        brand_name = data['name']
+        self.db.child("brand").child(brand_name).set(data)
+        print(data)
+        return True
 
     # 회원가입
     def insert_user(self, data, pw):

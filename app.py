@@ -244,13 +244,14 @@ def reg_item_submit_post():
     DB.insert_item(data['name'],data,image_file.filename)
     return render_template("./details/submit_item.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
 
-def process_form_data(form_data, form_files):
+def process_season_data(form_data, form_files):
     main_image_file=form_files["boothMainImg"]
     main_image_path = f"static/DBimage/{form_data['name']}{form_data['boothNum']}{main_image_file.filename}"
     main_image_file.save(main_image_path)
 
     booth_data = {
         "name": form_data["name"],
+        "seller": form_data["seller"],
         "boothLocation": form_data["boothLocation"],
         "boothNum": form_data["boothNum"],
         "openTime": form_data["openTime"],
@@ -288,10 +289,53 @@ def reg_season_submit_post():
     for key, value in form_data.items():
         print(f"{key}: {value}")
     
-    booth_data = process_form_data(form_data, files_data)  # 데이터 정제
+    booth_data = process_season_data(form_data, files_data)  # 데이터 정제
     DB.insert_booth(booth_data)
     return render_template("./details/submit_item.html", data=booth_data,  img_path=booth_data['boothMainImgPath'])
 
+def process_brand_data(form_data, files_data):
+    brand_data = {
+        "name": form_data["name"],
+        "seller": form_data["seller"],
+        "major": form_data["major"],
+        "graduNum": form_data["graduNum"],
+        "benefits": form_data["benefits"],
+        "userComments": form_data["userComments"],
+        "img_path" : [],
+        "socials": []
+    }
+
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/brand{form_data['name']}{form_data['seller']}{file.filename}"
+            file.save(img_path_format)
+            brand_data["img_path"].append(img_path_format)
+    
+    socialsType = ['instagram', 'x']
+    for sns in socialsType:
+        if(form_data.get(sns)): 
+            brand_data["socials"].append({sns : form_data[sns]})
+    
+    etcUrls = form_data.getlist('etcUrl')
+    etcNames = form_data.getlist('etcName')
+    if etcUrls and etcNames:
+        for name, url in zip(etcNames, etcUrls):  # 이름과 URL을 쌍으로 묶어서 처리
+            brand_data["socials"].append({name: url})
+
+    return brand_data
+
+@application.route("/submit_brand_post", methods=['POST'])
+def reg_brand_submit_post():
+    form_data = request.form
+    files_data = request.files.getlist('selectedFile')
+    
+    brand_data = process_brand_data(form_data, files_data)  # 데이터 정제
+    DB.insert_brand(brand_data)
+    return render_template("./details/brand_1.html", data=brand_data)
+
+@application.errorhandler(500)
+def internal_error(error):
+    return "500 Internal Server Error", 500
 
 @application.route("/submit_items")
 def reg_items_submit():
