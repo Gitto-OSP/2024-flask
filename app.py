@@ -200,9 +200,9 @@ def view_mypage():
 @application.route("/editProfile")
 def view_editProfile():
     return render_template("./mypage/editProfile.html")
-@application.route("/myBookmark")
-def view_myBookmark():
-    return render_template("./mypage/myBookmark.html")
+# @application.route("/myBookmark")
+# def view_myBookmark():
+#     return render_template("./mypage/myBookmark.html")
 
 @application.route("/myGroupBuy")
 def view_myGroupBuy():
@@ -451,3 +451,39 @@ def like(name):
 def unlike(name):
     my_bookmark = DB.update_bookmark(session['id'],'N',name)
     return jsonify({'msg': '관심글에서 삭제되었습니다.'})
+
+@application.route("/myBookmark")
+def view_liked_list():
+    page = request.args.get("page",0,type=int)
+    per_page = 15 #item count to display per page
+    per_row = 5 #item count to display per row
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+
+    user_id = session.get('id')
+    if not user_id:
+        return redirect('/login')
+    
+    data = DB.get_liked_items(user_id)
+    like_counts = like_tot_count = len(data)
+
+    if like_tot_count == 0:
+        return render_template("./mypage/myBookmark.html", 
+                               datas=[], 
+                               rows=[], 
+                               limit=per_page,
+                               page=page,
+                               page_count=1,
+                               total=0)
+    
+    data = data[start_idx:end_idx]
+    rows = [data[i:i + per_row] for i in range(0, len(data), per_row)]
+
+    return render_template("mypage/myBookmark.html", 
+                           datas=data, 
+                           rows = rows,
+                           limit=per_page,
+                           page = page,
+                           page_count = int((like_counts/per_page)+1),
+                           total=like_tot_count)
