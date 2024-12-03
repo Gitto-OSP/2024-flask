@@ -62,7 +62,7 @@
     }
     .list__obj img{
         width:210px;
-        height: auto;
+        height: 210px;
         border-radius: 20px;
     }
     .list__obj:hover{
