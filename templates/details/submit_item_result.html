@@ -18,11 +18,14 @@
             <div class="image-gallery">
                 <!-- 썸네일 리스트 -->
                 <div class="thumbnail-container">
-                    <img src="../../static/DBimage/{{data.img_path}}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('large-image1.jpg')">
+                    <img src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('{{ url_for('static', filename=data.img_path[0][7:]) }}')">
+                    {% if data.img_path|length > 1 %}
+                        <img src="{{ url_for('static', filename=data.img_path[1][7:]) }}" alt="Thumbnail 2" class="thumbnail" onclick="changeImage('{{ url_for('static', filename=data.img_path[1][7:]) }}')">
+                    {% endif %}
                 </div>
                 <!-- 큰 이미지 -->
                 <div class="large-image-container">
-                    <img id="largeImage" src="../../static/DBimage/{{data.img_path}}" alt="상품 사진">
+                    <img id="largeImage" src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="상품 사진" class="large-image">
                 </div>
             </div>
         
@@ -54,6 +57,10 @@
                 </div>
             </div>
             <script>
+                function changeImage(imagePath) {
+                    const largeImage = document.getElementById("largeImage");
+                    largeImage.src = imagePath;
+                }
                 function showBookmark() {
                     $.ajax({
                         type: 'GET',

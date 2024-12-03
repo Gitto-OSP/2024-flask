@@ -30,7 +30,7 @@
     {% for key,value in row %}
     <div class="list__obj">
         <a href="/info_item/{{key}}/">
-        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+        <img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
         </a>
         <div class="listobj_textarea">
             <div class="listobj_place">{{value.tradeRegions}}</div>

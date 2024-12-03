@@ -9,7 +9,7 @@
 {%block section%}
 
 <div class="content__header">
-    <h1 id="tmp">중고거래</h1>
+    <h1 id="tmp">관심 상품</h1>
 </div>
 
 {% if total > 0 %}
@@ -19,7 +19,7 @@
             {% for item in row %}
             <div class="list__obj">
                 <a href="/info_item/{{ item['id'] }}/">
-                <img src="/static/DBimage/{{ item['img_path'] }}" alt="상품 이미지" width="210" height="210">
+                <img src="{{ url_for('static', filename=item.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210">
                 </a>
                 <div class="listobj_textarea">
                     <div class="listobj_place">{{ item['tradeRegions'] }}</div>
