@@ -54,9 +54,10 @@ class DBhandler:
         user_info = {
             "id": data['id'],
             "pw": pw,
-            #"nickname": data['nickname'],
+            "nickname": data['nickname'],
             "email": data['email'],
-            "phone": data['phone']
+            "phone": data['phone'],
+            "profile_image": "static/image/profile.png"
         }
         
         if self.user_duplicate_check(data['id']):
@@ -81,12 +82,36 @@ class DBhandler:
     # 로그인
     def find_user(self, id_, pw_):
         users = self.db.child("user").get()
-        target_value=[]
+        #target_value=[]
         for res in users.each():
             value = res.val()
             if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
                 return True
         return False
+    
+    # 닉네임 중복 체크
+    def nickname_exists(self, nickname):
+        users = self.db.child("user").get()
+        for res in users.each():
+            if res.val().get('nickname') == nickname:
+                return True  # 닉네임이 존재하면 True 반환
+        return False  # 닉네임이 존재하지 않으면 False 반환
+
+    
+    def get_items(self):
+        # item 노드 아래 값들 가져오기
+        items = self.db.child("item").get().val()
+        return items
+    
+    def get_item_byname(self,name):
+        items=self.db.child("item").get()
+        target_value=""
+        print("###########",name)
+        for res in items.each():
+            key_value = res.key()
+            if key_value==name:
+                target_value=res.val()
+        return target_value
     
     def get_bookmark_byname(self,uid,name):
         bookmarks = self.db.child("bookmark").child(uid).get()
