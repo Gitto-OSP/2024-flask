@@ -3,6 +3,9 @@ from database import DBhandler
 import hashlib
 import sys
 
+import random
+import string
+
 application = Flask(__name__)
 application.config["SECRET_KEY"] = "helloosp"
 
@@ -114,32 +117,67 @@ def view_login_user():
         session['id']=id_    # session에 id 정보 삽입
         return redirect(url_for('view_list'))
     else:
-        flash("Wrong ID or PW!")    #db에 매칭 정보가 없으면 플래시 메세지 생성
+        flash("잘못된 아이디 혹은 비밀번호를 입력하셨습니다.")    #db에 매칭 정보가 없으면 플래시 메세지 생성
         return render_template("login.html")
 
 # 로그아웃
 @application.route("/logout")
 def logout_user():
-    session.clear()    #session에 셋팅한 값들 모두 클리어, session id값 지워짐.
+    session.clear()    #session에 세팅한 값들 모두 클리어, session id값 지워짐.
     return redirect(url_for('view_list'))
 
-#여기까지(p9까지 완료)
+# DBhandler 인스턴스를 생성하고, 닉네임을 생성
+db_handler = DBhandler()
+
+# 랜덤 닉네임 생성
+def generate_random_nickname(db_handler):
+    while True:
+        # 랜덤 문자열 생성 (예시로 8자리 닉네임)
+        random_nickname = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        # 닉네임 중복 체크
+        if not db_handler.nickname_exists(random_nickname):
+            return random_nickname  # 중복되지 않으면 반환
 
 @application.route("/signup")
 def view_signup():
     return render_template("signup.html")
 
-@application.route("/signup_post", methods=['POST'])
+# 성공 페이지 라우트 정의
+@application.route('/success')
+def success():
+    #return "회원가입 성공!"
+    return redirect(url_for('view_login'))
+
+@application.route('/signup_post', methods=['POST'])
 def register_user():
-    data=request.form
-    pw=request.form['pw']
-    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-    if DB.insert_user(data,pw_hash):
-        flash("successful signup") #추가
-        return render_template("login.html")    #index.html
+    
+    user_data = {
+        'id': request.form['id'],
+        'email': request.form['email'],
+        'phone': request.form['phone']
+    }
+
+    # 랜덤 닉네임 생성
+    random_nickname = generate_random_nickname(db_handler)
+    user_data['nickname'] = random_nickname
+    
+    # 디폴트 프로필 이미지 경로 추가
+    default_profile_path = '/static/image/profile.png'
+    user_data['profile_image'] = default_profile_path
+    
+
+    # 비밀번호 해시화
+    password = request.form['password']
+    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    
+    if db_handler.insert_user(user_data, password_hash):
+        
+        flash("회원가입 성공!", "success")
+        return redirect(url_for('view_login'))  
     else:
-        flash("user id already exist!")
-        return render_template("signup.html")
+        flash("회원가입 실패!", "error")
+        return redirect(url_for('view_signup'))
+    
 
 #아이디 중복체크
 @application.route("/check_id", methods=['GET'])
@@ -148,8 +186,8 @@ def check_id():
     if not user_id:
         return jsonify({"success": False, "message": "아이디를 제공해야 합니다."}), 400
 
-    # Firebase에서 중복 아이디 확인
-    result = DB.user_duplicate_check(user_id)
+    # 중복 아이디 확인
+    result = db_handler.user_duplicate_check(user_id)
     if result:
         return jsonify({"success": True, "message": "사용 가능한 아이디입니다."})
     else:
@@ -233,16 +271,115 @@ def mySpecificReview():
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
     form_data = request.form
+    files_data = request.files.getlist('selectedFile')
+    img_path_list = []
+
     print("POST로 수신된 데이터:")
     for key, value in form_data.items():
         print(f"{key}: {value}")
     print(form_data.getlist('tradeRegions'))
     
-    image_file=request.files["file"]
-    image_file.save("static/DBimage/{}".format(image_file.filename))
-    data=request.form
-    DB.insert_item(data['name'],data,image_file.filename)
-    return render_template("./details/submit_item.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/fleamarket{form_data['name']}{form_data['seller']}{file.filename}"
+            file.save(img_path_format)
+            img_path_list.append(img_path_format)
+
+    DB.insert_item(form_data['name'], form_data, img_path_list)
+    return render_template("./details/submit_item.html", data=form_data, img_path=img_path_list[0])
+
+def process_season_data(form_data, form_files):
+    main_image_file=form_files["boothMainImg"]
+    main_image_path = f"static/DBimage/{form_data['name']}{form_data['boothNum']}{main_image_file.filename}"
+    main_image_file.save(main_image_path)
+
+    booth_data = {
+        "name": form_data["name"],
+        "seller": form_data["seller"],
+        "boothLocation": form_data["boothLocation"],
+        "boothNum": form_data["boothNum"],
+        "openTime": form_data["openTime"],
+        "closingTime": form_data["closingTime"],
+        "boothComments": form_data["boothComments"],
+        "boothMainImgPath" : main_image_path,
+        "products": []
+    }
+
+    product_count = int(form_data["productNum"])
+
+    for i in range(product_count):
+        product_name = form_data[f"product{i}Name"]
+        product_price = int(form_data[f"product{i}Price"])
+
+        product_image_file = form_files.get(f"productImg{i}")
+        product_img_path = f"static/DBimage/{booth_data['name']}{booth_data['boothNum']}{product_image_file.filename}"
+        product_image_file.save(product_img_path)
+
+        booth_data["products"].append({
+            "name": product_name,
+            "price": product_price,
+            "img_path" : product_img_path
+        })
+
+    return booth_data
+
+
+@application.route("/submit_season_post", methods=['POST'])
+def reg_season_submit_post():
+    form_data = request.form
+    files_data = request.files
+    
+    print("POST로 수신된 데이터:")
+    for key, value in form_data.items():
+        print(f"{key}: {value}")
+    
+    booth_data = process_season_data(form_data, files_data)  # 데이터 정제
+    DB.insert_booth(booth_data)
+    return render_template("./details/submit_item.html", data=booth_data,  img_path=booth_data['boothMainImgPath'])
+
+def process_brand_data(form_data, files_data):
+    brand_data = {
+        "name": form_data["name"],
+        "seller": form_data["seller"],
+        "major": form_data["major"],
+        "graduNum": form_data["graduNum"],
+        "benefits": form_data["benefits"],
+        "userComments": form_data["userComments"],
+        "img_path" : [],
+        "socials": []
+    }
+
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/brand{form_data['name']}{form_data['seller']}{file.filename}"
+            file.save(img_path_format)
+            brand_data["img_path"].append(img_path_format)
+    
+    socialsType = ['instagram', 'x']
+    for sns in socialsType:
+        if(form_data.get(sns)): 
+            brand_data["socials"].append({sns : form_data[sns]})
+    
+    etcUrls = form_data.getlist('etcUrl')
+    etcNames = form_data.getlist('etcName')
+    if etcUrls and etcNames:
+        for name, url in zip(etcNames, etcUrls):  # 이름과 URL을 쌍으로 묶어서 처리
+            brand_data["socials"].append({name: url})
+
+    return brand_data
+
+@application.route("/submit_brand_post", methods=['POST'])
+def reg_brand_submit_post():
+    form_data = request.form
+    files_data = request.files.getlist('selectedFile')
+    
+    brand_data = process_brand_data(form_data, files_data)  # 데이터 정제
+    DB.insert_brand(brand_data)
+    return render_template("./details/brand_1.html", data=brand_data)
+
+@application.errorhandler(500)
+def internal_error(error):
+    return "500 Internal Server Error", 500
 
 @application.route("/submit_items")
 def reg_items_submit():
@@ -253,7 +390,7 @@ def reg_items_submit():
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
 
-@application.route("/submit_season_post")
+@application.route("/submit_season")
 def reg_season_submit():
     name=request.args.get("name")
     seller=request.args.get("seller")
@@ -261,10 +398,17 @@ def reg_season_submit():
     boothNum=request.args.get("boothNum")
     openTime=request.args.get("openTime")
     closingTime=request.args.get("closingTime")
-    # price=request.args.get("price")
     addr=request.args.getlist("tradeRegions")
     status=request.args.get("choice")
-    # print(name, seller, addr, price, status)
+    print(name, seller, addr, boothLocation, status)
+
+@application.route("/submit_gpitem_post", methods=['POST'])
+def reg_gpitem_submit_post(): 
+    image_file=request.files["file"]
+    image_file.save("static/DBimage/{}".format(image_file.filename))
+    data=request.form
+    DB.insert_gp_item(data['name'],data,image_file.filename)
+    return render_template("./details/group_purchase.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):

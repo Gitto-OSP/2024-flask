@@ -21,15 +21,43 @@ class DBhandler:
         self.db.child("item").child(name).set(item_info)
         print(data,img_path)
         return True
+    
+    def insert_booth(self, data):
+        booth_name = data['name']
+        self.db.child("season").child(booth_name).set(data)
+        print(data)
+        return True
+    
+    def insert_brand(self, data):
+        brand_name = data['name']
+        self.db.child("brand").child(brand_name).set(data)
+        print(data)
+        return True
+
+    def get_items(self):
+        # item 노드 아래 값들 가져오기
+        items = self.db.child("item").get().val()
+        return items
+    
+    def get_item_byname(self,name):
+        items=self.db.child("item").get()
+        target_value=""
+        print("###########",name)
+        for res in items.each():
+            key_value = res.key()
+            if key_value==name:
+                target_value=res.val()
+        return target_value
 
     # 회원가입
     def insert_user(self, data, pw):
         user_info = {
             "id": data['id'],
             "pw": pw,
-            #"nickname": data['nickname'],
+            "nickname": data['nickname'],
             "email": data['email'],
-            "phone": data['phone']
+            "phone": data['phone'],
+            "profile_image": "static/image/profile.png"
         }
         
         if self.user_duplicate_check(data['id']):
@@ -54,12 +82,20 @@ class DBhandler:
     # 로그인
     def find_user(self, id_, pw_):
         users = self.db.child("user").get()
-        target_value=[]
+        #target_value=[]
         for res in users.each():
             value = res.val()
             if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
                 return True
         return False
+    
+    # 닉네임 중복 체크
+    def nickname_exists(self, nickname):
+        users = self.db.child("user").get()
+        for res in users.each():
+            if res.val().get('nickname') == nickname:
+                return True  # 닉네임이 존재하면 True 반환
+        return False  # 닉네임이 존재하지 않으면 False 반환
 
     
     def get_items(self):
@@ -138,3 +174,21 @@ class DBhandler:
                     }
                     linked_items.append(item)
         return linked_items or []
+    
+    #공동구매
+    def insert_gp_item(self,name,data,img_path):
+        gp_item_info={
+            "name":data['name'],
+            "seller":data['seller'],
+            "price":data['price'],
+            "company":data['company'],
+            "provideRegions":data['provideRegions'],
+            "options":data['options[]'],
+            "startDate":data['startDate'],
+            "endDate":data['endDate'],
+            "status":data['status'],
+            "img_path":img_path,
+            "userComments":data['userComments']
+        }
+        self.db.child("gp_item").child(name).set(gp_item_info)
+        return True
