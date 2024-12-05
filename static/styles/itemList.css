@@ -93,6 +93,10 @@
 }
 .listobj_desc, .listobj_seller, .listobj_status{
     color:#767676;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .listobj_place{
     float:right;
