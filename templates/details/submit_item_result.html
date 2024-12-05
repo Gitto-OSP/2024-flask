@@ -34,7 +34,13 @@
                 <p>가격: {{data.price}}원</p>
                 <p>판매자: {{data.seller}}</p>
                 <p>직거래 장소:
-                    
+                {% if data.tradeRegions == "frontEntrance" %} 정문 {% endif %}
+                {% if data.tradeRegions == "studentCC" %} 학문관 {% endif %}
+                {% if data.tradeRegions == "post" %} 택배 {% endif %}
+                {% if data.tradeRegions == "posko" %} 포스코 {% endif %}
+                {% if data.tradeRegions == "engineering" %} 공학관 {% endif %}
+                {% if data.tradeRegions == "ecc" %} ECC {% endif %}
+                {% if data.tradeRegions == "etc" %} 기타 {% endif %}
                 </p>
                 
                 

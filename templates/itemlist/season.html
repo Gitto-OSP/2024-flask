@@ -29,7 +29,16 @@
         <a href="/info_booth/{{key}}/">
         <img src="{{value.boothMainImgPath}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
         <div class="listobj_textarea">
-            <div class="listobj_place">{{value.boothLocation}}</div>
+            <div class="listobj_place">
+                {% if value.boothLocation == "frontEntrance" %} 정문 {% endif %}
+                {% if value.boothLocation == "studentCC" %} 학문관 {% endif %}
+                {% if value.boothLocation == "shkwan" %} 생활관 {% endif %}
+                {% if value.boothLocation == "posko" %} 포스코 {% endif %}
+                {% if value.boothLocation == "huyut" %} 후윳길 {% endif %}
+                {% if value.boothLocation == "edu" %} 교육관 {% endif %}
+                <br>
+                {{value.boothNum}}
+            </div>
             <div class="listobj_title">{{key}}</div>
             <div class="listobj_desc">{{value.boothComments}}</div>
         </div>

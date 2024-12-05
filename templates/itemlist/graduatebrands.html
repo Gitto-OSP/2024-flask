@@ -21,8 +21,12 @@
     {% for row in rows %}
     {% for key,value in row %}
     <a href="/info_brand/{{key}}/">
-        <div class="brand__obj" style="background-image: 
-        linear-gradient(to top, #107413e6 10%,#00000000 33%),url(../../{{value.img_path[0]}});">
+        <div class="brand__obj" id="{{key}}" 
+        style="background-image: 
+        linear-gradient(to top, #107413e6 10%,#00000000 33%),
+        url(../../{{value.img_path[0]}});"
+        onmouseenter="mouseEnter('{{key}}','{{value.img_path[0]}}')"
+        onmouseleave="mouseLeave('{{key}}','{{value.img_path[0]}}')">
             <div class="listobj_textarea">
                 <div class="brandobj_title">{{key}}</div>
                 <div class="brandobj_event">{{value.benefits}}</div>
@@ -32,6 +36,16 @@
     {% endfor %}
     <div style="display: block;"></div>
     {% endfor %}
+    <script>
+        function mouseEnter(key,url){
+            var elem = document.getElementById(key);
+            elem.setAttribute('style',`background-image:linear-gradient(to top, #004702,#00000000 80%),url(../../${url})`);
+        }
+        function mouseLeave(key,url){
+            var elem = document.getElementById(key);
+            elem.setAttribute('style',`background-image:linear-gradient(to top, #107413e6 10%,#00000000 33%),url(../../${url})`);
+        }
+    </script>
 </div>
 <div class="pagenation">
     <ul style="list-style: none;">

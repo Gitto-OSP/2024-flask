@@ -43,6 +43,11 @@
     margin-right: 30px;
 }
 
+#number_itms{
+    color:#114B19;
+    text-decoration: underline;
+}
+
 /* 상품 목록 박스 */
 .item__list{
     display: block;
@@ -75,9 +80,13 @@
     padding:0px 15px;
 }
 .listobj_title{
+    display: block;
     color: #191919;
-    width:100%;
+    width:70%;
     font-size: larger;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .listobj_price{
     color:#191919;
@@ -87,8 +96,9 @@
 }
 .listobj_place{
     float:right;
-    width:30px;
+    width:50px;
     color:#D9D9D9;
+    text-align: center;
 }
 
 /* 동문 브랜드 객체 관련 */
@@ -100,11 +110,7 @@
     float:left;
     margin: 10px;
     border-radius: 20px;
-    
-    background-size: contain;
-}
-.brand__obj:hover{
-    background-image: linear-gradient(to top, #004702,#00000000 80%);
+    background-size: cover;
 }
 .brandobj_title{
     font-size: larger;

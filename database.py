@@ -135,6 +135,14 @@ class DBhandler:
                 return True
         return False
     
+    def get_userInfo(self,id_, key):
+        users = self.db.child("user").get()
+        for res in users.each():
+            value = res.val()
+            if value['id']==id_:
+                return value[key]
+        return -1
+    
     # 닉네임 중복 체크
     def nickname_exists(self, nickname):
         users = self.db.child("user").get()

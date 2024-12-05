@@ -244,7 +244,7 @@ def check_id():
 
 @application.route("/mypage")
 def view_mypage():
-    return render_template("./mypage/mypage.html")
+    return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
 
 @application.route("/editProfile")
 def view_editProfile():
