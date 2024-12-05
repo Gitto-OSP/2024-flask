@@ -1,0 +1,120 @@
+<!--상품리스트 -> 동적라우팅에 연결되어있음-->
+{% extends "index.html" %}
+
+{% block section %}
+    
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중고거래</title>
+    <link rel="stylesheet" href="../../static/styles/trans_styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="product-detail">
+            <div class="image-gallery">
+                <!-- 썸네일 리스트 -->
+                <div class="thumbnail-container">
+                    <img src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('{{ url_for('static', filename=data.img_path[0][7:]) }}')">
+                    {% if data.img_path|length > 1 %}
+                        <img src="{{ url_for('static', filename=data.img_path[1][7:]) }}" alt="Thumbnail 2" class="thumbnail" onclick="changeImage('{{ url_for('static', filename=data.img_path[1][7:]) }}')">
+                    {% endif %}
+                </div>
+                <!-- 큰 이미지 -->
+                <div class="large-image-container">
+                    <img id="largeImage" src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="상품 사진" class="large-image">
+                </div>
+            </div>
+        
+            <div class="product-info">
+                <h1>{{data.name}}</h1>
+                <p>가격: {{data.price}}원</p>
+                <p>판매자: {{data.seller}}</p>
+                <p>직거래 장소:
+                    
+                </p>
+                
+                
+                <p>상품 상태:
+                {% if data['choice'] == "optionBrandNew" %}
+                새 상품
+                {% endif %}
+                {% if data['choice'] == "optionLikeNew" %}
+                거의 새 것
+                {% endif %}
+                {% if data['choice'] == "optionUsed" %}
+                중고 상품
+                {% endif %}
+                </p>
+                <p>설명: {{data.userComments}}</p>
+                <div class="button-container">
+                    <button class="bookmark-button" id="bookmark">관심</button>
+                    <button type="button" onclick="window.open('https://open.kakao.com/o/sK7AfA2g')">바로 구매</button>
+                    <button onclick="location.href='/reg_review_init/{{name}}/';">리뷰쓰기</button>
+                </div>
+            </div>
+            <script>
+                function changeImage(imagePath) {
+                    const largeImage = document.getElementById("largeImage");
+                    largeImage.src = imagePath;
+                }
+                function showBookmark() {
+                    $.ajax({
+                        type: 'GET',
+                        url:'/show_bookmark/{{data.name}}/',
+                        data: {},
+                        success: function (response) {
+                            let my_bookmark = response['my_bookmark'];
+                            if (my_bookmark['interested'] == 'Y') {
+                                $("#bookmark").css("background-color","#00462A");
+                                $("#bookmark").attr("onclick","unlike()");
+                            }
+            
+                            else {
+                                $("#bookmark").css("background-color","grey");
+                                $("#bookmark").attr("onclick","like()");
+                            }
+                            //alert("showbookmark!")
+                        }
+                    });
+                }
+            
+                function like() {
+                    $.ajax({
+                        type: 'POST',
+                        url:'/like/{{data.name}}/',
+                        data: {
+                            interested : "Y"
+                        },
+                        success: function (response) {
+                            alert(response['msg']);
+                            window.location.reload()
+                        }
+                    });
+                }
+                function unlike() {
+                   $.ajax({
+                        type: 'POST',
+                        url: '/unlike/{{data.name}}/',
+                        data: {
+                            interested : "N"
+                        },
+                        success: function (response) {
+                            alert(response['msg']);
+                            window.location.reload()
+                        }
+                    });
+                }
+                $(document).ready(function () {
+                    showBookmark();
+                });
+            </script>
+        </div>
+    </div>
+    
+</body>
+</html>
+{% endblock section %}

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='./styles/signup.css') }}">
 </head>
 <body>
 
@@ -12,34 +12,27 @@
         <h2>회원가입</h2>
 
         <!-- 플래시 메세지  -->
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <script>
-                    alert("{{ messages[0] }}");
-                </script>
-            
-                <div class="flash-messages">
-                    <ul>
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
             {% endif %}
         {% endwith %}
 
         <form id="signupForm" action="/signup_post" method="POST">
+            
             <!-- 아이디 입력 -->
             <label for="id"><span class="required">*</span> <span class="label-text">ID</span></label>
             <div class="input-group">
-                <input type="text" id="id" placeholder="아이디" required>
+                <input type="text" name="id" id="id" placeholder="아이디" required>
                 <button type="button" id="checkIdButton">중복체크</button>
             </div>
             <small id="idMessage" class="message"></small>
 
             <!-- 비밀번호 입력 -->
             <label for="password"><span class="required">*</span> <span class="label-text">비밀번호</span></label>
-            <input type="password" id="password" placeholder="비밀번호" required>
+            <input type="password" name="password" id="password" placeholder="비밀번호" required>
             <small id="passwordMessage" class="message"></small>
             <div class="password-criteria">
                 <label><input type="checkbox" id="hasUpperCase" disabled> 영문 대문자</label>
@@ -50,13 +43,13 @@
 
             <!-- 비밀번호 확인 -->
             <label for="confirmPassword"><span class="required">*</span> <span class="label-text">비밀번호 확인</span></label>
-            <input type="password" id="confirmPassword" placeholder="비밀번호 확인" required>
+            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="비밀번호 확인" required>
             <small id="confirmMessage" class="message"></small>
 
             <!-- 이메일 입력 -->
             <label for="email"><span class="required">*</span> <span class="label-text">이메일</span></label>
             <div class="email-container">
-                <input type="text" id="email" placeholder="이메일" required>
+                <input type="text" name="email" id="email" placeholder="이메일" required>
                 <select id="emailDomain">
                     <option value="@ewhain.net">@ewhain.net</option>
                     <option value="@ewha.ac.kr">@ewha.ac.kr</option>
@@ -66,7 +59,7 @@
 
             <!-- 핸드폰 번호 입력 -->
             <label for="phone"><span class="required">*</span> <span class="label-text">핸드폰 번호</span></label>
-            <input type="tel" id="phone" placeholder="핸드폰 번호" required pattern="[0-9]{10,11}">
+            <input type="tel" name="phone" id="phone" placeholder="핸드폰 번호" required pattern="[0-9]{10,11}">
             <small id="phoneMessage" class="message"></small>
 
             <!-- 회원가입 버튼 -->
@@ -157,6 +150,7 @@
         const idMessage = document.getElementById("idMessage");
         const passwordInput = document.getElementById("password").value;
         const passwordMessage = document.getElementById("passwordMessage");
+        const confirmPasswordInput = document.getElementById("confirmPassword").value;
         const confirmMessage = document.getElementById("confirmMessage");
         const emailInput = document.getElementById("email").value.trim();
         const emailMessage = document.getElementById("emailMessage");
@@ -181,7 +175,7 @@
         }
 
         // 비밀번호 확인 검사
-        if (passwordInput !== document.getElementById("confirmPassword").value) {
+        if (passwordInput !== confirmPasswordInput){
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
@@ -205,31 +199,7 @@
             phoneMessage.textContent = "";
         }
 
-
-        // fetch API, 비동기로 서버에 데이터 전송
-        fetch("/signup_post", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: new URLSearchParams({
-                id: idInput,
-                pw: passwordInput,
-                email: emailInput,
-                phone: phoneInput
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("회원가입이 완료되었습니다.");
-                window.location.href = "/index";  // 홈 화면으로 이동
-            } else {
-                alert(data.message);  // 서버에서 받은 에러 메시지 표시
-            }
-        })
-        .catch(error => console.error("Error:", error));
- 
+        this.submit();
     });
     </script>
 

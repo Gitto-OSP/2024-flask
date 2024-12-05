@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/styles/reg.css">
+    <link rel="stylesheet" href="../../static/styles/regImage.css">
+    <link rel="stylesheet" href="../../static/styles/reg_brand.css">
+</head>
+
+<body>
+    {%extends "index.html"%}
+    {%block section%}
+
+    <div id="writeContainer">
+        <h1>동문브랜드 등록하기</h1>
+
+        <form action="/submit_brand_post" enctype="multipart/form-data" method="post">
+            <div>
+                <h2>기본 정보</h2>
+                <div id="basicInfoContainer">
+                    <label for="seller">대표명</label>
+                    <input type="text" name="seller" id="seller" placeholder="입력" required>
+
+                    <label for="name">브랜드 이름</label>
+                    <input type="text" name="name" id="name" placeholder="입력" required>
+
+                    <label for="major">동문 정보</label>
+                    <div>
+                        <label for="major">전공</label>
+                        <input type="text" name="major" id="major" placeholder="ex) 컴공" required>
+                        <label for="graduNum" id="graduNumLabel">졸업 학번</label>
+                        <input type="number" name="graduNum" id="graduNum" placeholder="ex) 19" required>
+                        <label>졸</label>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2>추가 옵션</h2>
+                <div id="basicInfoContainer">
+                    <label for="socials">SNS 링크 추가</label>
+                    <div id="snsContainer">
+                        <div id="snsBtnContainer">
+                            <div class="socialAddingBtn" onclick="addLink('인스타그램', 'instagram')">
+                                <img class="socialLogo" src="../static/image/LogoInstagram.png" alt="인스타그램"
+                                    title="인스타그램 주소 추가" />
+                            </div>
+                            <div class="socialAddingBtn" onclick="addLink('x(트위터)', 'x')">
+                                <img class="socialLogo" src="../static/image/LogoXTwitter.png" alt="x(트위터)"
+                                    title="X(트위터) 주소 추가" />
+                            </div>
+                            <div class="socialAddingBtn" onclick="addLink('기타링크', 'etcUrl')">
+                                <img class="socialLogo" src="../static/image/LogoLink.png" alt="기타링크"
+                                    title="기타 링크 주소 추가" />
+                            </div>
+                        </div>
+                        <div id="snsInputs">
+
+                        </div>
+                    </div>
+                    <label for="benefits">제휴 혜택 추가</label>
+                    <div class="benefitsContainer">
+                        <script>
+                            const CHECKED = '✔';
+                            function checkIconClickHandler(event) {
+                                const benefitInput = document.getElementById('benefits');
+                                const checkBox = event.target;
+                                if (checkBox.innerHTML === CHECKED) {
+                                    checkBox.innerHTML = '+';
+                                }
+                                else {
+                                    checkBox.innerHTML = CHECKED;
+                                };
+                                checkBox.classList.toggle('checked');
+                                benefitInput.classList.toggle('visible');
+                            }
+                        </script>
+                        <span id="checkIcon" onclick="checkIconClickHandler(event)">+</span>
+                        <input type="text" name="benefits" id="benefits" placeholder="ex) 이화인 10% 할인">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2>브랜드 사진</h2>
+                <div class="image-upload-container side-adding-container">
+                    <label class="add-image-label" style="display: flex;">
+                        <span class="add-button">+</span>
+                        <input type="file" name="file" id="imageUpload" class="image-file-input" accept="image/*"
+                            multiple required>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <h2>브랜드 설명</h2>
+                <textarea id="write-description" class="descTextarea" name="userComments"
+                    placeholder="상품에 대한 자세한 설명을 입력하세요." required></textarea>
+            </div>
+
+            <input class="submit-btn" type="submit" value="등록하기">
+        </form>
+    </div>
+
+    <script src="../../static/scripts/reg.js"></script>
+    <script src="../../static/scripts/regSocials.js"></script>
+    {%endblock section%}
+</body>
+
+</html>

@@ -5,23 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='./styles/index.css') }}">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar__topbox">
             <div class="navbar__top">
-                <a class="logo" href="">벗터</a>
-                
+                <a class="logo" href="/season"><img src="{{ url_for('static', filename='./image/profile.png') }}"></img></a>
+                <a class="logo" href="/season"><p>벗들의 공간: 벗터</p></a>
                 <!-- session id 있으면 account_in, 없으면 account_out -->
                 {% if session['id'] %}
-                <ul id="account_in">
-                    <li><a class="account_btn" href="/logout"><b>{{session['id']}}님 반갑습니다!</b> 로그아웃</a></li>
+                <ul class="account__area" id="account_in">
+                    <li><b>{{session['id']}}님 반갑습니다!</b></li>
+                    <li><img id='profileImg' src="/static/image/user_img.png"></li>
+                    <li><a class="account_btn" href="/logout">로그아웃</a></li>
                     <li><a href='/mypage'>마이페이지</a></li>
-                    <li><img src="/static/image/user_img.png" width="48px;" height="48px" style="background-color: white;"></li>
                 </ul>
                 {% else %}
-                <ul id="account_out">
+                <ul class="account__area" id="account_out">
                     <li><a class="account_btn" id="login_btn" href="/login">로그인</a></li>
                     <li><a href="/signup">회원가입</a></li>
                 </ul>
@@ -63,5 +65,5 @@
         </ul>
     </div>
 </footer>
-<script src="../static/navbar.js"></script>
+<script src="../static/scripts/navbar.js"></script>
 </html>
