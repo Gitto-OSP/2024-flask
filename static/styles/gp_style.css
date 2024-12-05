@@ -21,7 +21,7 @@ body {
 }
 
 .product-image img {
-    max-width: 80%;
+    max-width: 100%;
     height: auto;
 }
 
@@ -34,7 +34,8 @@ body {
 }
 
 .product-details {
-    max-width: 50%;
+    margin-left: 50px;
+    min-width: 30%;
 }
 
 .product-details h1 {

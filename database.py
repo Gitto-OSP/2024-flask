@@ -34,10 +34,26 @@ class DBhandler:
         print(data)
         return True
 
+    # 중고거래용 get db
     def get_items(self):
         # item 노드 아래 값들 가져오기
         items = self.db.child("item").get().val()
         return items
+    
+    # 시즌페이지 get db
+    def get_seasons(self):
+        seasons = self.db.child("season").get().val()
+        return seasons
+    
+    # 공구페이지 get db
+    def get_gp(self):
+        gp = self.db.child("gp_item").get().val()
+        return gp
+    
+    # 동문브랜드 get db
+    def get_brand(self):
+        brand = self.db.child("brand").get().val()
+        return brand
     
     def get_item_byname(self,name):
         items=self.db.child("item").get()
@@ -48,7 +64,27 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
-
+    
+    def get_gp_byname(self,name):
+        items=self.db.child("gp_item").get()
+        target_value=""
+        print("###########",name)
+        for res in items.each():
+            key_value = res.key()
+            if key_value==name:
+                target_value=res.val()
+        return target_value
+    
+    def get_brand_byname(self,name):
+        items=self.db.child("brand").get()
+        target_value=""
+        print("###########",name)
+        for res in items.each():
+            key_value = res.key()
+            if key_value==name:
+                target_value=res.val()
+        return target_value
+    
     # 회원가입
     def insert_user(self, data, pw):
         user_info = {

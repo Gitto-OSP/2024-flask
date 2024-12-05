@@ -23,30 +23,20 @@
     </ul>
 </div>
 <div class="item__list">
-    {% for key,value in row1 %}
+    {% for row in rows %}
+    {% for key,value in row %}
     <div class="list__obj">
         <a href="/info_item/{{key}}/">
-        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
-        </a>
+        <img src="{{value.boothMainImgPath}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
         <div class="listobj_textarea">
-            <div class="listobj_place">{{value.tradeRegions}}</div>
+            <div class="listobj_place">{{value.boothLocation}}</div>
             <div class="listobj_title">{{key}}</div>
-            <div class="listobj_desc">{{value.price}} 원</div>
+            <div class="listobj_desc">{{value.boothComments}}</div>
         </div>
+        </a>
     </div>
     {% endfor %}
     <div style="display: block;"></div>
-    {% for key,value in row2 %}
-    <div class="list__obj">
-        <a href="/info_item/{{key}}/">
-        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
-        </a>
-        <div class="listobj_textarea">
-            <div class="listobj_place">{{value.tradeRegions}}</div>
-            <div class="listobj_title">{{key}}</div>
-            <div class="listobj_desc">{{value.price}} 원</div>
-        </div>
-    </div>
     {% endfor %}
 </div>
 <div class="page-wrap">
