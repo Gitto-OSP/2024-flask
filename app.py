@@ -248,7 +248,7 @@ def view_mypage():
 
 @application.route("/editProfile")
 def view_editProfile():
-    return render_template("./mypage/editProfile.html")
+    return render_template("./mypage/editProfile.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'),phone=DB.get_userInfo(session['id'],'phone'))
 # @application.route("/myBookmark")
 # def view_myBookmark():
 #     return render_template("./mypage/myBookmark.html")
