@@ -471,6 +471,13 @@ def view_item_detail(name):
     print("####data:",data)
     return render_template("./details/submit_item_result.html",name=name,data=data)
 
+@application.route("/info_booth/<name>/")
+def view_booth_detail(name):
+    print("###name:",name)
+    data=DB.get_booth_byname(str(name))
+    print("####data:",data)
+    return render_template("./details/season_detail.html",name=name,data=data)
+
 @application.route("/info_gp/<name>/")
 def view_gp_detail(name):
     print("###name:",name)

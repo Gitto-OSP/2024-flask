@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+
+{% block section %}
+    
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시즌</title>
+    <link rel="stylesheet" href="../../static/styles/trans_styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="product-detail">
+            <!-- 큰 이미지 -->
+            <div class="large-image-container">
+                <img id="largeImage" src="{{data.boothMainImgPath}}" alt="부스 메인 이미지" class="large-image">
+            </div>
+        
+            <div class="product-info">
+                <h1>{{data.name}}</h1><br>
+                <h3>{{data.boothComments}}</h3>
+                <p>
+                {% if data['boothLocation'] == "frontEntrance" %} 정문 {% endif %}
+                {% if data['boothLocation'] == "studentCC" %} 학문관 {% endif %}
+                {% if data['boothLocation'] == "shkwan" %} 생활관 {% endif %}
+                {% if data['boothLocation'] == "posko" %} 포스코관 {% endif %}
+                {% if data['boothLocation'] == "huyut" %} 후윳길 {% endif %}
+                {% if data['boothLocation'] == "edu" %} 교육관 {% endif %}
+                {{data.boothNum}}번 부스
+                </p>
+                <p>운영 시간: {{data.openTime}} ~ {{data.closingTime}}</p>
+            </div>
+        </div>
+        <div class="item__list">
+            {% for product in data.products %}
+            <div class="pro_list">
+                <img src="../../{{ product.img_path }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>가격: {{ product.price }}원</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="item__list">
+        {% for row in rows %}
+        {% for key,value in row %}
+        <div class="pro_list">
+            
+        </div>
+        {% endfor %}
+        <div style="display: block;"></div>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>
+{% endblock section %}
