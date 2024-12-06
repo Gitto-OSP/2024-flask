@@ -440,6 +440,7 @@ def reg_items_submit():
     name=request.args.get("name")
     seller=request.args.get("seller")
     price=request.args.get("price")
+    chat=request.args.get("chat")
     addr=request.args.getlist("tradeRegions")
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
