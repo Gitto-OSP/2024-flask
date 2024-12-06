@@ -1,0 +1,68 @@
+#snsContainer {
+    display: grid;
+}
+
+#snsBtnContainer {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.socialLogo {
+    width: 25px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.socialAddingBtn {
+    margin-right: 20px;
+}
+
+#snsInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-container {
+    color: gray;
+    display: grid;
+    grid-template-columns: 100px 200px 100px;
+    gap: 10px;
+    align-items: center;
+}
+
+#checkIcon {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    color: #acacac;
+    border: 2px dashed #ccc;
+}
+
+#checkIcon.checked {
+    background-color: #114B19;
+    border: 2px dashed #012206;
+    color: whitesmoke;
+}
+
+.benefitsContainer {
+    display: flex;
+    gap: 20px;
+}
+
+#benefits {
+    flex: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+#benefits.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0.5s ease-in-out;
+}

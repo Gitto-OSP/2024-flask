@@ -1,0 +1,76 @@
+
+.review{
+    text-align:center;
+    position:center;
+    color:black;
+    font-size: 30px;
+    font-weight:bolder;
+    align-items:center;
+}
+.count{
+    text-align:left;
+    position:relative;
+    top:-10px;
+    color:grey;
+    font-size: 25px;
+    font-weight:500;
+}
+
+/*리뷰 리스트*/
+.review_list {
+    display: block;
+    width: max-content;
+    margin: 0px auto;
+    overflow: hidden;
+}
+.list {
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 230px;
+    overflow: hidden;
+}
+.list img {
+    width: 210px;
+    height: 200px;
+    border-radius: 20px;
+}
+.list:hover {
+    background-color: #D9D9D9;
+}
+.review_info {
+    padding: 0px 15px;
+}
+.title {
+    color: #191919;
+    width: 100%;
+    font-size: larger;
+    margin: 0;
+}
+.writer {
+    color: #767676;
+    margin: 0;
+}
+
+
+/*페이지네이션*/
+.pagenation{
+    width: fit-content;
+    height:50px;
+    margin:50px auto;
+}
+.page_btn, .prev_btn, .next_btn{
+    float:left;
+    display: block;
+    padding: 10px;
+    margin:10px;
+    width: 30px;
+    height: 30px;
+    text-decoration: none;
+    border-radius: 10%;
+    border-width: 0px;
+}
+.pagenation a:hover{
+    background-color: #D9D9D9;
+}

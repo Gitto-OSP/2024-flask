@@ -1,0 +1,61 @@
+{% extends "index.html" %}
+
+{% block section %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공동구매</title>
+    <link rel="stylesheet" href="../../static/styles/gp_style.css">
+</head>
+<body>
+    <div class="container">
+        <section class="product-section">
+            <div class="product-image">
+                <img src="/static/DBimage/{{data.img_path}}" alt="Image">
+            </div>
+            <div class="product-details">
+                <h1>{{data.name}}</h1>
+                <p class="price">가격: {{data.price}}원</p>
+                <div class="supplier-info">
+                    <p><strong>공구자: </strong>{{data.seller}}</p>
+                    <p><strong>물품: </strong>{{data.name}}</p>
+                    <p><strong>업체: </strong>{{data.company}}</p>
+                    <p><strong>설명: </strong>{{data.userComments}}</p>
+                </div>
+                <div class="size-options">
+                    <label for="size">옵션: </label>
+                    <!--데이터의 옵션에 맞춰 동적으로 추가해야 함(스크립트 필요 예상)-->
+                    <select id="size">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                    </select>
+                </div>
+                <button class="participate-btn">참여하기</button>
+            </div>
+        </section>
+
+        <!-- 본문 -->
+        <section class="status-section">
+            <h2>진행상황</h2>
+            <div class="status-bar">
+                <span class="status-text">모집</span>
+                <span class="status-text">주문</span>
+                <span class="status-text">수취</span>
+                <span class="status-text">배부</span>
+                <span class="status-text">마감</span>
+            </div>
+            <p>19명의 벗이 함께하는 중</p>
+        </section>
+
+        <!-- 상세 정보 -->
+        <!-- <section class="additional-info">
+            <img src="{{img_path}}" alt="Additional Product Info">
+        </section> -->
+    </div>
+</body>
+</html>
+{% endblock section %}

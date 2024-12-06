@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.product-detail {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.image-gallery {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.thumbnail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.large-image-container {
+    width: 400px;
+    height: 400px;
+    background-color: #f0f0f0;
+}
+
+.large-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.product-info h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.product-info h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    margin-bottom: 10px;
+}
+
+.product-info button {
+    width: 30%;
+    margin: 0 5px;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 40px;
+    background-color: grey;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    flex: 1;
+}
+
+.product-info button:hover {
+    background-color: #00462A;
+}
+
+#bookmark {
+    color: white;
+    background-color: #00462A;
+    width: 30%
+}
+
+#bookmark.green {
+    background-color:#00462A;
+}
+
+.item__list {
+    display: flex;
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+    gap: 20px; /* 항목 간격 */
+    justify-content: left; /* 중앙 정렬 */
+}
+.pro_list {
+    flex: 0 1 calc(25% - 20px); /* 한 줄에 3개 표시 */
+    box-sizing: border-box;
+    border: 1px solid hsl(0, 0%, 87%);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background: #f9f9f9;
+}
+.pro_list img {
+    width: 100%;
+    height: auto;
+    max-height: 150px; /* 이미지 높이 제한 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    border-radius: 8px;
+}
+.pro_list h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+.pro_list p {
+    font-size: 1em;
+    color: #333;
+}
