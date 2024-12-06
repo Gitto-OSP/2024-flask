@@ -248,7 +248,25 @@ def view_mypage():
 
 @application.route("/editProfile")
 def view_editProfile():
-    return render_template("./mypage/editProfile.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'),phone=DB.get_userInfo(session['id'],'phone'))
+    return render_template("./mypage/editProfile.html", 
+                           nickname=DB.get_userInfo(session['id'],'nickname'),
+                           profile_img=DB.get_userInfo(session['id'],'profile_image'),
+                           phone=DB.get_userInfo(session['id'],'phone'),
+                           orgPW = DB.get_userInfo(session['id'],'pw'))
+
+# 프로필 수정 confirm action
+@application.route("/edit_confirm", methods=['POST'])
+def profile_edit_confirm():
+    id_=session['id']
+    pw=request.form['pw']
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()    # db에 저장된 비밀번호 해시값으로 비교위한 해시값 생성
+    if DB.find_user(id_,pw_hash):
+        session['id']=id_    # session에 id 정보 삽입
+        return redirect(url_for('view_list'))
+    else:
+        flash("잘못된 아이디 혹은 비밀번호를 입력하셨습니다.")    #db에 매칭 정보가 없으면 플래시 메세지 생성
+        view_editProfile()
+
 # @application.route("/myBookmark")
 # def view_myBookmark():
 #     return render_template("./mypage/myBookmark.html")

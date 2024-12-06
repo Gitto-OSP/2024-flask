@@ -12,7 +12,7 @@
   {%extends "index.html"%}
   {%block section%}
 
-    <form class="mypage-content" id="editForm">
+    <form class="mypage-content" id="editForm" action="/edit_confirm" method="post">
         <div class="profile-img-section">
             <img src="../../{{profile_img}}" alt="프로필 사진" class="profile-img" id="previewContainer">
             <div class="profile-img-input">
@@ -35,7 +35,7 @@
             </div>
             <h4>새 비밀번호 확인:  <input type="password" id="confirmPassword" class="info-input"></input></h4>
             <small id="confirmMessage" class="message"></small>
-            <h4>휴대폰 번호:  <input type="tel" id="phone" class="info-input" value={{phone}} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"></input></h4>
+            <h4>휴대폰 번호:  <input type="tel" id="phone" class="info-input" value={{phone}} pattern="[0-9]{3}[0-9]{4}[0-9]{4}"></input></h4>
             <small id="phoneMessage" class="message"></small>
             <button class="edit-button" type=submit>프로필 수정</section>
         </div>
@@ -51,7 +51,7 @@
     }, true);
     // 기존 비밀번호 유효성 검사 
     document.getElementById("orgPassword").addEventListener("input",function(){
-        const correctPW = "Asdf1234!";
+        const correctPW = "{{orgPW}}";
         const originPasswordInput = document.getElementById("orgPassword").value;
 
         const orgPWMessage = document.getElementById("orgPWMessage");
@@ -110,38 +110,44 @@
     document.getElementById("editForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
-        // const passwordInput = document.getElementById("password").value;
-        // const passwordMessage = document.getElementById("passwordMessage");
-        // const confirmMessage = document.getElementById("confirmMessage");
-        // const phoneInput = document.getElementById("phone").value.trim();
-        // const phoneMessage = document.getElementById("phoneMessage");
+        const newPWInput = document.getElementById("password").value;
+        const passwordInput = document.getElementById("orgPassword").value;
+        const passwordMessage = document.getElementById("passwordMessage");
+        const confirmMessage = document.getElementById("confirmMessage");
+        const phoneInput = document.getElementById("phone").value.trim();
+        const phoneMessage = document.getElementById("phoneMessage");
 
-        // // 비밀번호 유효성 검사
-        // const hasUpperCase = document.getElementById("hasUpperCase").checked;
-        // const hasNumber = document.getElementById("hasNumber").checked;
-        // const hasSpecialChar = document.getElementById("hasSpecialChar").checked;
-        // const minLength = document.getElementById("minLength").checked;
+        // 비밀번호 유효성 검사
+        const hasUpperCase = document.getElementById("hasUpperCase").checked;
+        const hasNumber = document.getElementById("hasNumber").checked;
+        const hasSpecialChar = document.getElementById("hasSpecialChar").checked;
+        const minLength = document.getElementById("minLength").checked;
 
-        // if (!(hasUpperCase && hasNumber && hasSpecialChar && minLength)) {
-        //     alert("비밀번호 조건을 모두 만족해야 합니다.");
-        //     return;
-        // }
+        if(newPWInput!=""){
+            if (!(hasUpperCase && hasNumber && hasSpecialChar && minLength)) {
+                alert("비밀번호 조건을 모두 만족해야 합니다.");
+                return;
+            }
 
-        // // 비밀번호 확인 검사
-        // if (passwordInput !== document.getElementById("confirmPassword").value) {
-        //     alert("비밀번호가 일치하지 않습니다.");
-        //     return;
-        // }
+            // 비밀번호 확인 검사
+            if (passwordInput !== document.getElementById("confirmPassword").value) {
+                alert("비밀번호 확인이 일치하지 않습니다.");
+                return;
+            }
+        }
+        else{
+            document.getElementById("password")="{{orgPW}}"
+        }
 
-        // // 핸드폰 번호 유효성 검사
-        // const phonePattern = /^[0-9]{10,11}$/;
-        // if (!phonePattern.test(phoneInput)) {
-        //     phoneMessage.textContent = "올바른 핸드폰 번호를 입력해주세요.";
-        //     phoneMessage.style.color = "red";
-        //     return;
-        // } else {
-        //     phoneMessage.textContent = "";
-        // }
+        // 핸드폰 번호 유효성 검사
+        const phonePattern = /^[0-9]{10,11}$/;
+        if (!phonePattern.test(phoneInput)) {
+            phoneMessage.textContent = "올바른 핸드폰 번호를 입력해주세요.";
+            phoneMessage.style.color = "red";
+            return;
+        } else {
+            phoneMessage.textContent = "";
+        }
 
         // 모든 조건을 만족하면 회원가입 성공
         alert("프로필 수정이 완료되었습니다.");
