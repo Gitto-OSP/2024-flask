@@ -16,33 +16,57 @@
     <h1>동문 브랜드</h1>
     {% endif %}
 </div>
+{% if total > 0 %}
 <div class="item__list">
+    {% for row in rows %}
+    {% for key,value in row %}
+    <a href="/info_brand/{{key}}/">
+        <div class="brand__obj" id="{{key}}" 
+        style="background-image: 
+        linear-gradient(to top, #107413e6 10%,#00000000 33%),
+        url(../../{{value.img_path[0]}});"
+        onmouseenter="mouseEnter('{{key}}','{{value.img_path[0]}}')"
+        onmouseleave="mouseLeave('{{key}}','{{value.img_path[0]}}')">
+            <div class="listobj_textarea">
+                <div class="brandobj_title">{{key}}</div>
+                <div class="brandobj_event">{{value.benefits}}</div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+    <div style="display: block;"></div>
+    {% endfor %}
     <script>
-        var k = 12;
-        for (var i = 0; i < k; i++) {
-            //머지 후 브랜드 상세조회 페이지 등록 필요
-            document.write(`
-            <a href="/brand_1">
-                <div class=\"brand__obj\">
-                    <div class="listobj_textarea">
-                        <div class="brandobj_title">브랜드명</div>
-                        <div class="brandobj_event">제휴혜택</div>
-                    </div>
-                </div>
-            </a>
-            `);
-            //<img src="/static/image/tmp_brand_img.jpg" alt="브랜드 이미지" width="300" height="300" style="padding: 10px; border-radius:20px;">
+        function mouseEnter(key,url){
+            var elem = document.getElementById(key);
+            elem.setAttribute('style',`background-image:linear-gradient(to top, #004702,#00000000 80%),url(../../${url})`);
+        }
+        function mouseLeave(key,url){
+            var elem = document.getElementById(key);
+            elem.setAttribute('style',`background-image:linear-gradient(to top, #107413e6 10%,#00000000 33%),url(../../${url})`);
         }
     </script>
 </div>
 <div class="pagenation">
+    <ul style="list-style: none;">
+        <li>
+            {% for i in range(page_count) %}
+            <a id="page{{i}}"class="page_btn" href="{{url_for('view_graduatebrands',page=i)}}" color="black">{{i+1}}</a>
+            {% endfor %}
+        </li>
+    </ul>
     <script>
-        var curr_page = 1;
-        document.write("<span class=\"prev_btn\" id=\"prev_btn\">\<</span>");
-        for (var j = 1; j <= 5; j++) {
-            document.write("<span class=\"page_btn\" id=\"page" + j + "\">" + j + "</span>");
+        var curr_page = window.location.search.split('=')[1];
+        if(curr_page==null){
+            curr_page = 0;
         }
-        document.write("<span class=\"next_btn\" id=\"next_btn\">\></span>");
+        var btn = document.getElementById("page"+curr_page);
+        btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
     </script>
 </div>
+{% else %}
+<p>
+    등록된 상품이 없습니다. 
+</p>
+{% endif %}
 {% endblock section %}

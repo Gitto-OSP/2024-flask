@@ -48,11 +48,11 @@ body {
 .profile-info h2 {
   font-size: 1.5em;
   margin: 0;
-  color: #333333;
+  color: #999999;
 }
 
 .nickname-tag {
-  color: #999999;
+  color: #333333;
 }
 
 /* 프로필 수정 버튼 */

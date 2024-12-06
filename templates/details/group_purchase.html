@@ -14,7 +14,7 @@
     <div class="container">
         <section class="product-section">
             <div class="product-image">
-                <img src="/static/image/item_img.png" alt="Image">
+                <img src="/static/DBimage/{{data.img_path}}" alt="Image">
             </div>
             <div class="product-details">
                 <h1>{{data.name}}</h1>
@@ -27,6 +27,7 @@
                 </div>
                 <div class="size-options">
                     <label for="size">옵션: </label>
+                    <!--데이터의 옵션에 맞춰 동적으로 추가해야 함(스크립트 필요 예상)-->
                     <select id="size">
                         <option value="S">S</option>
                         <option value="M">M</option>

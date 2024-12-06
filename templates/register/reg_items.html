@@ -21,7 +21,7 @@
                 <h2>기본 정보</h2>
                 <div id="basicInfoContainer">
                     <label for="seller">ID</label>
-                    <input type="text" name="seller" id="seller" placeholder="입력" required>
+                    <input type="text" name="seller" id="seller" value="{{session['id']}}" readonly>
 
                     <label for="name">상품 이름</label>
                     <input type="text" name="name" id="name" placeholder="입력" required>

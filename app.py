@@ -5,6 +5,7 @@ import sys
 
 import random
 import string
+import re
 
 application = Flask(__name__)
 application.config["SECRET_KEY"] = "helloosp"
@@ -24,19 +25,21 @@ def view_list():
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_items() #read the table
+    data = DB.get_seasons() #read the table
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
+    print(data.items())
+    rows=[]
     
     for i in range(row_count): #last row
         if(i == row_count-1) and (tot_count%per_row!=0):
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+        rows.append(locals()['data_{}'.format(i)].items())
     return render_template("./itemlist/season.html", 
                            datas=data.items(), 
-                           row1 = locals()['data_0'].items(),
-                           row2 = locals()['data_1'].items(),
+                           rows = rows,
                            limit=per_page,
                            page = page,
                            page_count = int((item_counts/per_page)+1),
@@ -97,11 +100,57 @@ def view_fleamarket():
 
 @application.route("/gonggu")
 def view_gonggu():
-    return render_template("./itemlist/gonggu.html")
+    page = request.args.get("page",0,type=int)
+    per_page = 25 #item count to display per page
+    per_row = 5 #item count to display per row
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+    data = DB.get_gp() #read the table
+    item_counts = tot_count = len(data)
+    data = dict(list(data.items())[start_idx:end_idx])
+    rows=[]
+    
+    for i in range(row_count): #last row
+        if(i == row_count-1) and (tot_count%per_row!=0):
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+        rows.append(locals()['data_{}'.format(i)].items())
+    return render_template("./itemlist/gonggu.html", 
+                           datas=data.items(), 
+                           rows = rows,
+                           limit=per_page,
+                           page = page,
+                           page_count = int((item_counts/per_page)+1),
+                           total=item_counts)
 
 @application.route("/graduatebrands")
 def view_graduatebrands():
-    return render_template("./itemlist/graduatebrands.html")
+    page = request.args.get("page",0,type=int)
+    per_page = 16 #item count to display per page
+    per_row = 4 #item count to display per row
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+    data = DB.get_brand() #read the table
+    item_counts = tot_count = len(data)
+    data = dict(list(data.items())[start_idx:end_idx])
+    rows=[]
+    
+    for i in range(row_count): #last row
+        if(i == row_count-1) and (tot_count%per_row!=0):
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+        rows.append(locals()['data_{}'.format(i)].items())
+    return render_template("./itemlist/graduatebrands.html", 
+                           datas=data.items(), 
+                           rows = rows,
+                           limit=per_page,
+                           page = page,
+                           page_count = int((item_counts/per_page)+1),
+                           total=item_counts)
 
 @application.route("/login")
 def view_login():
@@ -195,11 +244,11 @@ def check_id():
 
 @application.route("/mypage")
 def view_mypage():
-    return render_template("./mypage/mypage.html")
+    return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
 
 @application.route("/editProfile")
 def view_editProfile():
-    return render_template("./mypage/editProfile.html")
+    return render_template("./mypage/editProfile.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'),phone=DB.get_userInfo(session['id'],'phone'))
 # @application.route("/myBookmark")
 # def view_myBookmark():
 #     return render_template("./mypage/myBookmark.html")
@@ -351,7 +400,7 @@ def process_brand_data(form_data, files_data):
 
     for file in files_data:
         if file.filename: 
-            img_path_format = f"static/DBimage/brand{form_data['name']}{form_data['seller']}{file.filename}"
+            img_path_format = f"static/DBimage/brand{form_data['name']}{form_data['seller']}{get_rid_spChar(file.filename)}"
             file.save(img_path_format)
             brand_data["img_path"].append(img_path_format)
     
@@ -367,6 +416,11 @@ def process_brand_data(form_data, files_data):
             brand_data["socials"].append({name: url})
 
     return brand_data
+
+def get_rid_spChar(string):
+    result = re.sub(r'[^\w.]', '', string)
+    return result
+
 
 @application.route("/submit_brand_post", methods=['POST'])
 def reg_brand_submit_post():
@@ -416,8 +470,30 @@ def view_item_detail(name):
     data=DB.get_item_byname(str(name))
     print("####data:",data)
     return render_template("./details/submit_item_result.html",name=name,data=data)
-#리뷰 상세조회
 
+@application.route("/info_booth/<name>/")
+def view_booth_detail(name):
+    print("###name:",name)
+    data=DB.get_booth_byname(str(name))
+    print("####data:",data)
+    return render_template("./details/season_detail.html",name=name,data=data)
+
+@application.route("/info_gp/<name>/")
+def view_gp_detail(name):
+    print("###name:",name)
+    data=DB.get_gp_byname(str(name))
+    print("####data:",data)
+    return render_template("./details/group_purchase.html",name=name,data=data)
+
+@application.route("/info_brand/<name>/")
+def view_brand_detail(name):
+    print("###name:",name)
+    data=DB.get_brand_byname(str(name))
+    print("####data:",data)
+    return render_template("./details/brand_detail.html",name=name,data=data)
+    
+
+#리뷰 상세조회
 @application.route("/submit_reviews")
 def reg_reviews_submit():
     name=request.args.get("name")

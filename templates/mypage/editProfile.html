@@ -14,7 +14,7 @@
 
     <form class="mypage-content" id="editForm">
         <div class="profile-img-section">
-            <img src="/static/image/profile.png" alt="프로필 사진" class="profile-img" id="previewContainer">
+            <img src="../../{{profile_img}}" alt="프로필 사진" class="profile-img" id="previewContainer">
             <div class="profile-img-input">
                 <h3>프로필 사진 변경</h3>
                 <input type="file" name="file" id="imageUpload">
@@ -22,7 +22,7 @@
         </div>
         <hr style="width:65%; height:1px; border-width:0px; background-color:#D9D9D9;">
         <div class="info-edit-section">
-            <h2>닉네임: # <input type="text" class="username-input" placeholder="아이스티노중독자"></input></h2>
+            <h2>닉네임: # <input type="text" class="username-input" value={{nickname}}></input></h2>
             <h4>기존 비밀번호:  <input id="orgPassword" type="password" class="info-input"></input></h4>
             <small id="orgPWMessage" class="message"></small>
             <h4>새 비밀번호:  <input type="password" class="info-input" id="password"></input></h4>
@@ -35,7 +35,7 @@
             </div>
             <h4>새 비밀번호 확인:  <input type="password" id="confirmPassword" class="info-input"></input></h4>
             <small id="confirmMessage" class="message"></small>
-            <h4>휴대폰 번호:  <input type="tel" id="phone" class="info-input" placeholder="010-1234-5678" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"></input></h4>
+            <h4>휴대폰 번호:  <input type="tel" id="phone" class="info-input" value={{phone}} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"></input></h4>
             <small id="phoneMessage" class="message"></small>
             <button class="edit-button" type=submit>프로필 수정</section>
         </div>

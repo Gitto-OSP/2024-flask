@@ -62,6 +62,7 @@ body {
 
 .brand-info-section {
     flex: 2;
+    margin-left: 30px;
 }
 
 .brand-info {

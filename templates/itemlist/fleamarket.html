@@ -30,13 +30,21 @@
     {% for key,value in row %}
     <div class="list__obj">
         <a href="/info_item/{{key}}/">
-        <img src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
-        </a>
+        <img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
         <div class="listobj_textarea">
-            <div class="listobj_place">{{value.tradeRegions}}</div>
+            <div class="listobj_place">
+                {% if value.tradeRegions == "frontEntrance" %} 정문 {% endif %}
+                {% if value.tradeRegions == "studentCC" %} 학문관 {% endif %}
+                {% if value.tradeRegions == "post" %} 택배 {% endif %}
+                {% if value.tradeRegions == "posko" %} 포스코 {% endif %}
+                {% if value.tradeRegions == "engineering" %} 공학관 {% endif %}
+                {% if value.tradeRegions == "ecc" %} ECC {% endif %}
+                {% if value.tradeRegions == "etc" %} 기타 {% endif %}
+            </div>
             <div class="listobj_title">{{key}}</div>
-            <div class="listobj_desc">{{value.price}} 원</div>
+            <div class="listobj_desc">가격: {{value.price}} 원</div>
         </div>
+    </a>
     </div>
     {% endfor %}
     <div style="display: block;"></div>
