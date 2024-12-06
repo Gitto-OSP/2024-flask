@@ -102,11 +102,12 @@ class DBhandler:
             "name":data['name'], #상품이름
             "writer":data['seller'], #작성자
             "title":data['price'], #리뷰제목
-            "rate":data['star'],
-            "review":data['userComments'],
-            "img_path":img_path
+            "rate":data['star'], #별점
+            "review":data['userComments'], #리뷰내용
+            "img_path":img_path #리뷰 이미지
         }
-        self.db.child("review").child(data['name']).set(review_info)
+        self.db.child("review").push(review_info)
+        print(data)
         return True 
     
     def get_reviews(self):
@@ -122,3 +123,21 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+    
+    def get_reviews_bywriter(self,writer):
+        reviews=self.db.child("review").get()
+        target_value=[]
+        target_key=[]
+        for res in reviews.each():
+            value=res.val()
+            key_value=res.key()
+
+            if value['writer']==writer:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict

@@ -1,44 +1,80 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>작성한 리뷰</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='myReview.css') }}">
-</head>
-<body>
+
     {% extends "index.html" %}
     {% block section %}
-    <!--페이지 상단 중앙 제목-->
-    <p class="title">나의 리뷰</p>
-    <button class="back" onclick="window.location.href='/mypage'">> 마이페이지</button>
-    <!--리뷰 섹션-->
-    <div class="container">
-        <div class="item">
-            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
-                리뷰제목</button>
-        </div>
-        <div class="item">
-            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
-                리뷰제목</button>
-        </div>
-        <div class="item">
-            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
-                리뷰제목</button>
-        </div>
-        <div class="item">
-            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
-                리뷰제목</button>
-        </div>
-        <div class="item">
-            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
-                리뷰제목</button>
-        </div>
-        <div class="item">
-            <button class="reviewTitle"onclick="window.location.href='/mySpecificReview'">
-                리뷰제목</button>
-        </div>
+
+    <script>
+        $(document).ready(function(){
+            //alert("{{writer}}");
+            $('#idoption:contaions("{{writer}}")').prop("selected",true);
+        })
+    </script>
+ 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="../static/review.css">
+        <title>나의 리뷰 전체조회</title>
+    </head>
+
+        <!--페이지 상단 중앙 제목-->
+        <p class="review">{{session['id']}}님의 리뷰</p>
+        {% if total>0 %}
+        <h1 class="count">Total {{total}}</h1>
+
+        
+        <!--리뷰 섹션-->
+        <div class="review__list" name="writer" id="writer" onchange="location=this.value">
+            <div value="{{ url_for('view_myReview', page=i, writer=session['id']) }}">
+            {% for key,value in row1 %}
+            <div class="list">
+                <a href="/info_review/{{key}}/">
+                <img class="review_img" src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="review_info">
+                    <div class="writer">{{value.writer}}</div>
+                    <div class="title">{{value.title}}</div>
+                </div>
+            </div>
+            {% endfor %}
+            <div style="display: block;"></div>
+            {% for key,value in row2 %}
+            <div class="list">
+                <a href="/info_review/{{key}}/">
+                <img class="review_img" src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                </a>
+                <div class="review_info">
+                    <div class="writer">{{value.writer}}</div>
+                    <div class="title">{{value.title}}</div>
+                </div>
+            </div>
+            </div>
+            {% endfor %}
     </div>
-</body>
-{% endblock section %}
-</html>
+       <!--페이지네이션-->
+       <div class="page-wrap">
+        <div class="pagenation">
+            <ul style="list-style: none;">
+                <li>
+                    {% for i in range(page_count) %}
+                    <a id="page{{i}}"class="page_btn" href="{{url_for('view_myReview',page=i)}}" color="black">{{i+1}}</a>
+                    {% endfor %}
+                </li>
+            </ul>
+            <script>
+                var curr_page = window.location.search.split('=')[1];
+                var btn = document.getElementById("page"+curr_page);
+                btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
+            </script>
+        </div>
+       </div>
+       {% else %}
+       <p>
+        등록된 리뷰가 없습니다.
+       </p>
+       {% endif %}
+       <script src="../static/pagenation.js"></script>
+       {% endblock section %}
+    
+  
+
