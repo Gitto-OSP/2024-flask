@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from database import DBhandler
 import hashlib
 import sys
+import math
 
 import random
 import string
@@ -54,8 +55,10 @@ def view_review():
     start_idx = per_page*page
     end_idx = per_page*(page+1)
     data = DB.get_reviews() #read the table
+    data=dict(sorted(data.items(),key=lambda x:x[0],reverse=False))
     review_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
+    
     
     for i in range(row_count): #last row
         if(i == row_count-1) and (tot_count%per_row!=0):
@@ -277,7 +280,30 @@ def view_myGroupBuy():
 
 @application.route("/myReview")
 def view_myReview():
-    return render_template("./mypage/myReview.html")
+    page=request.args.get("page",0,type=int)
+    writer=request.args.get("writer","all")
+    per_page=10
+    per_row=5
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+    data = DB.get_reviews_bywriter(session['id']) 
+    review_counts=len(data)
+
+    for i in range(row_count): #last row
+        if(i == row_count-1) and (review_counts%per_row!=0):
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+    return render_template("myReview.html", 
+                           datas=data.items(), 
+                           row1 = locals()['data_0'].items(),
+                           row2 = locals()['data_1'].items(),
+                           limit=per_page,
+                           page = page,
+                           page_count = int((review_counts/per_page)+1),
+                           total=review_counts,writer=writer)
+   
 
 @application.route("/mySale")
 def view_mySale():
