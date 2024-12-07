@@ -42,7 +42,8 @@
         
     </form>
     
-    
+<!--JS sha-256 hash-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {
@@ -53,10 +54,11 @@
     document.getElementById("orgPassword").addEventListener("input",function(){
         const correctPW = "{{orgPW}}";
         const originPasswordInput = document.getElementById("orgPassword").value;
+        var hash = CryptoJS.SHA256(originPasswordInput);
 
         const orgPWMessage = document.getElementById("orgPWMessage");
         orgPWMessage.style.display = "block";
-        if (correctPW !== originPasswordInput) {
+        if (correctPW !== hash.toString(CryptoJS.enc.Hex)) {
             orgPWMessage.style.color = "red";
             orgPWMessage.textContent = "비밀번호와 일치하지 않습니다.";
         } else {
@@ -111,17 +113,17 @@
         event.preventDefault();
 
         const newPWInput = document.getElementById("password").value;
-        const passwordInput = document.getElementById("orgPassword").value;
-        const passwordMessage = document.getElementById("passwordMessage");
-        const confirmMessage = document.getElementById("confirmMessage");
         const phoneInput = document.getElementById("phone").value.trim();
-        const phoneMessage = document.getElementById("phoneMessage");
 
         // 비밀번호 유효성 검사
         const hasUpperCase = document.getElementById("hasUpperCase").checked;
         const hasNumber = document.getElementById("hasNumber").checked;
         const hasSpecialChar = document.getElementById("hasSpecialChar").checked;
         const minLength = document.getElementById("minLength").checked;
+
+        const correctPW = "{{orgPW}}";
+        const originPasswordInput = document.getElementById("orgPassword").value;
+        var hash = CryptoJS.SHA256(originPasswordInput);
 
         if(newPWInput!=""){
             if (!(hasUpperCase && hasNumber && hasSpecialChar && minLength)) {
@@ -130,13 +132,18 @@
             }
 
             // 비밀번호 확인 검사
-            if (passwordInput !== document.getElementById("confirmPassword").value) {
+            if (newPWInput !== document.getElementById("confirmPassword").value) {
                 alert("비밀번호 확인이 일치하지 않습니다.");
+                return;
+            }
+
+            if(correctPW!=hash.toString(CryptoJS.enc.Hex)){
+                alert("기존 비밀번호가 정확하지 않습니다.");
                 return;
             }
         }
         else{
-            document.getElementById("password")="{{orgPW}}"
+            document.getElementById("password").value="{{orgPW}}"
         }
 
         // 핸드폰 번호 유효성 검사
@@ -149,6 +156,12 @@
             phoneMessage.textContent = "";
         }
 
+        const fileInput = document.getElementById("imageUpload");
+        if(!fileInput.value){
+            alert("file null exception");
+            fileInput.value='{{profile_img}}';
+            return;
+        }
         // 모든 조건을 만족하면 회원가입 성공
         alert("프로필 수정이 완료되었습니다.");
         // 여기서 폼을 실제로 제출하거나 추가적인 작업을 수행
