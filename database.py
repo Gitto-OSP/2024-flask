@@ -192,9 +192,9 @@ class DBhandler:
             "name":data['name'], #상품이름
             "writer":data['seller'], #작성자
             "title":data['price'], #리뷰제목
-            "rate":data['star'], #별점
-            "review":data['userComments'], #리뷰내용
-            "img_path":img_path #리뷰 이미지
+            "rate":data['star'],
+            "review":data['userComments'],
+            "img_path":img_path
         }
         self.db.child("review").push(review_info)
         print(data)
@@ -231,3 +231,39 @@ class DBhandler:
         for k,v in zip(target_key,target_value):
             new_dict[k]=v
         return new_dict
+
+    def get_liked_items(self, user_id):
+        bookmarks = self.db.child("bookmark").child(user_id).get()
+        linked_items = []
+        if bookmarks.val():
+            for res in bookmarks.each():
+                if res.val().get("interested") == "Y":
+                    item_data = self.db.child("item").child(res.key()).get().val()
+                    if item_data:  # item_data가 None이 아닌 경우만 처리
+                        img_list = item_data.get("img_path", [])
+                        item = {
+                            "id": res.key(),  # ID
+                            "img_path": img_list,  # 첫 번째 이미지 경로
+                            "tradeRegions": item_data.get("tradeRegions", ""),  # 거래 지역
+                            "price": item_data.get("price", 0)  # 가격
+                        }
+                        linked_items.append(item)
+        return linked_items or []
+    
+    #공동구매
+    def insert_gp_item(self,name,data,img_path):
+        gp_item_info={
+            "name":data['name'],
+            "seller":data['seller'],
+            "price":data['price'],
+            "company":data['company'],
+            "provideRegions":data['provideRegions'],
+            "options":data['options[]'],
+            "startDate":data['startDate'],
+            "endDate":data['endDate'],
+            "status":data['status'],
+            "img_path":img_path,
+            "userComments":data['userComments']
+        }
+        self.db.child("gp_item").child(name).set(gp_item_info)
+        return True
