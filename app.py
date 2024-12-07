@@ -395,7 +395,7 @@ def process_brand_data(form_data, files_data):
         "benefits": form_data["benefits"],
         "userComments": form_data["userComments"],
         "img_path" : [],
-        "socials": []
+        "socials": {}
     }
 
     for file in files_data:
@@ -407,13 +407,13 @@ def process_brand_data(form_data, files_data):
     socialsType = ['instagram', 'x']
     for sns in socialsType:
         if(form_data.get(sns)): 
-            brand_data["socials"].append({sns : form_data[sns]})
+            brand_data["socials"][sns] = form_data[sns]
     
     etcUrls = form_data.getlist('etcUrl')
     etcNames = form_data.getlist('etcName')
     if etcUrls and etcNames:
         for name, url in zip(etcNames, etcUrls):  # 이름과 URL을 쌍으로 묶어서 처리
-            brand_data["socials"].append({name: url})
+            brand_data["socials"][name] = url
 
     return brand_data
 
