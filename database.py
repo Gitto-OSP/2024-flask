@@ -267,3 +267,22 @@ class DBhandler:
         }
         self.db.child("gp_item").child(name).set(gp_item_info)
         return True
+
+    def edit_profile(self,id_, data, img_path):
+        key = -1
+        val = {}
+        users = self.db.child("user").get()
+        for res in users.each():
+            value = res.val()
+            if value['id']==id_:
+                key = res.key()
+                val = value
+        new_prof={
+            "email": val["email"],
+            "id":id_,
+            "phone":data['phone'],
+            "pw":data['pw'],
+            "nickname":data['nickname'],
+            "profile_image":img_path
+        }
+        self.db.child("user").child(key).set(new_prof)
