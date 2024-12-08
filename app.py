@@ -270,7 +270,8 @@ def profile_edit_confirm():
     else:
         image_file=request.files["file"]
         image_file.save("static/DBimage/{}".format(image_file.filename))
-        filename=image_file.filename
+        filename="static/DBimage/{}".format(image_file.filename)
+        print(filename)
     DB.edit_profile(session["id"],data,filename)
     return redirect(url_for('view_mypage'))
     

@@ -12,7 +12,7 @@
   {%extends "index.html"%}
   {%block section%}
 
-    <form class="mypage-content" id="editForm" action="/edit_confirm" method="post">
+    <form class="mypage-content" id="editForm" action="/edit_confirm" method="post" enctype="multipart/form-data">
         <div class="profile-img-section">
             <img src="../../{{profile_img}}" alt="프로필 사진" class="profile-img" id="previewContainer">
             <div class="profile-img-input">
