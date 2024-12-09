@@ -167,18 +167,18 @@ class DBhandler:
             return True
         else:
             return False
-
-    # 사용자 정보 조회
-    def get_userInfo(self, user_id, column):
+    """ 
+        # 사용자 정보 조회
+        def get_userInfo(self, user_id, column):
     
         all_users = self.get_all_users()
         user = next((user for user in all_users if user['id'] == user_id), None)
         if user:
             return user.get(column, None)
-        return None
+        return None 
 
-    # 사용자 정보 업데이트
-    def update_userInfo(self, user_id, column, value):
+        # 사용자 정보 업데이트
+        def update_userInfo(self, user_id, column, value):
         users = self.db.child("user").get()
         for res in users.each():
             user = res.val()
@@ -188,7 +188,7 @@ class DBhandler:
                 # 변경된 사용자 정보 DB에 반영
                 self.db.child("user").child(res.key()).update(user)
                 return True
-        return False
+        return False """
 
     # 회원가입 중복체크
     def user_duplicate_check(self, id_string):
@@ -205,12 +205,17 @@ class DBhandler:
     # 로그인
     def find_user(self, id_, pw_):
         users = self.db.child("user").get()
-        #target_value=[]
+        
         for res in users.each():
             value = res.val()
-            if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
+            if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한지 확인
                 return True
         return False
+            
+            
+            #if value.get('id') == id_ and value.get('pw') == pw_:    
+            #    return True
+        #return False
     
     def get_userInfo(self,id_, key):
         users = self.db.child("user").get()
