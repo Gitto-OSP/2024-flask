@@ -1,0 +1,196 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.content__section{
+  background-color: #f9f9f9;
+}
+
+.content__area{
+  height: 80vh;
+  min-height: 700px;
+}
+
+.mypage-content {
+  max-width: 600px;
+  margin:   100px auto;
+  padding: 30px 40px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* 프로필 섹션 */
+.profile-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.profile-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.profile-info {
+  margin-left: 20px;
+  text-align: left;
+}
+
+.profile-info h2 {
+  font-size: 1.5em;
+  margin: 0;
+  color: #999999;
+}
+
+.nickname-tag {
+  color: #333333;
+}
+
+/* 프로필 수정 버튼 */
+.edit-profile-button {
+  background-color: #00462A;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  min-width: 160px;
+  text-align: center;
+  font-size: 1em;
+}
+
+.edit-profile-button:hover {
+  background-color: #00462A;
+}
+
+/* 배꽃지수 */
+.flower-score-block {
+  background-color: #00462A;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.flower-score {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.flower-score span {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.white-flower-icons img {
+  width: 20px; 
+  height: 20px; 
+  margin-right: 5px;
+  object-fit: contain;
+}
+
+.green-flower-icons img {
+  width: 20px; 
+  height: 20px; 
+  margin-right: 5px;
+  object-fit: contain;
+}
+
+.score {
+  font-size: 2em;
+  margin-left: 1px;
+  text-align: center;
+}
+
+/* 버튼 섹션 */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.buttons button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1em;
+  background-color: #f1f1f1;
+  color: #333333;
+  transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+  background-color: #00462A;
+  color: #ffffff;
+}
+
+/* 개별 버튼 스타일 */
+.post-button,
+.scrap-button,
+.manner-button {
+  background-color: #f1f1f1;
+  color: #333333;
+}
+
+.sale-button {
+  background-color: #f1f1f1;
+  color: #333333;
+}
+
+.sale-count {
+  color: #ff5d7de3;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .mypage-content {
+      padding: 20px;
+  }
+
+  .buttons {
+      gap: 10px;
+  }
+
+  .flower-score-block {
+      flex-direction: column;
+      text-align: center;
+  }
+
+  .profile-section {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .profile-info {
+      margin-left: 0;
+      text-align: center;
+      margin-top: 15px;
+  }
+
+  .flower-score span,
+  .score {
+      margin-top: 10px;
+  }
+
+  .edit-profile-button,
+  button {
+      min-width: 100%;
+  }
+}
