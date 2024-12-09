@@ -200,9 +200,8 @@ db_handler = DBhandler()
 # 랜덤 닉네임 생성
 def generate_random_nickname(db_handler):
     while True:
-        # 랜덤 문자열 생성 (예시로 8자리 닉네임)
+        # 랜덤 문자열 생성, 닉네임 중복 체크
         random_nickname = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-        # 닉네임 중복 체크
         if not db_handler.nickname_exists(random_nickname):
             return random_nickname  # 중복되지 않으면 반환
 
@@ -218,7 +217,6 @@ def success():
 
 @application.route('/signup_post', methods=['POST'])
 def register_user():
-    
     user_data = {
         'id': request.form['id'],
         'email': request.form['email'],
@@ -233,7 +231,10 @@ def register_user():
     default_profile_path = '/static/image/profile.png'
     user_data['profile_image'] = default_profile_path
     
-
+    # 초기 배꽃지수
+    default_flower_index = 4.3
+    user_data['flower_index'] = default_flower_index
+    
     # 비밀번호 해시화
     password = request.form['password']
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
@@ -263,7 +264,25 @@ def check_id():
 
 @application.route("/mypage")
 def view_mypage():
+    
+    nickname = DB.get_userInfo(session['id'], 'nickname')
+    profile_img = DB.get_userInfo(session['id'], 'profile_image')
+
+    # flower_index 가져오기
+    flower_index = DB.get_user_flower_index(session['id'])  # 실제 로직에 맞게 수정
+
+    # flower_index 값을 template에 전달
+    return render_template(
+        "./mypage/mypage.html", 
+        nickname=nickname, 
+        profile_img=profile_img,
+        flower_index=flower_index  # flower_index 전달
+    )
+    
+    
+    """ 
     return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
+    """
 
 @application.route("/editProfile")
 def view_editProfile():
