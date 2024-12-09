@@ -81,10 +81,34 @@ body {
     color: #666;
 }
 
+.socialList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.socialList li {
+    display: flex;
+    align-items: center;
+    padding: 5px 0px;
+}
+
 .instagram {
     font-size: 1rem;
     color: #ff69b4;
-    margin-top: 5px;
+}
+
+.x {
+    color: #1DA1F2;
+}
+
+.etcLink {
+    color: #393939;
+}
+
+.socialLogo {
+    width: 20px;
+    margin-right: 5px;
 }
 
 .discount-banner {

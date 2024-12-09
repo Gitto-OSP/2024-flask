@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
 {% extends "index.html" %}
 
 {% block section %}
+
 <body>
     <div class="container">
         <section class="brand-header">
@@ -22,13 +23,18 @@
             <!-- Left side: Main image and thumbnails -->
             <div class="image-section">
                 <div class="main-image">
-                    <img id="largeImage" src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="대표 사진" class="large-image">
+                    <img id="largeImage" src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="대표 사진"
+                        class="large-image">
                 </div>
                 <div class="thumbnails">
-                        <img src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="Thumbnail 1" class="thumbnail" onclick="changeImage('{{ url_for('static', filename=data.img_path[0][7:]) }}')">
-                        {% if data.img_path|length > 1 %}
-                            <img src="{{ url_for('static', filename=data.img_path[1][7:]) }}" alt="Thumbnail 2" class="thumbnail" onclick="changeImage('{{ url_for('static', filename=data.img_path[1][7:]) }}')">
-                        {% endif %}
+                    <img src="{{ url_for('static', filename=data.img_path[0][7:]) }}" alt="Thumbnail 1"
+                        class="thumbnail"
+                        onclick="changeImage('{{ url_for('static', filename=data.img_path[0][7:]) }}')">
+                    {% if data.img_path|length > 1 %}
+                    <img src="{{ url_for('static', filename=data.img_path[1][7:]) }}" alt="Thumbnail 2"
+                        class="thumbnail"
+                        onclick="changeImage('{{ url_for('static', filename=data.img_path[1][7:]) }}')">
+                    {% endif %}
                 </div>
             </div>
 
@@ -38,7 +44,28 @@
                     <h2>{{data.name}}</h2>
                     <p class="representative">{{data.seller}} 대표 ({{data.major}} {{data.graduNum}}졸)</p>
                     <!--SNS 추가 코드-->
-                    <p class="instagram">@abc123</p>
+                    {% if data.socials %}
+                    <ul class="socialList">
+                        {% for key, value in data.socials.items() %}
+                        {% if key == 'instagram' %}
+                        <li class="instagram">
+                            <img class="socialLogo" src="../../static/image/LogoInstagram.png" alt="인스타그램" /> {{value}}
+                        </li>
+                        {% elif key == 'x' %}
+                        <li class="x">
+                            <img class="socialLogo" src="../../static/image/LogoXTwitter.png" alt="x(트위터)" /> {{value}}
+                        </li>
+                        {% else %}
+                        <li class="etcLink">
+                            <img class="socialLogo" src="../../static/image/LogoLink.png" alt="기타링크" />{{key}} :
+                            {{value}}
+                        </li>
+                        {% endif %}
+                        {% else %}
+                        <li>No social media links available.</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                 </section>
 
                 <div class="discount-banner">
@@ -55,10 +82,11 @@
 
     <script>
         function changeImage(imagePath) {
-                    const largeImage = document.getElementById("largeImage");
-                    largeImage.src = imagePath;
+            const largeImage = document.getElementById("largeImage");
+            largeImage.src = imagePath;
         }
     </script>
 </body>
+
 </html>
 {% endblock section %}
