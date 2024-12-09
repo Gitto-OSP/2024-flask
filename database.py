@@ -159,15 +159,36 @@ class DBhandler:
             "email": data['email'],
             "phone": data['phone'],
             "profile_image": "static/image/profile.png",
-            "flower_index": data['flower_index']  # 배꽃지수 1.0으로 저장
+            "flower_index": data['flower_index']
         }
         
         if self.user_duplicate_check(data['id']):
             self.db.child("user").push(user_info)
-            #print("New user registered:", user_info)
             return True
         else:
             return False
+
+    # 사용자 정보 조회
+    def get_userInfo(self, user_id, column):
+    
+        all_users = self.get_all_users()
+        user = next((user for user in all_users if user['id'] == user_id), None)
+        if user:
+            return user.get(column, None)
+        return None
+
+    # 사용자 정보 업데이트
+    def update_userInfo(self, user_id, column, value):
+        users = self.db.child("user").get()
+        for res in users.each():
+            user = res.val()
+            if user['id'] == user_id:
+                # 해당 사용자의 column을 업데이트
+                user[column] = value
+                # 변경된 사용자 정보 DB에 반영
+                self.db.child("user").child(res.key()).update(user)
+                return True
+        return False
 
     # 회원가입 중복체크
     def user_duplicate_check(self, id_string):

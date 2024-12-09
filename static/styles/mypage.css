@@ -16,9 +16,8 @@ body {
   min-height: 700px;
 }
 
-/* 마이페이지 컨텐츠 */
 .mypage-content {
-  max-width: 600px; /* 참고한 CSS와 동일한 최대 폭 */
+  max-width: 600px;
   margin:   100px auto;
   padding: 30px 40px;
   background-color: #ffffff;
@@ -29,8 +28,8 @@ body {
 /* 프로필 섹션 */
 .profile-section {
   display: flex;
-  align-items: center; /* 수평 정렬을 위해 사용 */
-  justify-content: center; /* 전체 블록 가운데 정렬 */
+  align-items: center;
+  justify-content: center;
   margin-bottom: 30px;
 }
 
@@ -42,7 +41,7 @@ body {
 
 .profile-info {
   margin-left: 20px;
-  text-align: left; /* 닉네임과 프로필 수정 버튼을 왼쪽 정렬 */
+  text-align: left;
 }
 
 .profile-info h2 {
@@ -83,26 +82,39 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .flower-score {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .flower-score span {
-  font-size: 1.2em;
+  font-size: 1.5em;
   margin-right: 10px;
 }
 
-.flower-icons img {
-  width: 20px;
-  height: 20px;
+.white-flower-icons img {
+  width: 20px; 
+  height: 20px; 
   margin-right: 5px;
+  object-fit: contain;
+}
+
+.green-flower-icons img {
+  width: 20px; 
+  height: 20px; 
+  margin-right: 5px;
+  object-fit: contain;
 }
 
 .score {
-  font-size: 1.2em;
+  font-size: 2em;
+  margin-left: 1px;
+  text-align: center;
 }
 
 /* 버튼 섹션 */

@@ -31,17 +31,18 @@
                         {% if i <= flower_index < i+1 %}
                         <!-- 흰색 꽃 아이콘: i개 -->
                             {% for j in range(i) %}
-                                <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
+                                <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘" class="white-flower-icons">
                             {% endfor %}
                             <!-- 초록색 꽃 아이콘: 5-i개 -->
                             {% for j in range(5-i) %}
-                                <img src="/static/image/filledStar.svg" alt="초록색 꽃 아이콘">
+                                <img src="/static/image/filledStar.svg" alt="초록색 꽃 아이콘" class="green-flower-icons">
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                     </div>
+                    <span class="score">{{flower_index}}</span>
                 </div>
-                <span class="score">{{ flower_index }}</span>
+                
             </div>
 
             <div class="buttons">

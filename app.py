@@ -218,7 +218,6 @@ def success():
 
 @application.route('/signup_post', methods=['POST'])
 def register_user():
-    
     user_data = {
         'id': request.form['id'],
         'email': request.form['email'],
@@ -233,9 +232,9 @@ def register_user():
     default_profile_path = '/static/image/profile.png'
     user_data['profile_image'] = default_profile_path
     
-    # 초기 배꽃지수는 1.0 #수정부분
-    flower_index = 1.0
-    user_data['flower_index'] = flower_index
+    # 초기 배꽃지수는 1.0
+    default_flower_index = 1.0
+    user_data['flower_index'] = default_flower_index
     
     # 비밀번호 해시화
     password = request.form['password']
@@ -267,24 +266,19 @@ def check_id():
 @application.route("/mypage")
 def view_mypage():
     
-    # 사용자 정보 가져오기
-    nickname = DB.get_userInfo(session['id'], 'nickname')
-    profile_img = DB.get_userInfo(session['id'], 'profile_image')
-    flower_index = DB.get_userInfo(session['id'], 'flower_index')  # flower_index 추가
+    user_id = session.get('id')
+    
+    # DB에서 최신 사용자 정보 가져오기
+    nickname = DB.get_userInfo(user_id, 'nickname')
+    profile_img = DB.get_userInfo(user_id, 'profile_image')
+    flower_index = DB.get_userInfo(user_id, 'flower_index')  # 최신 flower_index 값 가져오기
     
     return render_template(
         "./mypage/mypage.html", 
         nickname=nickname, 
         profile_img=profile_img,
-        flower_index=flower_index  # flower_index 값 전달
+        flower_index=flower_index  # 최신 flower_index 값 전달
     )    
-    
-"""     return render_template(
-        "./mypage/mypage.html",
-        nickname=DB.get_userInfo(session['id'],'nickname'),
-        profile_img=DB.get_userInfo(session['id'],'profile_image'),
-        
-        ) """
 
 @application.route("/editProfile")
 def view_editProfile():
