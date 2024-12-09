@@ -18,7 +18,7 @@
                 {% if session['id'] %}
                 <ul class="account__area" id="account_in">
                     <li><b>{{session['id']}}님 반갑습니다!</b></li>
-                    <li><img id='profileImg' src="/static/image/user_img.png"></li>
+                    <li><img id='profileImg' src="{{session['prof_img']}}"></li>
                     <li><a class="account_btn" href="/logout">로그아웃</a></li>
                     <li><a href='/mypage'>마이페이지</a></li>
                 </ul>

@@ -112,7 +112,7 @@ body {
   gap: 15px;
 }
 
-button {
+.buttons button {
   padding: 12px;
   border: none;
   border-radius: 10px;
@@ -124,7 +124,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.buttons button:hover {
   background-color: #00462A;
   color: #ffffff;
 }
