@@ -158,7 +158,8 @@ class DBhandler:
             "nickname": data['nickname'],
             "email": data['email'],
             "phone": data['phone'],
-            "profile_image": "static/image/profile.png"
+            "profile_image": "static/image/profile.png",
+            "flower_index": data['flower_index']  # 배꽃지수 1.0으로 저장
         }
         
         if self.user_duplicate_check(data['id']):

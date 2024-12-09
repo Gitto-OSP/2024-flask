@@ -233,7 +233,10 @@ def register_user():
     default_profile_path = '/static/image/profile.png'
     user_data['profile_image'] = default_profile_path
     
-
+    # 초기 배꽃지수는 1.0 #수정부분
+    flower_index = 1.0
+    user_data['flower_index'] = flower_index
+    
     # 비밀번호 해시화
     password = request.form['password']
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
