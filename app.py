@@ -301,7 +301,7 @@ def view_myReview():
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
-    return render_template("myReview.html", 
+    return render_template("./mypage/myReview.html", 
                            datas=data.items(), 
                            row1 = locals()['data_0'].items(),
                            row2 = locals()['data_1'].items(),
