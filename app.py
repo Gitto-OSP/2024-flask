@@ -265,15 +265,24 @@ def check_id():
 @application.route("/mypage")
 def view_mypage():
     
-    return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
-    
-    """     return render_template(
-        
+    nickname = DB.get_userInfo(session['id'], 'nickname')
+    profile_img = DB.get_userInfo(session['id'], 'profile_image')
+
+    # flower_index 가져오기
+    flower_index = DB.get_user_flower_index(session['id'])  # 실제 로직에 맞게 수정
+
+    # flower_index 값을 template에 전달
+    return render_template(
         "./mypage/mypage.html", 
         nickname=nickname, 
         profile_img=profile_img,
-        flower_index=flower_index  # 최신 flower_index 값 전달
-     """    
+        flower_index=flower_index  # flower_index 전달
+    )
+    
+    
+    """ 
+    return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
+    """
 
 @application.route("/editProfile")
 def view_editProfile():

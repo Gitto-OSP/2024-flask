@@ -167,18 +167,28 @@ class DBhandler:
             return True
         else:
             return False
-    """ 
-        # 사용자 정보 조회
-        def get_userInfo(self, user_id, column):
     
+    # 사용자 정보 조회
+    def get_userInfo(self, user_id, column=None):
         all_users = self.get_all_users()
         user = next((user for user in all_users if user['id'] == user_id), None)
         if user:
-            return user.get(column, None)
+            if column:
+                return user.get(column, None)
+            return user
         return None 
 
-        # 사용자 정보 업데이트
-        def update_userInfo(self, user_id, column, value):
+    # 사용자의 flower_index를 반환
+    def get_user_flower_index(self, user_id):
+        user_info = self.get_userInfo(user_id, 'flower_index')  # column 인자로 'flower_index' 전달
+        if user_info is not None:
+            return user_info  # flower_index 반환
+        return None
+    
+    """  
+    
+    # 사용자 정보 업데이트
+    def update_userInfo(self, user_id, column, value):
         users = self.db.child("user").get()
         for res in users.each():
             user = res.val()
