@@ -46,10 +46,46 @@ class DBhandler:
         seasons = self.db.child("season").get().val()
         return seasons
     
+    def get_seasons_bycategory(self,cate):
+        items = self.db.child("season").get()
+        target_value=[]
+        target_key=[]
+        for res in items.each():
+            value = res.val()
+            key_value = res.key()
+
+            if value['boothLocation']==cate:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
+    
     # 공구페이지 get db
     def get_gp(self):
         gp = self.db.child("gp_item").get().val()
         return gp
+    
+    def get_gp_bycategory(self,cate):
+        items = self.db.child("gp_item").get()
+        target_value=[]
+        target_key=[]
+        for res in items.each():
+            value = res.val()
+            key_value = res.key()
+
+            if value['status']==cate:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
     
     # 동문브랜드 get db
     def get_brand(self):
@@ -65,6 +101,24 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+    
+    def get_item_bycategory(self,cate):
+        items = self.db.child("item").get()
+        target_value=[]
+        target_key=[]
+        for res in items.each():
+            value = res.val()
+            key_value = res.key()
+
+            if value['tradeRegions']==cate:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
     
     def get_booth_byname(self,name):
         items=self.db.child("season").get()

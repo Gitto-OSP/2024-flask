@@ -13,15 +13,54 @@
     <h1>시즌/대동제</h1>
 </div>
 <img src="/static/image/banner_img.png" width="100%;" style="display:block; margin:30px auto">
-{% if total > 0 %}
 <div class="filter__area" style="margin-bottom:20px;">
     <ul>
         <li>총 <span id="number_itms">{{total}}</span> 개 상품
-        <li>필터 <span id="filter_str"> > 필터이름</span>
-            <!---필터 드롭다운 메뉴 추가--->
-            <script src="scriptname.js"></script>
+        <li>필터 <span id="filter_str"> ></span>
+            <script>
+                $(document).ready(function(){
+                    //alert("{{category}}");
+                    let currCategory = "{{category}}";
+                    var catString = "";
+                    switch(currCategory){
+                        case "frontEntrance":
+                            catString="정문";
+                            break;
+                        case "studentCC":
+                            catString="학문관";
+                            break;
+                        case "shkwan":
+                            catString="생활관";
+                            break;
+                        case "posko":
+                            catString="포스코";
+                            break;
+                        case "huyut":
+                            catString="후윳길";
+                            break;
+                        case "edu":
+                            catString="교육관";
+                            break;
+                        default:
+                            catString="All";
+                            break;
+                    }
+                    
+                    $('#category option:contains("'+catString+'")').prop("selected",true);
+                })
+            </script>
+        <select id="category" name="category" onchange="location=this.value">>
+            <option value="{{url_for('view_list', page=i, category='all')}}">All</option>
+            <option value="{{url_for('view_list', page=i, category='frontEntrance')}}">정문</option>
+            <option value="{{url_for('view_list', page=i, category='studentCC')}}">학문관</option>
+            <option value="{{url_for('view_list', page=i, category='shkwan')}}">생활관</option>
+            <option value="{{url_for('view_list', page=i, category='posko')}}">포스코</option>
+            <option value="{{url_for('view_list', page=i, category='huyut')}}">후윳길</option>
+            <option value="{{url_for('view_list', page=i, category='edu')}}">교육관</option>
+        </select>
     </ul>
 </div>
+{% if total > 0 %}
 <div class="item__list">
     {% for row in rows %}
     {% for key,value in row %}

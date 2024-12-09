@@ -21,12 +21,16 @@ def hello():
 @application.route("/season")
 def view_list():
     page = request.args.get("page",0,type=int)
+    category = request.args.get("category","all")
     per_page = 10 #item count to display per page
     per_row = 5 #item count to display per row
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_seasons() #read the table
+    if category=="all":
+        data = DB.get_seasons() #read the table
+    else:
+        data = DB.get_seasons_bycategory(category) #read the table
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
     print(data.items())
@@ -44,7 +48,8 @@ def view_list():
                            limit=per_page,
                            page = page,
                            page_count = int((item_counts/per_page)+1),
-                           total=item_counts)
+                           total=item_counts,
+                           category=category)
 
 @application.route("/review")
 def view_review():
@@ -77,12 +82,16 @@ def view_review():
 @application.route("/fleamarket")
 def view_fleamarket():
     page = request.args.get("page",0,type=int)
+    category = request.args.get("category","all")
     per_page = 25 #item count to display per page
     per_row = 5 #item count to display per row
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_items() #read the table
+    if category=="all":
+        data = DB.get_items() #read the table
+    else:
+        data = DB.get_item_bycategory(category)
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
     rows=[]
@@ -98,18 +107,23 @@ def view_fleamarket():
                            rows = rows,
                            limit=per_page,
                            page = page,
-                           page_count = int((item_counts/per_page)+1),
-                           total=item_counts)
+                           page_count = int(math.ceil(item_counts/per_page)),
+                           total=item_counts,
+                           category=category)
 
 @application.route("/gonggu")
 def view_gonggu():
     page = request.args.get("page",0,type=int)
+    category = request.args.get("category","all")
     per_page = 25 #item count to display per page
     per_row = 5 #item count to display per row
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_gp() #read the table
+    if category=="all":
+        data = DB.get_gp() #read the table
+    else:
+        data = DB.get_gp_bycategory(category)
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
     rows=[]
@@ -126,7 +140,8 @@ def view_gonggu():
                            limit=per_page,
                            page = page,
                            page_count = int((item_counts/per_page)+1),
-                           total=item_counts)
+                           total=item_counts,
+                           category=category)
 
 @application.route("/graduatebrands")
 def view_graduatebrands():

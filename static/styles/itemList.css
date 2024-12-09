@@ -147,3 +147,9 @@
 .pagenation a:hover{
     background-color: #D9D9D9;
 }
+
+select {
+    min-width: 6rem;
+    min-height: 2rem;
+    text-indent: 10px;
+}
