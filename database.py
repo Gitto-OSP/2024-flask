@@ -13,6 +13,7 @@ class DBhandler:
             "name":data['name'],
             "seller":data['seller'],
             "price":data['price'],
+            "chat":data['chat'],
             "tradeRegions":data['tradeRegions'],
             "choice":data['choice'],
             "img_path":img_path,
