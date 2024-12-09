@@ -266,7 +266,25 @@ def check_id():
 
 @application.route("/mypage")
 def view_mypage():
-    return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
+    
+    # 사용자 정보 가져오기
+    nickname = DB.get_userInfo(session['id'], 'nickname')
+    profile_img = DB.get_userInfo(session['id'], 'profile_image')
+    flower_index = DB.get_userInfo(session['id'], 'flower_index')  # flower_index 추가
+    
+    return render_template(
+        "./mypage/mypage.html", 
+        nickname=nickname, 
+        profile_img=profile_img,
+        flower_index=flower_index  # flower_index 값 전달
+    )    
+    
+"""     return render_template(
+        "./mypage/mypage.html",
+        nickname=DB.get_userInfo(session['id'],'nickname'),
+        profile_img=DB.get_userInfo(session['id'],'profile_image'),
+        
+        ) """
 
 @application.route("/editProfile")
 def view_editProfile():

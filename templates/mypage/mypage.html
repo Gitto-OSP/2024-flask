@@ -28,14 +28,18 @@
                 <div class="flower-score">
                     <span>배꽃지수</span>
                     <div class="flower-icons">
-                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
-                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
-                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
-                        <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
-                        <img src="/static/image/filledStar.svg" alt="초록색 꽃 아이콘">
+                        {% for i in range(1, 6) %}
+                            {% if flower_index >= i and flower_index < i + 1 %}
+                                <!-- 흰꽃 아이콘 -->
+                                <img src="/static/image/emptyStar.svg" alt="흰색 꽃 아이콘">
+                            {% else %}
+                                <!-- 초록꽃 아이콘 -->
+                                <img src="/static/image/filledStar.svg" alt="초록색 꽃 아이콘">
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
-                <span class="score">4.2</span>
+                <span class="score">{{ flower_index }}</span>
             </div>
 
             <div class="buttons">
