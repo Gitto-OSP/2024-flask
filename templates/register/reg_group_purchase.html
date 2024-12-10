@@ -7,6 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../static/styles/reg.css">
     <link rel="stylesheet" href="../../static/styles/regImage.css">
+    <link rel="stylesheet" href="../../static/styles/reg_group_purchase.css">
 </head>
 
 <body>
@@ -33,9 +34,10 @@
                     <input type="text" name="company" id="company" placeholder="입력" required>
 
                     <label for="period">공동구매 기간</label>
-                    <div>
-                        <input type="date" name="startDate" id="startDate" onChange="setendmin(this.value)" required> ~
-                        <input type="date" name="endDate" id="endDate" required>
+                    <div id="periodContainer">
+                        <input type="date" name="startDate" id="startDate" class="input-style"
+                            onChange="setendmin(this.value)" required> <span id="period-gap">~</span>
+                        <input type="date" name="endDate" id="endDate" class="input-style" required>
                     </div>
 
                     <label for="status">진행 상황</label>
@@ -79,7 +81,7 @@
                         </label>
                     </div>
 
-                    <div>
+                    <!-- <div>
                         <h2>상품 옵션</h2>
                         <div id="optionContainer">
                             <div class="option">
@@ -88,7 +90,17 @@
                             </div>
                         </div>
                         <button type="button" id="addOption">옵션 추가</button>
-                    </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <div>
+                <h2>상품 옵션</h2>
+                <div class="optionAddContainer">
+                    <input type="text" id="optionInput" placeholder="옵션명 입력">
+                    <button type="button" id="addOption">옵션 추가</button>
+                </div>
+                <div id="optionContainer">
                 </div>
             </div>
 
@@ -114,24 +126,25 @@
     </div>
 
     <script src="../../static/scripts/reg.js"></script>
+    <script src="../../static/scripts/regOptions.js"></script>
     <script>
         // 옵션 추가/삭제 기능
-        document.getElementById('addOption').addEventListener('click', function () {
-            const container = document.getElementById('optionContainer');
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.innerHTML = `
-                <input type="text" name="options[]" placeholder="옵션명 입력">
-                <button type="button" class="remove-option">삭제</button>
-            `;
-            container.appendChild(optionDiv);
-        });
+        // document.getElementById('addOption').addEventListener('click', function () {
+        //     const container = document.getElementById('optionContainer');
+        //     const optionDiv = document.createElement('div');
+        //     optionDiv.className = 'option';
+        //     optionDiv.innerHTML = `
+        //         <input type="text" name="options[]" placeholder="옵션명 입력">
+        //         <button type="button" class="remove-option">삭제</button>
+        //     `;
+        //     container.appendChild(optionDiv);
+        // });
 
-        document.getElementById('optionContainer').addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-option')) {
-                e.target.parentElement.remove();
-            }
-        });
+        // document.getElementById('optionContainer').addEventListener('click', function (e) {
+        //     if (e.target.classList.contains('remove-option')) {
+        //         e.target.parentElement.remove();
+        //     }
+        // });
 
         var now_utc = Date.now()
         var timeOff = new Date().getTimezoneOffset() * 60000;

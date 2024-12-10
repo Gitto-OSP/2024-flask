@@ -458,10 +458,20 @@ def reg_season_submit():
 
 @application.route("/submit_gpitem_post", methods=['POST'])
 def reg_gpitem_submit_post(): 
+    form_data = request.form
     image_file=request.files["file"]
+    
+    image_paths = []
+    files_data = request.files.getlist('selectedFile')
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/gp{form_data['name']}{form_data['seller']}{get_rid_spChar(file.filename)}"
+            file.save(img_path_format)
+            image_paths.append(img_path_format)
+    
     image_file.save("static/DBimage/{}".format(image_file.filename))
     data=request.form
-    DB.insert_gp_item(data['name'],data,image_file.filename)
+    DB.insert_gp_item(data['name'],data,image_file.filename, image_paths)
     return render_template("./details/group_purchase.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
 
 @application.route("/info_item/<name>/")

@@ -232,18 +232,19 @@ class DBhandler:
         return linked_items or []
     
     #공동구매
-    def insert_gp_item(self,name,data,img_path):
+    def insert_gp_item(self,name,data,img_path, image_paths):
         gp_item_info={
             "name":data['name'],
             "seller":data['seller'],
             "price":data['price'],
             "company":data['company'],
             "provideRegions":data['provideRegions'],
-            "options":data['options[]'],
+            "options":data.getlist('options[]'),
             "startDate":data['startDate'],
             "endDate":data['endDate'],
             "status":data['status'],
             "img_path":img_path,
+            "img_paths" : image_paths,
             "userComments":data['userComments']
         }
         self.db.child("gp_item").child(name).set(gp_item_info)

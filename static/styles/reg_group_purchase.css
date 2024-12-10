@@ -1,0 +1,25 @@
+#periodContainer {
+    display: grid;
+    grid-template-columns: 5fr 1fr 5fr;
+    align-items: center;
+}
+
+#period-gap {
+    margin: auto;
+}
+
+#optionContainer {
+    display: flex;
+    gap: 14px;
+}
+
+.gp-option {
+    display: flex;
+    align-items: center;
+    background-color: #114B19;
+    border-radius: 15px;
+    color: white;
+    padding: 10px 13px;
+    gap: 10px;
+    margin: 10px 0;
+}
