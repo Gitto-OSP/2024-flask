@@ -355,10 +355,26 @@ class DBhandler:
             "endDate":data['endDate'],
             "status":data['status'],
             "img_path":img_path,
-            "userComments":data['userComments']
+            "userComments":data['userComments'],
+            "participants": {}
         }
         self.db.child("gp_item").child(name).set(gp_item_info)
         return True
+    
+    def add_participant(self, gp_item_name, user_info, selected_option):
+        participant_data = {
+            "user_id": user_info['id'],
+            "email": user_info['email'],
+            "option": selected_option
+        }
+        # 참여자 데이터 추가
+        self.db.child("gp_item").child(gp_item_name).child("participants").push(participant_data)
+
+        # 참여자 수 업데이트
+        participants = self.db.child("gp_item").child(gp_item_name).child("participants").get().val()
+
+        # 참여자 수 반환 (없으면 0)
+        return len(participants) if participants else 0
 
     def edit_profile(self,id_, data, img_path):
         key = -1

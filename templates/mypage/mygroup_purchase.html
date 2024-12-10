@@ -23,17 +23,17 @@
 						<div class="list__openedgp">
 							<div style="float:left; width:210px; height:210px;">
 								<a href="/info_item">
-									<img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+									<img src="../static/DBimage/{{data.img_path}}" alt="상품 이미지">
 								</a>
 							</div>
 							<div class="listobj_textarea">
-								<div class="listobj_title"><b>상품명 : 교표 후리스</b></div>
-								<div class="listobj_seller">주최자 <span class="bar">|</span> sellerID</div>
-								<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;">##</span>명의 벗이 함께하는 중
+								<div class="listobj_title"><b>상품명 : {{data.name}}</b></div>
+								<div class="listobj_seller">주최자 <span class="bar">|</span> {{data.seller}} </div>
+								<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;"> {{data.participant_count}} </span>명의 벗이 함께하는 중
 									<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
 								</div>
 								<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
-									<span class="status_text">모집 중</span>
+									<span class="status_text">{{data.status}} 중</span>
 									<span class="dropdown-container">
 										<select class="dropdown" onchange="updateStatus(this)" style="display: none;">
 											<option id="모집 중" value="20">모집 중</option>
@@ -45,7 +45,7 @@
 										<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
 									</span>
 								</div>
-								<div class="listobj_data">공동구매 기간 <span class="bar">|</span> YYYY/MM/DD ~ YYYY/MM/DD</div>
+								<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{data.startDate}} ~ {{data.endDate}}</div>
 							</div>
 						</div><br><br>
 					`);
@@ -62,12 +62,12 @@
 						<div class="list__partedgp">
 							<div style="float:left; width:210px; height:210px;">
 								<a href="/info_item">
-										<img src="/static/image/item_img.png" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+									<<img src="../static/DBimage/{{data.img_path}}" alt="상품 이미지">
 								</a>
 							</div>
 							<div class="listobj_textarea">
-									<div class="listobj_title"><b>상품명 : 교표 후리스</b></div>
-									<div class="listobj_seller">주최자 <span class="bar">|</span> sellerID 
+									<div class="listobj_title"><b>상품명 : {{data.name}}</b></div>
+									<div class="listobj_seller">주최자 <span class="bar">|</span> {{data.seller}}
 										<button class="btn" id="mailto" onclick="fn_mailto">
 											<a class="p2pmail" href="mailto:userid@ewha.ac.kr">1:1문의</a>
 										</button>
@@ -85,9 +85,9 @@
 											<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
 										</span>
 									</div>
-									<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;">##</span>명의 벗이 함께하는 중</div>
+									<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;"> {{data.participant_count}} </span>명의 벗이 함께하는 중</div>
 									<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
-										<span class="status_text">모집 중</span>
+										<span class="status_text">{{data.status}} 중</span>
 									</div>
 							</div><br><br>
 							<div class="progressbar_container">
