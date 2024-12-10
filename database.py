@@ -13,6 +13,7 @@ class DBhandler:
             "name":data['name'],
             "seller":data['seller'],
             "price":data['price'],
+            "chat":data['chat'],
             "tradeRegions":data['tradeRegions'],
             "choice":data['choice'],
             "img_path":img_path,
@@ -45,10 +46,46 @@ class DBhandler:
         seasons = self.db.child("season").get().val()
         return seasons
     
+    def get_seasons_bycategory(self,cate):
+        items = self.db.child("season").get()
+        target_value=[]
+        target_key=[]
+        for res in items.each():
+            value = res.val()
+            key_value = res.key()
+
+            if value['boothLocation']==cate:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
+    
     # 공구페이지 get db
     def get_gp(self):
         gp = self.db.child("gp_item").get().val()
         return gp
+    
+    def get_gp_bycategory(self,cate):
+        items = self.db.child("gp_item").get()
+        target_value=[]
+        target_key=[]
+        for res in items.each():
+            value = res.val()
+            key_value = res.key()
+
+            if value['status']==cate:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
     
     # 동문브랜드 get db
     def get_brand(self):
@@ -64,6 +101,24 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+    
+    def get_item_bycategory(self,cate):
+        items = self.db.child("item").get()
+        target_value=[]
+        target_key=[]
+        for res in items.each():
+            value = res.val()
+            key_value = res.key()
+
+            if value['tradeRegions']==cate:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
     
     def get_booth_byname(self,name):
         items=self.db.child("season").get()
@@ -103,15 +158,47 @@ class DBhandler:
             "nickname": data['nickname'],
             "email": data['email'],
             "phone": data['phone'],
-            "profile_image": "static/image/profile.png"
+            "profile_image": "static/image/profile.png",
+            "flower_index": data['flower_index']
         }
         
         if self.user_duplicate_check(data['id']):
             self.db.child("user").push(user_info)
-            #print("New user registered:", user_info)
             return True
         else:
             return False
+    
+    # 사용자 정보 조회
+    def get_userInfo(self, user_id, column=None):
+        all_users = self.get_all_users()
+        user = next((user for user in all_users if user['id'] == user_id), None)
+        if user:
+            if column:
+                return user.get(column, None)
+            return user
+        return None 
+
+    # 사용자의 flower_index를 반환
+    def get_user_flower_index(self, user_id):
+        user_info = self.get_userInfo(user_id, 'flower_index')  # column 인자로 'flower_index' 전달
+        if user_info is not None:
+            return user_info  # flower_index 반환
+        return None
+    
+    """  
+    
+    # 사용자 정보 업데이트
+    def update_userInfo(self, user_id, column, value):
+        users = self.db.child("user").get()
+        for res in users.each():
+            user = res.val()
+            if user['id'] == user_id:
+                # 해당 사용자의 column을 업데이트
+                user[column] = value
+                # 변경된 사용자 정보 DB에 반영
+                self.db.child("user").child(res.key()).update(user)
+                return True
+        return False """
 
     # 회원가입 중복체크
     def user_duplicate_check(self, id_string):
@@ -128,12 +215,17 @@ class DBhandler:
     # 로그인
     def find_user(self, id_, pw_):
         users = self.db.child("user").get()
-        #target_value=[]
+        
         for res in users.each():
             value = res.val()
-            if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한 경우가 있는지 확인
+            if value['id'] == id_ and value['pw'] == pw_:    #입력받은 아이디와 비밀번호의 해시값이 동일한지 확인
                 return True
         return False
+            
+            
+            #if value.get('id') == id_ and value.get('pw') == pw_:    
+            #    return True
+        #return False
     
     def get_userInfo(self,id_, key):
         users = self.db.child("user").get()
@@ -196,7 +288,8 @@ class DBhandler:
             "review":data['userComments'],
             "img_path":img_path
         }
-        self.db.child("review").child(data['name']).set(review_info)
+        self.db.child("review").push(review_info)
+        print(data)
         return True 
     
     def get_reviews(self):
@@ -212,6 +305,24 @@ class DBhandler:
             if key_value==name:
                 target_value=res.val()
         return target_value
+    
+    def get_reviews_bywriter(self,writer):
+        reviews=self.db.child("review").get()
+        target_value=[]
+        target_key=[]
+        for res in reviews.each():
+            value=res.val()
+            key_value=res.key()
+
+            if value['writer']==writer:
+                target_value.append(value)
+                target_key.append(key_value)
+        print("######target_value",target_value)
+        new_dict={}
+
+        for k,v in zip(target_key,target_value):
+            new_dict[k]=v
+        return new_dict
 
     def get_liked_items(self, user_id):
         bookmarks = self.db.child("bookmark").child(user_id).get()
@@ -246,6 +357,75 @@ class DBhandler:
             "img_path":img_path,
             "img_paths" : image_paths,
             "userComments":data['userComments']
+            "userComments":data['userComments'],
+            "participants": {}
         }
         self.db.child("gp_item").child(name).set(gp_item_info)
         return True
+    
+    def add_participant(self, gp_item_name, user_info, selected_option):
+        participant_data = {
+            "user_id": user_info['id'],
+            "email": user_info['email'],
+            "option": selected_option
+        }
+        # 참여자 데이터 추가
+        self.db.child("gp_item").child(gp_item_name).child("participants").push(participant_data)
+
+        # 참여자 수 업데이트
+        participants = self.db.child("gp_item").child(gp_item_name).child("participants").get().val()
+
+        # 참여자 수 반환 (없으면 0)
+        return len(participants) if participants else 0
+
+    def edit_profile(self,id_, data, img_path):
+        key = -1
+        val = {}
+        users = self.db.child("user").get()
+        for res in users.each():
+            value = res.val()
+            if value['id']==id_:
+                key = res.key()
+                val = value
+        new_prof={
+            "email": val["email"],
+            "id":id_,
+            "phone":data['phone'],
+            "pw":data['pw'],
+            "nickname":data['nickname'],
+            "profile_image":img_path
+        }
+        self.db.child("user").child(key).set(new_prof)
+    
+    # db 연결 바꾸기...
+    def get_sale_byname(self,uid,name):
+        sales = self.db.child("item").child(uid).get()
+        target_value=""
+        if sales.val() == None:
+            return target_value
+        
+        for res in sales.each():
+            key_value = res.key()
+
+            if key_value == name:
+                target_value = res.val()
+        return target_value
+    
+    # db 연결 바꾸기...
+    def get_sale_items(self, user_id):
+        sales = self.db.child("item").get()
+        linked_items = []
+        if sales.val():
+            for res in sales.each():
+                if res.val().get("seller") == user_id:
+                    item_data = self.db.child("item").child(res.key()).get().val()
+                    if item_data:  # item_data가 None이 아닌 경우만 처리
+                        img_list = item_data.get("img_path", [])
+                        item = {
+                            "id": res.key(),  # ID
+                            "img_path": img_list,  # 첫 번째 이미지 경로
+                            "tradeRegions": item_data.get("tradeRegions", ""),  # 거래 지역
+                            "price": item_data.get("price", 0)  # 가격
+                        }
+                        linked_items.append(item)
+        return linked_items or []

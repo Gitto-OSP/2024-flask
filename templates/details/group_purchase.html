@@ -9,12 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공동구매</title>
     <link rel="stylesheet" href="../../static/styles/gp_style.css">
+    <link rel="stylesheet" href="../../static/styles/mygpstyle.css">
 </head>
 <body>
     <div class="container">
         <section class="product-section">
             <div class="product-image">
-                <img src="/static/DBimage/{{data.img_path}}" alt="Image">
+                <img src="../static/DBimage/{{data.img_path}}" alt="Image">
             </div>
             <div class="product-details">
                 <h1>{{data.name}}</h1>
@@ -27,35 +28,85 @@
                 </div>
                 <div class="size-options">
                     <label for="size">옵션: </label>
-                    <!--데이터의 옵션에 맞춰 동적으로 추가해야 함(스크립트 필요 예상)-->
                     <select id="size">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
+                        {% for option in data.options %}
+                            <option value="{{option}}">{{option}}</option>
+                        {% endfor %}
                     </select>
                 </div>
-                <button class="participate-btn">참여하기</button>
+                <div class="provideRegions">
+                    <label for="Regions">수령 장소: </label>
+                    {% for regions in data.provideRegions %}
+                        {% if regions=='engineering' %}
+                        <span> 공대 </span>
+                        {% elif regions=='posko' %}
+                        <span> 포관 </span>
+                        {% elif regions=='ecc' %}
+                        <span> ECC </span>
+                        {% elif regions=='studentCC' %}
+                        <span> 학문관 </span>
+                        {% elif regions=='frontEntrance' %}
+                        <span> 정문 </span>
+                        {% elif regions=='post' %}
+                        <span> 택배 </span>
+                        {% endif %}
+                    {% endfor %}
+                </div><br>
+                <button class="participate-btn" onclick="participate()">참여하기</button>
             </div>
         </section>
 
         <!-- 본문 -->
         <section class="status-section">
-            <h2>진행상황</h2>
-            <div class="status-bar">
-                <span class="status-text">모집</span>
-                <span class="status-text">주문</span>
-                <span class="status-text">수취</span>
-                <span class="status-text">배부</span>
-                <span class="status-text">마감</span>
+            <div class="listobj_status"><b>진행상황: </b>
+                <span class="status_text">{{data.status}} 중</span>
             </div>
-            <p>19명의 벗이 함께하는 중</p>
+            <div class="progressbar_container">
+                <div class="listobj_pbar"></div>
+                <div class="progress_steps">
+                    <span>모집</span>
+                    <span>주문</span>
+                    <span>수취</span>
+                    <span>배부</span>
+                    <span>마감</span>
+                </div>
+            </div><br>
+            <p>{{data.participant_count | default(0)}}명의 벗이 함께하는 중</p>
         </section>
-
-        <!-- 상세 정보 -->
-        <!-- <section class="additional-info">
-            <img src="{{img_path}}" alt="Additional Product Info">
-        </section> -->
     </div>
+
+    <script>
+        function participate() {
+            const selectedOption = document.getElementById("size").value;
+            const gpItemName = "{{data.name}}";
+        
+            fetch("/gp_participate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: gpItemName,
+                    option: selectedOption
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("응답:", data);
+                if (data.error) {
+                    alert(`오류: ${data.error}`);
+                } else {
+                    document.getElementById("participant-count").innerText = 
+                        `${data.participant_count || 0}명의 벗이 함께하는 중`;
+                }
+            })
+            .catch(error => {
+                console.error("네트워크 오류:", error);
+                alert("서버와 통신하지 못했습니다.");
+            });
+        }        
+
+    </script>
 </body>
 </html>
 {% endblock section %}

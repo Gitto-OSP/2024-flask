@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from database import DBhandler
 import hashlib
 import sys
+import math
 
 import random
 import string
@@ -20,12 +21,16 @@ def hello():
 @application.route("/season")
 def view_list():
     page = request.args.get("page",0,type=int)
+    category = request.args.get("category","all")
     per_page = 10 #item count to display per page
     per_row = 5 #item count to display per row
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_seasons() #read the table
+    if category=="all":
+        data = DB.get_seasons() #read the table
+    else:
+        data = DB.get_seasons_bycategory(category) #read the table
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
     print(data.items())
@@ -43,7 +48,8 @@ def view_list():
                            limit=per_page,
                            page = page,
                            page_count = int((item_counts/per_page)+1),
-                           total=item_counts)
+                           total=item_counts,
+                           category=category)
 
 @application.route("/review")
 def view_review():
@@ -54,8 +60,10 @@ def view_review():
     start_idx = per_page*page
     end_idx = per_page*(page+1)
     data = DB.get_reviews() #read the table
+    data=dict(sorted(data.items(),key=lambda x:x[0],reverse=False))
     review_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
+    
     
     for i in range(row_count): #last row
         if(i == row_count-1) and (tot_count%per_row!=0):
@@ -74,12 +82,16 @@ def view_review():
 @application.route("/fleamarket")
 def view_fleamarket():
     page = request.args.get("page",0,type=int)
+    category = request.args.get("category","all")
     per_page = 25 #item count to display per page
     per_row = 5 #item count to display per row
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_items() #read the table
+    if category=="all":
+        data = DB.get_items() #read the table
+    else:
+        data = DB.get_item_bycategory(category)
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
     rows=[]
@@ -95,18 +107,23 @@ def view_fleamarket():
                            rows = rows,
                            limit=per_page,
                            page = page,
-                           page_count = int((item_counts/per_page)+1),
-                           total=item_counts)
+                           page_count = int(math.ceil(item_counts/per_page)),
+                           total=item_counts,
+                           category=category)
 
 @application.route("/gonggu")
 def view_gonggu():
     page = request.args.get("page",0,type=int)
+    category = request.args.get("category","all")
     per_page = 25 #item count to display per page
     per_row = 5 #item count to display per row
     row_count = int(per_page/per_row)
     start_idx = per_page*page
     end_idx = per_page*(page+1)
-    data = DB.get_gp() #read the table
+    if category=="all":
+        data = DB.get_gp() #read the table
+    else:
+        data = DB.get_gp_bycategory(category)
     item_counts = tot_count = len(data)
     data = dict(list(data.items())[start_idx:end_idx])
     rows=[]
@@ -123,7 +140,8 @@ def view_gonggu():
                            limit=per_page,
                            page = page,
                            page_count = int((item_counts/per_page)+1),
-                           total=item_counts)
+                           total=item_counts,
+                           category=category)
 
 @application.route("/graduatebrands")
 def view_graduatebrands():
@@ -164,6 +182,7 @@ def view_login_user():
     pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()    # db에 저장된 비밀번호 해시값으로 비교위한 해시값 생성
     if DB.find_user(id_,pw_hash):
         session['id']=id_    # session에 id 정보 삽입
+        session['prof_img']=DB.get_userInfo(id_,'profile_image')
         return redirect(url_for('view_list'))
     else:
         flash("잘못된 아이디 혹은 비밀번호를 입력하셨습니다.")    #db에 매칭 정보가 없으면 플래시 메세지 생성
@@ -181,9 +200,8 @@ db_handler = DBhandler()
 # 랜덤 닉네임 생성
 def generate_random_nickname(db_handler):
     while True:
-        # 랜덤 문자열 생성 (예시로 8자리 닉네임)
+        # 랜덤 문자열 생성, 닉네임 중복 체크
         random_nickname = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-        # 닉네임 중복 체크
         if not db_handler.nickname_exists(random_nickname):
             return random_nickname  # 중복되지 않으면 반환
 
@@ -199,7 +217,6 @@ def success():
 
 @application.route('/signup_post', methods=['POST'])
 def register_user():
-    
     user_data = {
         'id': request.form['id'],
         'email': request.form['email'],
@@ -214,7 +231,10 @@ def register_user():
     default_profile_path = '/static/image/profile.png'
     user_data['profile_image'] = default_profile_path
     
-
+    # 초기 배꽃지수
+    default_flower_index = 4.3
+    user_data['flower_index'] = default_flower_index
+    
     # 비밀번호 해시화
     password = request.form['password']
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
@@ -244,14 +264,52 @@ def check_id():
 
 @application.route("/mypage")
 def view_mypage():
+    
+    nickname = DB.get_userInfo(session['id'], 'nickname')
+    profile_img = DB.get_userInfo(session['id'], 'profile_image')
+
+    # flower_index 가져오기
+    flower_index = DB.get_user_flower_index(session['id'])  # 실제 로직에 맞게 수정
+
+    # flower_index 값을 template에 전달
+    return render_template(
+        "./mypage/mypage.html", 
+        nickname=nickname, 
+        profile_img=profile_img,
+        flower_index=flower_index  # flower_index 전달
+    )
+    
+    
+    """ 
     return render_template("./mypage/mypage.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'))
+    """
 
 @application.route("/editProfile")
 def view_editProfile():
-    return render_template("./mypage/editProfile.html", nickname=DB.get_userInfo(session['id'],'nickname'),profile_img=DB.get_userInfo(session['id'],'profile_image'),phone=DB.get_userInfo(session['id'],'phone'))
-# @application.route("/myBookmark")
-# def view_myBookmark():
-#     return render_template("./mypage/myBookmark.html")
+    return render_template("./mypage/editProfile.html", 
+                           nickname=DB.get_userInfo(session['id'],'nickname'),
+                           profile_img=DB.get_userInfo(session['id'],'profile_image'),
+                           phone=DB.get_userInfo(session['id'],'phone'),
+                           orgPW = DB.get_userInfo(session['id'],'pw'))
+
+# 프로필 수정 confirm action
+@application.route("/edit_confirm", methods=['POST'])
+def profile_edit_confirm():
+    print("edit_confirm call")
+    data=request.form
+    for key, value in data.items():
+        print(f"{key}: {value}")
+    if('file' not in request.files or request.files["file"].filename==''):
+        print("no file")
+        filename=DB.get_userInfo(session['id'],'profile_image')
+    else:
+        image_file=request.files["file"]
+        image_file.save("static/DBimage/{}".format(image_file.filename))
+        filename="static/DBimage/{}".format(image_file.filename)
+        session['prof_img'] = filename
+        print(filename)
+    DB.edit_profile(session["id"],data,filename)
+    return redirect(url_for('view_mypage'))
 
 @application.route("/myGroupBuy")
 def view_myGroupBuy():
@@ -259,11 +317,34 @@ def view_myGroupBuy():
 
 @application.route("/myReview")
 def view_myReview():
-    return render_template("./mypage/myReview.html")
+    page=request.args.get("page",0,type=int)
+    writer=request.args.get("writer","all")
+    per_page=10
+    per_row=5
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+    data = DB.get_reviews_bywriter(session['id']) 
+    review_counts=len(data)
 
-@application.route("/mySale")
-def view_mySale():
-    return render_template("./mypage/mySale.html")
+    for i in range(row_count): #last row
+        if(i == row_count-1) and (review_counts%per_row!=0):
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+    return render_template("./mypage/myReview.html", 
+                           datas=data.items(), 
+                           row1 = locals()['data_0'].items(),
+                           row2 = locals()['data_1'].items(),
+                           limit=per_page,
+                           page = page,
+                           page_count = int((review_counts/per_page)+1),
+                           total=review_counts,writer=writer)
+   
+
+# @application.route("/mySale")
+# def view_mySale():
+#     return render_template("./mypage/mySale.html")
 
 @application.route("/reg_season")
 def view_regseason():
@@ -440,6 +521,7 @@ def reg_items_submit():
     name=request.args.get("name")
     seller=request.args.get("seller")
     price=request.args.get("price")
+    chat=request.args.get("chat")
     addr=request.args.getlist("tradeRegions")
     status=request.args.get("choice")
     print(name, seller, addr, price, status)
@@ -459,7 +541,8 @@ def reg_season_submit():
 @application.route("/submit_gpitem_post", methods=['POST'])
 def reg_gpitem_submit_post(): 
     form_data = request.form
-    image_file=request.files["file"]
+    image_file = request.files["file"]
+    image_file.save("static/DBimage/{}".format(image_file.filename))
     
     image_paths = []
     files_data = request.files.getlist('selectedFile')
@@ -469,10 +552,65 @@ def reg_gpitem_submit_post():
             file.save(img_path_format)
             image_paths.append(img_path_format)
     
-    image_file.save("static/DBimage/{}".format(image_file.filename))
-    data=request.form
-    DB.insert_gp_item(data['name'],data,image_file.filename, image_paths)
-    return render_template("./details/group_purchase.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
+    data = request.form.to_dict()
+    data['provideRegions'] = request.form.getlist('provideRegions')
+    data['options[]'] = request.form.getlist('options[]')
+    
+    DB.insert_gp_item(data['name'], data, image_file.filename, image_paths)
+    
+    return render_template(
+        "./details/group_purchase.html",
+        data=data,
+        img_path="static/DBimage/{}".format(image_file.filename)
+    )
+
+#공동구매 참여자 정보(수정중)
+@application.route("/gp_participate", methods=["POST"])
+def participate():
+    try:
+        data = request.get_json()  # JSON으로 데이터 받기
+        gp_item_name = data.get("name")
+        selected_option = data.get("option")
+
+        # 세션에서 ID 확인
+        if DB.find_user(id_,pw_hash):
+            session['id']=id_    # session에 id 정보 삽입
+            session['prof_img']=DB.get_userInfo(id_,'profile_image')
+            return redirect(url_for('view_list'))
+    
+        user_id = session.get("id")
+        if not user_id:
+            return jsonify({"error": "로그인이 필요합니다."}), 401
+        
+        if user.val().get("id") == user_id:
+            user_email = DB.db.child("users").val().get("email")
+
+        # 사용자의 ID에 맞는 사용자 정보 필터링
+        user_info_from_db = None
+        for user in all_users.each():
+            if user.val().get("id") == user_id:
+                user_info_from_db = user.val()
+                break
+        
+        if not user_info_from_db:
+            return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
+
+        user_email = user_info_from_db.get("email")
+
+        # 사용자 정보 구성
+        user_info = {
+            "id": user_id,
+            "email": user_email
+        }
+
+        # 데이터베이스에 참여 정보 저장
+        participant_count = DB.add_participant(gp_item_name, user_info, selected_option)
+        return jsonify({"participant_count": participant_count})
+
+    except Exception as e:
+        error_message = str(e)
+        print("서버 오류 발생:", error_message)
+        return jsonify({"error": "서버 오류 발생", "details": error_message}), 500
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
@@ -573,3 +711,44 @@ def view_liked_list():
                            page = page,
                            page_count = int((like_counts/per_page)+1),
                            total=like_tot_count)
+
+@application.route('/show_mySale/<name>/', methods=['GET'])
+def show_mySale(name):
+    my_Sale = DB.get_sale_byname(session['id'],name)
+    return jsonify({'my_Sale': my_Sale})
+
+@application.route("/mySale")
+def view_mySale():
+    page = request.args.get("page",0,type=int)
+    per_page = 15 #item count to display per page
+    per_row = 5 #item count to display per row
+    row_count = int(per_page/per_row)
+    start_idx = per_page*page
+    end_idx = per_page*(page+1)
+
+    user_id = session.get('id')
+    if not user_id:
+        return redirect('/login')
+    
+    data = DB.get_sale_items(user_id)
+    sale_counts = sale_tot_count = len(data)
+
+    if sale_tot_count == 0:
+        return render_template("./mypage/mySale.html", 
+                               datas=[], 
+                               rows=[], 
+                               limit=per_page,
+                               page=page,
+                               page_count=1,
+                               total=0)
+    
+    data = data[start_idx:end_idx]
+    rows = [data[i:i + per_row] for i in range(0, len(data), per_row)]
+
+    return render_template("mypage/mySale.html", 
+                           datas=data, 
+                           rows = rows,
+                           limit=per_page,
+                           page = page,
+                           page_count = int((sale_counts/per_page)+1),
+                           total=sale_tot_count)
