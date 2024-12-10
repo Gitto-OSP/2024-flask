@@ -540,22 +540,29 @@ def reg_season_submit():
 
 @application.route("/submit_gpitem_post", methods=['POST'])
 def reg_gpitem_submit_post(): 
+    form_data = request.form
     image_file = request.files["file"]
     image_file.save("static/DBimage/{}".format(image_file.filename))
-
+    
+    image_paths = []
+    files_data = request.files.getlist('selectedFile')
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/gp{form_data['name']}{form_data['seller']}{get_rid_spChar(file.filename)}"
+            file.save(img_path_format)
+            image_paths.append(img_path_format)
+    
     data = request.form.to_dict()
     data['provideRegions'] = request.form.getlist('provideRegions')
     data['options[]'] = request.form.getlist('options[]')
-
-    DB.insert_gp_item(data['name'], data, image_file.filename)
-
+    
+    DB.insert_gp_item(data['name'], data, image_file.filename, image_paths)
+    
     return render_template(
         "./details/group_purchase.html",
         data=data,
         img_path="static/DBimage/{}".format(image_file.filename)
     )
-
-from flask import Flask, request, session, jsonify
 
 #공동구매 참여자 정보(수정중)
 @application.route("/gp_participate", methods=["POST"])
@@ -604,7 +611,6 @@ def participate():
         error_message = str(e)
         print("서버 오류 발생:", error_message)
         return jsonify({"error": "서버 오류 발생", "details": error_message}), 500
-
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
