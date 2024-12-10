@@ -18,13 +18,24 @@
     {% endif %}
 
 </div>
-{% if total > 0 %}
 <div class="filter__area" style="margin-bottom:20px;">
     <ul>
         <li>총 <span id="number_itms">{{total}}</span> 개 상품
-        <li>필터 <span id="filter_str"> > 필터이름</span>
-            <!---필터 드롭다운 메뉴 추가--->
-            <script src="scriptname.js"></script>
+        <li>필터 <span id="filter_str"> ></span>
+            <script>
+                $(document).ready(function(){
+                    //alert("{{category}}");
+                    $('#category option:contains("{{category}}")').prop("selected",true);
+                })
+            </script>
+            <select id="category" name="category" onchange="location=this.value">>
+                <option value="{{url_for('view_gonggu', page=i, category='all')}}">All</option>
+                <option value="{{url_for('view_gonggu', page=i, category='모집')}}">모집</option>
+                <option value="{{url_for('view_gonggu', page=i, category='주문')}}">주문</option>
+                <option value="{{url_for('view_gonggu', page=i, category='수취')}}">수취</option>
+                <option value="{{url_for('view_gonggu', page=i, category='배부')}}">배부</option>
+                <option value="{{url_for('view_gonggu', page=i, category='마감')}}">마감</option>
+            </select>
     </ul>
 </div>
 <div id="calendarArea">
@@ -49,6 +60,7 @@
     </div>
     <script src="../../static/scripts/calendar.js"></script>
 </div>
+{% if total > 0 %}
 <div class="item__list">
     {% for row in rows %}
     {% for key,value in row %}

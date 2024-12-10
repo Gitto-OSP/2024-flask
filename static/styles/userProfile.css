@@ -54,24 +54,6 @@ body {
   color: #333333;
 }
 
-/* 프로필 수정 버튼 */
-.edit-profile-button {
-  background-color: #00462A;
-  color: #ffffff;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 10px;
-  min-width: 160px;
-  text-align: center;
-  font-size: 1em;
-}
-
-.edit-profile-button:hover {
-  background-color: #00462A;
-}
-
 /* 배꽃지수 */
 .flower-score-block {
   background-color: #00462A;

@@ -4,22 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이페이지</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='./styles/mypage.css') }}">
-<!--     <link rel="stylesheet" href="mypage.css"> -->
+    <title>사용자 프로필</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./styles/userProfile.css') }}">
 </head>
 
 <body>
   {%extends "index.html"%}
   {%block section%}
 
-    <!-- 마이페이지 -->
-    <section class="mypage-content">
+    
+    <section class="userProfile-content">
         <div class="profile-section">
             <img src="{{profile_img}}" alt="프로필 사진" class="profile-img">
             <div class="profile-info">
                 <h2>닉네임 <span class="nickname-tag">#{{nickname}}</span></h2>
-                <button class="edit-profile-button" id="editProfile" onclick="navigateToPage(this.id)">프로필 수정</button>
             </div>
         </div>
 
@@ -47,9 +45,9 @@
 
             <div class="buttons">
 
-                <button class="mySale-button" id="mySale" onclick="navigateToPage(this.id)">판매글</button>
+                <button class="mySale-button" id="mySale" onclick="navigateToPage(this.id)">판매글 <span class="mySale-count">8</span>개</button>
                 <button class="myBookmark-button" id="myBookmark" onclick="navigateToPage(this.id)">관심글</button>
-                <button class="myReview-button" id="myReview" onclick="navigateToPage(this.id)">작성한 리뷰</button>
+                <button class="Review-button" id="Review" onclick="navigateToPage(this.id)">리뷰</button>
                 <button class="myGroupBuy-button" id="myGroupBuy" onclick="navigateToPage(this.id)">공동구매</button>
 
             </div>
@@ -65,14 +63,11 @@
                     case 'myBookmark':
                         url = '/myBookmark';
                         break;
-                    case 'myReview':
-                        url = '/myReview';
+                    case 'Review':
+                        url = '/Review';
                         break;
                     case 'myGroupBuy':
                         url = '/mygroup_purchase';
-                        break;
-                    case 'editProfile':
-                        url = '/editProfile'
                         break;
                     default:
                         url = '#';
