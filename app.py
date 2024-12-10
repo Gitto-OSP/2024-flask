@@ -526,11 +526,71 @@ def reg_season_submit():
 
 @application.route("/submit_gpitem_post", methods=['POST'])
 def reg_gpitem_submit_post(): 
-    image_file=request.files["file"]
+    image_file = request.files["file"]
     image_file.save("static/DBimage/{}".format(image_file.filename))
-    data=request.form
-    DB.insert_gp_item(data['name'],data,image_file.filename)
-    return render_template("./details/group_purchase.html", data=data,  img_path="static/DBimage/{}".format(image_file.filename))
+
+    data = request.form.to_dict()
+    data['provideRegions'] = request.form.getlist('provideRegions')
+    data['options[]'] = request.form.getlist('options[]')
+
+    DB.insert_gp_item(data['name'], data, image_file.filename)
+
+    return render_template(
+        "./details/group_purchase.html",
+        data=data,
+        img_path="static/DBimage/{}".format(image_file.filename)
+    )
+
+from flask import Flask, request, session, jsonify
+
+#공동구매 참여자 정보(수정중)
+@application.route("/gp_participate", methods=["POST"])
+def participate():
+    try:
+        data = request.get_json()  # JSON으로 데이터 받기
+        gp_item_name = data.get("name")
+        selected_option = data.get("option")
+
+        # 세션에서 ID 확인
+        if DB.find_user(id_,pw_hash):
+            session['id']=id_    # session에 id 정보 삽입
+            session['prof_img']=DB.get_userInfo(id_,'profile_image')
+            return redirect(url_for('view_list'))
+    
+        user_id = session.get("id")
+        if not user_id:
+            return jsonify({"error": "로그인이 필요합니다."}), 401
+        
+        if user.val().get("id") == user_id:
+            user_email = DB.db.child("users").val().get("email")
+
+        # 사용자의 ID에 맞는 사용자 정보 필터링
+        user_info_from_db = None
+        for user in all_users.each():
+            if user.val().get("id") == user_id:
+                user_info_from_db = user.val()
+                break
+        
+        if not user_info_from_db:
+            return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
+
+        user_email = user_info_from_db.get("email")
+
+        # 사용자 정보 구성
+        user_info = {
+            "id": user_id,
+            "email": user_email
+        }
+
+        # 데이터베이스에 참여 정보 저장
+        participant_count = DB.add_participant(gp_item_name, user_info, selected_option)
+        return jsonify({"participant_count": participant_count})
+
+    except Exception as e:
+        error_message = str(e)
+        print("서버 오류 발생:", error_message)
+        return jsonify({"error": "서버 오류 발생", "details": error_message}), 500
+
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
