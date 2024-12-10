@@ -1,0 +1,100 @@
+#month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    font-size: 1.5rem;
+    margin: 10px 0;
+}
+
+.month-btn {
+    cursor: pointer;
+    color: #114B19;
+}
+
+.month-btn:hover {
+    color: #B7D4B8;
+}
+
+#calendarArea {
+    width: 100%;
+    /* height: auto; */
+    margin: 50px 0px;
+}
+
+.calendar-header,
+.calendar {
+    display: grid;
+    grid-template-columns: 2fr repeat(7, 1fr);
+    width: 100%;
+    gap: 1px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.calendar-header {
+    margin-bottom: 10px;
+}
+
+.calendar {
+    background-color: #d9d9d9;
+}
+
+.day {
+    font-weight: bold;
+    background-color: #F1F5F2;
+    padding: 10px;
+    color: #191919;
+    border-radius: 18px;
+}
+
+.date,
+.week-sum {
+    background-color: white;
+    color: #ccc;
+}
+
+.date {
+    position: relative;
+    height: 70px;
+}
+
+.date-text {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.week-summary {
+    background-color: #B7D4B8;
+}
+
+.week-sum {
+    grid-column: 1 / 2;
+}
+
+#week2 {
+    grid-row: 2 / 3;
+}
+
+#week3 {
+    grid-row: 3 / 4;
+}
+
+#week4 {
+    grid-row: 4 / 5;
+}
+
+#week5 {
+    grid-row: 5 / 6;
+}
+
+#week6 {
+    grid-row: 6 / 7;
+}
+
+.prev-month,
+.next-month {
+    color: #d9d9d9;
+}

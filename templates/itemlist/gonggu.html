@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Butteo:Gonggu</title>
     <link rel="stylesheet" href="../../static/styles/itemList.css">
+    <link rel="stylesheet" href="../../static/styles/gonggu.css">
 </head>
 
 {%extends "index.html"%}
@@ -15,7 +16,7 @@
     <a class="register__btn" onclick="alert('로그인 후 이용해주세요.');">공구 등록하기</a>
     <h1>공동구매</h1>
     {% endif %}
-    
+
 </div>
 {% if total > 0 %}
 <div class="filter__area" style="margin-bottom:20px;">
@@ -26,21 +27,41 @@
             <script src="scriptname.js"></script>
     </ul>
 </div>
-<div id="calendarArea" style="width:100%;height:500px;background-color: aliceblue; margin:50px 0px;">
-    Calendar Area
+<div id="calendarArea">
+    <div id="month-nav">
+        <div id="month-btn-prev" class="month-btn">◀</div>
+        <div id="selectedYear"></div>
+        <span>.</span>
+        <div id="selectedMonth"></div>
+        <div id="month-btn-next" class="month-btn">▶</div>
+    </div>
+    <div class="calendar-header">
+        <div class="day week-summary">요약</div>
+        <div class="day">일</div>
+        <div class="day">월</div>
+        <div class="day">화</div>
+        <div class="day">수</div>
+        <div class="day">목</div>
+        <div class="day">금</div>
+        <div class="day">토</div>
+    </div>
+    <div class="calendar">
+    </div>
+    <script src="../../static/scripts/calendar.js"></script>
 </div>
 <div class="item__list">
     {% for row in rows %}
     {% for key,value in row %}
     <div class="list__obj">
         <a href="/info_gp/{{key}}/">
-        <img src="../../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
-        <div class="listobj_textarea">
-            <div class="listobj_title">{{key}}</div>
-            <div class="listobj_price">가격: {{value.price}} 원</div>
-            <div class="listobj_seller">판매자:{{value.seller}}</div>
-            <div class="listobj_status">상태:{{value.status}}</div>
-        </div>
+            <img src="../../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210"
+                style="padding: 10px;">
+            <div class="listobj_textarea">
+                <div class="listobj_title">{{key}}</div>
+                <div class="listobj_price">가격: {{value.price}} 원</div>
+                <div class="listobj_seller">판매자:{{value.seller}}</div>
+                <div class="listobj_status">상태:{{value.status}}</div>
+            </div>
         </a>
     </div>
     {% endfor %}
@@ -51,22 +72,22 @@
     <ul style="list-style: none;">
         <li>
             {% for i in range(page_count) %}
-            <a id="page{{i}}"class="page_btn" href="{{url_for('view_gonggu',page=i)}}" color="black">{{i+1}}</a>
+            <a id="page{{i}}" class="page_btn" href="{{url_for('view_gonggu',page=i)}}" color="black">{{i+1}}</a>
             {% endfor %}
         </li>
     </ul>
     <script>
         var curr_page = window.location.search.split('=')[1];
-        if(curr_page==null){
+        if (curr_page == null) {
             curr_page = 0;
         }
-        var btn = document.getElementById("page"+curr_page);
-        btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
+        var btn = document.getElementById("page" + curr_page);
+        btn.setAttribute("style", "color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
     </script>
 </div>
 {% else %}
 <p>
-    등록된 상품이 없습니다. 
+    등록된 상품이 없습니다.
 </p>
 {% endif %}
 {% endblock section %}
