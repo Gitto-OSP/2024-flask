@@ -50,6 +50,10 @@ class DBhandler:
         gp = self.db.child("gp_item").get().val()
         return gp
     
+    def get_gp_item_for_calendar(self, start_date, end_date):
+        gps = self.db.child("gp_item").order_by_child("startDate").start_at(start_date).end_at(end_date).get()
+        return gps
+    
     # 동문브랜드 get db
     def get_brand(self):
         brand = self.db.child("brand").get().val()
