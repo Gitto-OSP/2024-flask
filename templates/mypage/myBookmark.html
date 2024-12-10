@@ -12,6 +12,12 @@
     <h1 id="tmp">관심 상품</h1>
 </div>
 
+<div class="filter__area" style="margin-bottom:20px;">
+    <ul>
+        <li>총 <span id="number_itms">{{total}}</span> 개 상품
+    </ul>
+</div>
+
 {% if total > 0 %}
 <div class="item__list">
     {% for row in rows %}
