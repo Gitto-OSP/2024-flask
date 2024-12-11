@@ -69,6 +69,10 @@ class DBhandler:
         gp = self.db.child("gp_item").get().val()
         return gp
     
+    def get_gp_item_for_calendar(self, start_date, end_date):
+        gps = self.db.child("gp_item").order_by_child("startDate").start_at(start_date).end_at(end_date).get()
+        return gps
+    
     def get_gp_bycategory(self,cate):
         items = self.db.child("gp_item").get()
         target_value=[]
@@ -356,7 +360,6 @@ class DBhandler:
             "status":data['status'],
             "img_path":img_path,
             "img_paths" : image_paths,
-            "userComments":data['userComments']
             "userComments":data['userComments'],
             "participants": {}
         }

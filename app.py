@@ -465,7 +465,7 @@ def reg_season_submit_post():
     
     booth_data = process_season_data(form_data, files_data)  # 데이터 정제
     DB.insert_booth(booth_data)
-    return render_template("./details/submit_item.html", data=booth_data,  img_path=booth_data['boothMainImgPath'])
+    return render_template("./details/season_detail.html", data=booth_data,  img_path=booth_data['boothMainImgPath'])
 
 def process_brand_data(form_data, files_data):
     brand_data = {
