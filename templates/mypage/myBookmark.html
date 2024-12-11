@@ -28,7 +28,15 @@
                 <img src="{{ url_for('static', filename=item.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210">
                 </a>
                 <div class="listobj_textarea">
-                    <div class="listobj_place">{{ item['tradeRegions'] }}</div>
+                    <div class="listobj_place">
+                        {% if item.tradeRegions == "frontEntrance" %} 정문 {% endif %}
+                        {% if item.tradeRegions == "studentCC" %} 학문관 {% endif %}
+                        {% if item.tradeRegions == "post" %} 택배 {% endif %}
+                        {% if item.tradeRegions == "posko" %} 포스코 {% endif %}
+                        {% if item.tradeRegions == "engineering" %} 공학관 {% endif %}
+                        {% if item.tradeRegions == "ecc" %} ECC {% endif %}
+                        {% if item.tradeRegions == "etc" %} 기타 {% endif %}
+                    </div>
                     <div class="listobj_title">{{ item['id'] }}</div>
                     <div class="listobj_desc">{{ item['price'] }} 원</div>
                 </div>
