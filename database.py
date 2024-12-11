@@ -381,7 +381,7 @@ class DBhandler:
         # 참여자 수 반환 (없으면 0)
         return len(participants) if participants else 0
 
-    def edit_profile(self,id_, data, img_path):
+    def edit_profile(self,id_, data, img_path,flower_index):
         key = -1
         val = {}
         users = self.db.child("user").get()
@@ -394,6 +394,7 @@ class DBhandler:
             "email": val["email"],
             "id":id_,
             "phone":data['phone'],
+            "flower_index": flower_index,
             "pw":data['pw'],
             "nickname":data['nickname'],
             "profile_image":img_path
