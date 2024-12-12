@@ -443,27 +443,25 @@ class DBhandler:
         return new_dict
 
 
-
-
     def edit_profile(self,id_, data, img_path,flower_index):
-        key = -1
-        val = {}
-        users = self.db.child("user").get()
-        for res in users.each():
-            value = res.val()
-            if value['id']==id_:
-                key = res.key()
-                val = value
-        new_prof={
-            "email": val["email"],
-            "id":id_,
-            "phone":data['phone'],
-            "flower_index": flower_index,
-            "pw":data['pw'],
-            "nickname":data['nickname'],
-            "profile_image":img_path
-        }
-        self.db.child("user").child(key).set(new_prof)
+            key = -1
+            val = {}
+            users = self.db.child("user").get()
+            for res in users.each():
+                value = res.val()
+                if value['id']==id_:
+                    key = res.key()
+                    val = value
+            new_prof={
+                "email": val["email"],
+                "id":id_,
+                "phone":data['phone'],
+                "flower_index": flower_index,
+                "pw":data['pw'],
+                "nickname":data['nickname'],
+                "profile_image":img_path
+            }
+            self.db.child("user").child(key).set(new_prof)
     
     # db 연결 바꾸기...
     def get_sale_byname(self,uid,name):

@@ -310,7 +310,8 @@ def profile_edit_confirm():
         filename="static/DBimage/{}".format(image_file.filename)
         session['prof_img'] = filename
         print(filename)
-    DB.edit_profile(session["id"],data,filename)
+    flower_index = DB.get_user_flower_index(session['id'])
+    DB.edit_profile(session["id"],data,filename,flower_index)
     return redirect(url_for('view_mypage'))
 
 @application.route("/mygroup_purchase_sell")
