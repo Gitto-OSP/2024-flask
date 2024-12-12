@@ -420,21 +420,27 @@ class DBhandler:
         target_values = []
         target_keys = []
 
+        # GP 목록 확인
+        if not gps.each():
+            print("###### No GP items found!")
+            return {}
+
         for gp in gps.each():
             value = gp.val()  # GP 아이템 값
             key_value = gp.key()  # GP 아이템의 키값
 
             # participants 목록 가져오기
             participants = self.db.child("gp_item").child(key_value).child("participants").get().val()
+            
+            # participants 존재 여부 및 타입 확인
+            if participants and isinstance(participants, dict):
+                if any(participant.get('user_id') == buyer for participant in participants.values()):
+                    participant_count = len(participants)
 
-            # participants 목록에서 user_id가 buyer와 일치하는지 확인
-            if participants and any(participant.get('user_id') == buyer for participant in participants.values()):
-                participant_count = len(participants) if participants else 0
-
-                # 참가자 수 추가
-                value['participant_count'] = participant_count
-                target_values.append(value)
-                target_keys.append(key_value)
+                    # 참가자 수 추가
+                    value['participant_count'] = participant_count
+                    target_values.append(value)
+                    target_keys.append(key_value)
 
         print("###### Target Values:", target_values)
 
