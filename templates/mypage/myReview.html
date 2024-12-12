@@ -12,7 +12,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="stylesheet" href="../static/review.css">
+        <link rel="stylesheet" href="../static/styles/review.css">
         <title>나의 리뷰 전체조회</title>
     </head>
 
@@ -24,11 +24,11 @@
         
         <!--리뷰 섹션-->
         <div class="review__list" name="writer" id="writer" onchange="location=this.value">
-            <div value="{{ url_for('view_myReview', page=i, writer=session['id']) }}">
+            <div value="{{ url_for('view_review', page=i, writer=session['id']) }}">
             {% for key,value in row1 %}
             <div class="list">
-                <a href="/info_review/{{key}}/">
-                <img class="review_img" src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+                <a href="/info_myReview/{{key}}/">
+                <img class="review_img" src="/static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
                 </a>
                 <div class="review_info">
                     <div class="writer">{{value.writer}}</div>
@@ -39,7 +39,7 @@
             <div style="display: block;"></div>
             {% for key,value in row2 %}
             <div class="list">
-                <a href="/info_review/{{key}}/">
+                <a href="/info_myReview/{{key}}/">
                 <img class="review_img" src="/static/images/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
                 </a>
                 <div class="review_info">
