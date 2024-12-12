@@ -30,9 +30,9 @@
 </div>
 
 <div class="tab_wrap">
-  <div id="Tab1" class="tab on">
+  <div id="Tab1" class="tab {% if tab == 'Tab1' %}on{% endif %}">
       <div>
-			{% if total_sell>0 %}
+			{% if total_sell is defined and total_sell>0 %}
 			<h1 style="text-align: left;">Total {{total_sell}}</h1>
 			<!--내가 열고 있는 공동구매 섹션-->
 			<div class="hold__list" name="seller" id="seller" onchange="location=this.value">
@@ -41,7 +41,7 @@
 				<div class="list__openedgp">
 					<div style="float:left;">
 						<a href="/info_gp/{{key}}/">
-							<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+							<img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
 						</a>
 					</div>
 
@@ -73,7 +73,7 @@
 				<div class="list__openedgp">
 					<div style="float:left; width:210px; height:210px;">
 						<a href="/info_gp/{{key}}/">
-							<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지">
+							<img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
 						</a>
 					</div>
 
@@ -118,15 +118,15 @@
 				</script>
 			</div>
 		   </div>
-		   {% else %}
+		   {% elif total_sell is defined and total_sell==0 %}
 		   <p>
 			{{session['id']}}님이 열고 있는 공동구매가 없습니다.
 		   </p>
 		   {% endif %}
 		</div>
   	</div>
-  	<div id="Tab2" class="tab">
-	{% if total_buy |default(0) >0 %}
+  	<div id="Tab2" class="tab {% if tab == 'Tab2' %}on{% endif %}">
+	{% if total_buy is defined and total_buy >0 %}
 		<h1 style="text-align: left;">Total {{total_buy}}</h1>
 		<!--내가 열고 있는 공동구매 섹션-->
 		<div class="buy__list" name="buyer" id="buyer" onchange="location=this.value">
@@ -135,7 +135,7 @@
 			<div class="list__openedgp">
 				<div style="float:left;">
 					<a href="/info_gp/{{key}}/">
-						<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+						<img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
 					</a>
 				</div>
 
@@ -157,12 +157,11 @@
 							<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
 						</span>
 					</div>
-					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
-						<button class="btn" id="downloadExcel" onclick="fn_ExcelDown('{{value}}')">상세 다운로드</button>
-					</div>
+					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중</div>
 					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
 						<span class="status_text">{{value.status}} 중</span>
 					</div>
+					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 					
 					<div class="progressbar_container">
 						<div class="listobj_pbar"></div>
@@ -174,7 +173,6 @@
 							<span>마감</span>
 						</div>
 					</div>
-					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 				</div>
 			</div>
 			{% endfor %}
@@ -183,7 +181,7 @@
 			<div class="list__openedgp">
 				<div style="float:left;">
 					<a href="/info_gp/{{key}}/">
-						<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+						<img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
 					</a>
 				</div>
 
@@ -244,7 +242,7 @@
 				</script>
 			</div>
 		</div>
-	{% else %}
+	{% elif total_buy is defined and total_buy==0 %}
 	<p>
 		{{session['id']}}님이 참여하고 있는 공동구매가 없습니다.
 	</p>

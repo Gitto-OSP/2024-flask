@@ -368,30 +368,43 @@ def view_myGroupBuy_Buy():
     per_page = 10
     per_row = 5
     row_count = int(per_page / per_row)
-    start_idx = per_page * page
-    end_idx = per_page * (page + 1)
-    data_buy = DB.get_gp_bybuyer(session['id'])
     
-    buy_counts = len(data_buy) if data_buy else 0
-    
-    for i in range(row_count):  # last row
-        if (i == row_count - 1) and (buy_counts % per_row != 0):
-            locals()['data_{}'.format(i)] = dict(list(data_buy.items())[i * per_row:])
-        else:
-            locals()['data_{}'.format(i)] = dict(list(data_buy.items())[i * per_row:(i + 1) * per_row])
+    # 데이터 가져오기
+    data_buy = DB.get_gp_bybuyer(session['id']) or {}
+    buy_counts = len(data_buy)
 
+    # 디버깅
+    print(f"###### Page: {page}")
+    print(f"###### Buyer: {buyer}")
+    print(f"###### Data Buy: {data_buy}")
+    print(f"###### Buy Counts: {buy_counts}")
+
+    # Row 데이터 생성
+    data_rows = []
+    for i in range(row_count):
+        if (i == row_count - 1) and (buy_counts % per_row != 0):
+            data_rows.append(dict(list(data_buy.items())[i * per_row:]))
+        else:
+            data_rows.append(dict(list(data_buy.items())[i * per_row:(i + 1) * per_row]))
+
+    row1 = data_rows[0].items() if len(data_rows) > 0 else {}
+    row2 = data_rows[1].items() if len(data_rows) > 1 else {}
+
+    # 템플릿 렌더링
+    import math
     return render_template(
         "/mypage/mygroup_purchase.html", 
         data_buy=data_buy.items(),
-        tab = "Tab2",
-        row1=locals().get('data_0', {}).items(),
-        row2=locals().get('data_1', {}).items(),
+        tab="Tab2",
+        row1=row1,
+        row2=row2,
         limit=per_page,
         page=page,
         page_count=int((buy_counts / per_page) + 1),
-        total_buy=buy_counts, 
+        total_buy=buy_counts,
         buyer=buyer
     )
+
 
 @application.route("/myReview")
 def view_myReview():
