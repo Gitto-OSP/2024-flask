@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../../static/styles/trans_styles.css">
 </head>
 <body>
+    <script src="../../static/scripts/mygp.js"></script>
     <div class="container">
         <section class="product-section">
             <div class="image-gallery">
@@ -41,22 +42,6 @@
                 <div class="listobj_status"><strong>진행상황: </strong>
                     <span class="status_text">{{data.status}} 중</span>
                 </div><br>
-                <script> 
-                    const statusWidthMap = {
-                        "모집": "20%",
-                        "주문": "40%",
-                        "수취": "60%",
-                        "배부": "80%",
-                        "마감": "100%"
-                    };
-                
-                    // 데이터를 HTML 요소와 연결하고 스타일 설정
-                    const bar = document.getElementsByClassName('listobj_pbar');
-                    if (bar) {
-                        const width = statusWidthMap["{{data.status}}"]; // 상태에 따른 width
-                        bar.style.width = width;
-                    }
-                </script>
                 <div class="provideRegions">
                     <label for="Regions"><strong>수령 장소 :</strong></label>
                     {% for regions in data.provideRegions %}
@@ -94,7 +79,7 @@
 
         <section class="status-section">
             <div class="progressbar_container">
-                <div class="listobj_pbar"></div>
+                <div class="listobj_pbar" data-status="{{data.status}}"></div>
                 <div class="progress_steps">
                     <span>모집</span>
                     <span>주문</span>

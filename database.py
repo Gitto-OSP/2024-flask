@@ -373,18 +373,19 @@ class DBhandler:
         return linked_items or []
     
     #공동구매
-    def insert_gp_item(self,name,data,img_path):
+    def insert_gp_item(self,name,data,img_path, seller_email):
         gp_item_info={
             "name":data['name'],
             "seller":data['seller'],
+            "selleremail":seller_email,
             "price":data['price'],
             "company":data['company'],
             "provideRegions":data['provideRegions'],
-            "options":data['options[]'],
+            "options":data['optionInput'],
             "startDate":data['startDate'],
             "endDate":data['endDate'],
             "status":data['status'],
-            "img_path":'static/DBimage/'+img_path,
+            "img_path":img_path,
             "userComments":data['userComments'],
             "participants": {}
         }
@@ -425,20 +426,30 @@ class DBhandler:
 
                 if participants:
                     participant_count = len(participants)
+                    # 각 참여자 정보도 가져오기
+                    participant_details = []
+                    for participant_key, participant in participants.items():
+                        participant_details.append({
+                            'email': participant.get('email', ''),
+                            'option': participant.get('option', ''),
+                            'user_id': participant.get('user_id', '')
+                        })
                 else:
                     participant_count = 0
+                    participant_details = []
 
                 value['participant_count'] = participant_count
+                value['participants'] = participant_details  # 참여자 정보 추가
 
                 target_values.append(value)
                 target_keys.append(key_value)
-                
 
         print("###### Target Values:", target_values)
 
         # 새로운 딕셔너리 생성
         new_dict = {k: v for k, v in zip(target_keys, target_values)}
         return new_dict
+
     
     def get_gp_bybuyer(self, buyer):
         gps = self.db.child("gp_item").get()  # 전체 GP 아이템 가져오기
@@ -459,11 +470,22 @@ class DBhandler:
             
             # participants 존재 여부 및 타입 확인
             if participants and isinstance(participants, dict):
-                if any(participant.get('user_id') == buyer for participant in participants.values()):
+                # buyer와 관련된 참여자 필터링
+                buyer_participants = {
+                    key: participant for key, participant in participants.items()
+                    if participant.get('user_id') == buyer
+                }
+                
+                if buyer_participants:  # buyer가 참여한 경우
                     participant_count = len(participants)
 
                     # 참가자 수 추가
                     value['participant_count'] = participant_count
+                    
+                    # buyer 관련 데이터 추가
+                    value['buyer_participants'] = buyer_participants
+                    
+                    # GP 데이터를 결과 목록에 추가
                     target_values.append(value)
                     target_keys.append(key_value)
 
@@ -472,6 +494,7 @@ class DBhandler:
         # 새로운 딕셔너리 생성
         new_dict = {k: v for k, v in zip(target_keys, target_values)}
         return new_dict
+
 
 
     def edit_profile(self,id_, data, img_path,flower_index):
