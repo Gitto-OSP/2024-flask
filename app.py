@@ -639,17 +639,22 @@ def reg_season_submit():
 
 
 @application.route("/submit_gpitem_post", methods=['POST'])
-def reg_gpitem_submit_post(): 
+def reg_gpitem_submit_post():
+    form_data = request.form.to_dict()
+    files_data = request.files.getlist('selectedFile')
+    form_data['provideRegions'] = request.form.getlist('provideRegions')
+    form_data['optionInput'] = request.form.getlist('optionInput') 
+    seller_email = session['email']
     # 이미지 파일 처리
-    image_file = request.files["file"]
-    image_file.save("static/DBimage/{}".format(image_file.filename))
-
-    # 폼 데이터 처리
-    data = request.form.to_dict()
-    data['provideRegions'] = request.form.getlist('provideRegions')
-    data['options[]'] = request.form.getlist('options[]')
-
-    product_id = DB.insert_gp_item(data['name'], data, image_file.filename)
+    img_path_list = []
+    
+    for file in files_data:
+        if file.filename: 
+            img_path_format = f"static/DBimage/gp{form_data['name']}{form_data['seller']}{file.filename}"
+            file.save(img_path_format)
+            img_path_list.append(img_path_format)
+    
+    product_id = DB.insert_gp_item(form_data['name'], form_data, img_path_list, seller_email)
     
     return redirect(url_for('view_product', product_id=product_id))
 
@@ -687,24 +692,27 @@ def participate():
         print(f"서버 오류 발생: {error_message}")
         return jsonify({"error": "서버 오류 발생", "details": error_message}), 500
 
+
 @application.route('/update_gpstatus', methods=['POST'])
-def update_status():
-    data = request.json
-    name = data.get('name')
-    status = data.get('status')
+def update_gpstatus():
+    data = request.get_json()
+
+    name = data.get('name')  # 클라이언트에서 보낸 공동구매 이름
+    status = data.get('status')  # 클라이언트에서 보낸 상태 값
 
     if not name or not status:
-        return jsonify({"success": False, "error": "잘못된 요청입니다."}), 400
+        return jsonify({'success': False, 'error': 'Invalid input'}), 400
 
     try:
-        # 데이터베이스 업데이트
+        # 데이터베이스 업데이트 로직
         DB.db.child("gp_item").child(name).update({"status": status})
-        
-        # 성공 응답
-        return jsonify({"success": True, "redirect_url": url_for('view_myGroupBuy_Sell')})
+
+        # 상태 업데이트 성공 메시지 반환
+        return jsonify({'success': True, 'message': 'Status updated successfully'})
     except Exception as e:
-        print("오류 발생:", traceback.format_exc())  # 자세한 오류 로그 출력
-        return jsonify({"success": False, "error": str(e)}), 500   
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):

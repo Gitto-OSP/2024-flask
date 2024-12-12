@@ -21,9 +21,7 @@
         window.location.href = newUrl;
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../static/scripts/mygp.js"></script>
+
 <div class="tab-container">
     <div class="tabs {% if tab == 'Tab1' %}on{% endif %}" style="text-align: left;" onclick="openTab('Tab1')">내가 열고 있는 공동구매</div>
     <div class="tabs {% if tab == 'Tab2' %}on{% endif %}" style="text-align: right;" onclick="openTab('Tab2')">내가 참여한 공동구매</div>
@@ -49,12 +47,13 @@
 						<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
 						<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} </div>
 						<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
-							<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
-						</div>
+							<button class="btn" id="downloadExcel" data-value = "{{value.name}}">상세 다운로드</button>
+						</div>					
+
 						<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
 							<span class="status_text">{{value.status}} 중</span>
 							<span class="dropdown-container">
-								<select class="dropdown" onchange="updateStatus(this, '{{ value.name }}')" style="display: none;">
+								<select class="dropdown" onchange="handleSelectChange(event, this, '{{ value.name }}')" style="display: none;">
 									<option id="모집">모집</option>
 									<option id="주문">주문</option>
 									<option id="수취">수취</option>
@@ -62,6 +61,7 @@
 									<option id="마감">마감</option>
 								</select>
 								<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
+								<button class="btn save" style="display: none;" onclick="updateStatus(this.previousElementSibling.previousElementSibling, '{{ value.name }}')">저장</button>
 							</span>
 						</div>
 						<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
@@ -71,7 +71,7 @@
 				<div style="display: block;"></div>
 				{% for key,value in row2 %}
 				<div class="list__openedgp">
-					<div style="float:left; width:210px; height:210px;">
+					<div style="float:left;">
 						<a href="/info_gp/{{key}}/">
 							<img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
 						</a>
@@ -80,17 +80,17 @@
 					<div class="listobj_textarea">
 						<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
 						<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} </div>
-						<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;"> {{value.participant_count}} </span>명의 벗이 함께하는 중
-							<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
+						<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
+							<button class="btn" id="downloadExcel" data-value = "{{value.name}}">상세 다운로드</button>
 						</div>
 						<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
 							<span class="status_text">{{value.status}} 중</span>
 							<span class="dropdown-container">
-								<select class="dropdown" onchange="updateStatus(this, '{{value.name}}')" style="display: none;">
-									<option id="모집">모집 중</option>
-									<option id="주문">주문 중</option>
-									<option id="수취">수취 중</option>
-									<option id="배부">배부 중</option>
+								<select class="dropdown" onchange="handleSelectChange(event, this, '{{ value.name }}')" style="display: none;">
+									<option id="모집">모집</option>
+									<option id="주문">주문</option>
+									<option id="수취">수취</option>
+									<option id="배부">배부</option>
 									<option id="마감">마감</option>
 								</select>
 								<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
@@ -143,11 +143,13 @@
 					<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
 					<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} 
 						<button class="btn" id="mailto" onclick="fn_mailto">
-							<a class="p2pmail" href="mailto:1234@ewha.ac.kr">1:1문의</a>
+							<a class="p2pmail" href="mailto:{{value.selleremail}}@ewha.ac.kr">1:1문의</a>
 						</button>
 					</div>
-					<div class="listobj_option">선택 옵션 <span class="bar">|</span> 
-						<span class="option-text">옵션1</span>
+					<div class="listobj_option">선택 옵션 <span class="bar">|</span>
+						{% for participant_id, participant in value.buyer_participants.items() %}
+							<span class="option-text">{{ participant.option }}</span>
+						{% endfor %} 
 						<span class="dropdown-container">
 							<select class="dropdown" onchange="updateOption(this)" style="display: none;">
 								{% for option in value.options %}
@@ -164,7 +166,7 @@
 					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 					
 					<div class="progressbar_container">
-						<div class="listobj_pbar"></div>
+						<div class="listobj_pbar" data-status="{{value.status}}"></div>
 						<div class="progress_steps">
 							<span>모집</span>
 							<span>주문</span>
@@ -189,11 +191,11 @@
 					<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
 					<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} 
 						<button class="btn" id="mailto" onclick="fn_mailto">
-							<a class="p2pmail" href="mailto:1234@ewha.ac.kr">1:1문의</a>
+							<a class="p2pmail" href="mailto:{{value.selleremail}}@ewha.ac.kr">1:1문의</a>
 						</button>
 					</div>
 					<div class="listobj_option">선택 옵션 <span class="bar">|</span> 
-						<span class="option-text">옵션1</span>
+						<span class="option-text">{{value.buyer_participants[0].option}}</span>
 						<span class="dropdown-container">
 							<select class="dropdown" onchange="updateOption(this)" style="display: none;">
 								{% for option in value.options %}
@@ -203,15 +205,14 @@
 							<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
 						</span>
 					</div>
-					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
-						<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
-					</div>
+					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중</div>
 					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
 						<span class="status_text">{{value.status}} 중</span>
 					</div>
+					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 					
 					<div class="progressbar_container">
-						<div class="listobj_pbar"></div>
+						<div class="listobj_pbar" data-status="{{value.status}}"></div>
 						<div class="progress_steps">
 							<span>모집</span>
 							<span>주문</span>
@@ -220,7 +221,6 @@
 							<span>마감</span>
 						</div>
 					</div>
-					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 				</div>
 			</div>
 			{% endfor %}
@@ -249,4 +249,9 @@
 	{% endif %}
 	</div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<!-- SheetJS (XLSX) 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../static/scripts/mygp.js"></script>
 {%endblock section%}

@@ -62,8 +62,12 @@ a{text-decoration:none}
 }
 
 .listobj_pbar {
-  background-color: #0F4012; height: 100%; border-radius: 10px;
-} 
+  --dynamic-width: 20%; /* 기본값 */
+  width: var(--dynamic-width);
+  background-color: #0F4012;
+  height: 100%;
+  border-radius: 10px;
+}
 
 .progress_steps {
   display: flex; justify-content: space-between; width: 100%; position : absolute; top:-20px; font-size: 10px; color: #A9A9A9;

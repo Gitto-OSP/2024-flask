@@ -75,24 +75,13 @@
                             택배
                         </label>
                     </div>
-
-                    <!-- <div>
-                        <h2>상품 옵션</h2>
-                        <div id="optionContainer">
-                            <div class="option">
-                                <input type="text" name="options[]" placeholder="옵션명 입력">
-                                <button type="button" class="remove-option">삭제</button>
-                            </div>
-                        </div>
-                        <button type="button" id="addOption">옵션 추가</button>
-                    </div> -->
                 </div>
             </div>
 
             <div>
                 <h2>상품 옵션</h2>
                 <div class="optionAddContainer">
-                    <input type="text" id="optionInput" placeholder="옵션명 입력">
+                    <input type="text" id="optionInput" name="optionInput" placeholder="옵션명 입력">
                     <button type="button" id="addOption">옵션 추가</button>
                 </div>
                 <div id="optionContainer">
@@ -123,23 +112,22 @@
     <script src="../../static/scripts/reg.js"></script>
     <script src="../../static/scripts/regOptions.js"></script>
     <script>
-        // 옵션 추가/삭제 기능
-        // document.getElementById('addOption').addEventListener('click', function () {
-        //     const container = document.getElementById('optionContainer');
-        //     const optionDiv = document.createElement('div');
-        //     optionDiv.className = 'option';
-        //     optionDiv.innerHTML = `
-        //         <input type="text" name="options[]" placeholder="옵션명 입력">
-        //         <button type="button" class="remove-option">삭제</button>
-        //     `;
-        //     container.appendChild(optionDiv);
-        // });
+        document.getElementById('addOption').addEventListener('click', function () {
+            const inputValue = document.getElementById('optionInput').value.trim();
+            
+            if (inputValue) {
+                const container = document.getElementById('optionContainer');
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';  // hidden input으로 값 전송
+                hiddenInput.name = 'optionInput';  // 정확한 name 지정
+                hiddenInput.value = inputValue;
+                
+                container.appendChild(hiddenInput);
 
-        // document.getElementById('optionContainer').addEventListener('click', function (e) {
-        //     if (e.target.classList.contains('remove-option')) {
-        //         e.target.parentElement.remove();
-        //     }
-        // });
+                document.getElementById('optionInput').value = ''; // 입력 필드 초기화
+            }
+        });
+
 
         var now_utc = Date.now()
         var timeOff = new Date().getTimezoneOffset() * 60000;
