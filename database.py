@@ -288,9 +288,9 @@ class DBhandler:
             "name":data['name'], #상품이름
             "writer":data['seller'], #작성자
             "title":data['price'], #리뷰제목
-            "rate":data['star'],
-            "review":data['userComments'],
-            "img_path":img_path
+            "rate":data['star'], #별점
+            "review":data['userComments'], #리뷰내용
+            "img_path":img_path #리뷰사진
         }
         self.db.child("review").push(review_info)
         print(data)
