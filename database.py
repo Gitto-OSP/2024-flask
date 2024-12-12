@@ -373,7 +373,7 @@ class DBhandler:
         return linked_items or []
     
     #공동구매
-    def insert_gp_item(self,name,data,img_path, image_paths):
+    def insert_gp_item(self,name,data,img_path):
         gp_item_info={
             "name":data['name'],
             "seller":data['seller'],
@@ -385,7 +385,6 @@ class DBhandler:
             "endDate":data['endDate'],
             "status":data['status'],
             "img_path":img_path,
-            "img_paths" : image_paths,
             "userComments":data['userComments'],
             "participants": {}
         }
