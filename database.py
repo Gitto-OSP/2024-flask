@@ -364,7 +364,7 @@ class DBhandler:
             "participants": {}
         }
         self.db.child("gp_item").child(name).set(gp_item_info)
-        return True
+        return name
     
     def add_participant(self, gp_item_name, user_info, selected_option):
         participant_data = {
@@ -378,8 +378,70 @@ class DBhandler:
         # 참여자 수 업데이트
         participants = self.db.child("gp_item").child(gp_item_name).child("participants").get().val()
 
-        # 참여자 수 반환 (없으면 0)
-        return len(participants) if participants else 0
+        if participants:
+            participant_count = len(participants)
+        else:
+            participant_count = 0
+
+        return participant_count
+    
+    def get_gp_byseller(self, seller):
+        gps = self.db.child("gp_item").get()
+        target_values = []
+        target_keys = []
+
+        for gp in gps.each():
+            value = gp.val()
+            key_value = gp.key
+
+            if value['seller'] == seller:
+                gp_item_name = value['name']
+                participants = self.db.child("gp_item").child(gp_item_name).child("participants").get().val()
+
+                if participants:
+                    participant_count = len(participants)
+                else:
+                    participant_count = 0
+
+                value['participant_count'] = participant_count
+
+                target_values.append(value)
+                target_keys.append(key_value)
+                
+
+        print("###### Target Values:", target_values)
+
+        # 새로운 딕셔너리 생성
+        new_dict = {k: v for k, v in zip(target_keys, target_values)}
+        return new_dict
+    
+    def get_gp_bybuyer(self, buyer):
+        gps = self.db.child("gp_item").get()
+        target_values = []
+        target_keys = []
+
+        for gp in gps.each():
+            value = gp.val()
+            key_value = gp.key
+
+            # participants 목록 가져오기
+            participants = self.db.child("gp_item").child(value['name']).child("participants").get().val()
+
+            # participants 목록에 buyer ID가 있는지 확인
+            if participants and buyer in participants:
+                participant_count = len(participants)
+                
+                # 참가자 수 추가
+                value['participant_count'] = participant_count
+                target_values.append(value)
+                target_keys.append(key_value)
+
+        print("###### Target Values:", target_values)
+
+        # 새로운 딕셔너리 생성
+        new_dict = {k: v for k, v in zip(target_keys, target_values)}
+        return new_dict
+
 
     def edit_profile(self,id_, data, img_path,flower_index):
         key = -1

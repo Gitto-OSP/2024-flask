@@ -7,6 +7,12 @@
 
 {%extends "index.html"%}
 {%block section%}
+<script>
+	$(document).ready(function(){
+		//alert("{{writer}}");
+		$('#idoption:contaions("{{seller}}")').prop("selected",true);
+	})
+</script>
 <script src="../../static/scripts/mygp.js"></script>
 <div class="tab-container">
     <div class="tabs on" style="text-align: left;" onclick="openTab('Tab1')">내가 열고 있는 공동구매</div>
@@ -16,134 +22,221 @@
 <div class="tab_wrap">
   <div id="Tab1" class="tab on">
       <div>
-			<script>
-				var k = 10;
-				for (var i = 0; i < k; i++) {
-					document.write(`
-						<div class="list__openedgp">
-							<div style="float:left; width:210px; height:210px;">
-								<a href="/info_item">
-									<img src="../static/DBimage/{{data.img_path}}" alt="상품 이미지">
-								</a>
-							</div>
-							<div class="listobj_textarea">
-								<div class="listobj_title"><b>상품명 : {{data.name}}</b></div>
-								<div class="listobj_seller">주최자 <span class="bar">|</span> {{data.seller}} </div>
-								<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;"> {{data.participant_count}} </span>명의 벗이 함께하는 중
-									<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
-								</div>
-								<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
-									<span class="status_text">{{data.status}} 중</span>
-									<span class="dropdown-container">
-										<select class="dropdown" onchange="updateStatus(this)" style="display: none;">
-											<option id="모집 중" value="20">모집 중</option>
-											<option id="주문 중" value="40">주문 중</option>
-											<option id="수취 중" value="60">수취 중</option>
-											<option id="배부 중" value="80">배부 중</option>
-											<option id="마감" value="100">마감</option>
-										</select>
-										<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
-									</span>
-								</div>
-								<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{data.startDate}} ~ {{data.endDate}}</div>
-							</div>
-						</div><br><br>
-					`);
-				}
-			</script>
-		</div>
+			{% if total_sell>0 %}
+			<h1 style="text-align: left;">Total {{total_sell}}</h1>
+			<!--내가 열고 있는 공동구매 섹션-->
+			<div class="hold__list" name="seller" id="seller" onchange="location=this.value">
+				<div value="{{ url_for('view_myGroupBuy_Sell', page=i, seller=session['id']) }}">
+				{% for key,value in row1 %}
+				<div class="list__openedgp">
+					<div style="float:left;">
+						<a href="/info_gp/{{key}}/">
+							<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+						</a>
+					</div>
+
+					<div class="listobj_textarea">
+						<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
+						<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} </div>
+						<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
+							<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
+						</div>
+						<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
+							<span class="status_text">{{value.status}} 중</span>
+							<span class="dropdown-container">
+								<select class="dropdown" onchange="updateStatus(this, '{{ value.name }}')" style="display: none;">
+									<option id="모집">모집</option>
+									<option id="주문">주문</option>
+									<option id="수취">수취</option>
+									<option id="배부">배부</option>
+									<option id="마감">마감</option>
+								</select>
+								<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
+							</span>
+						</div>
+						<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
+					</div>
+				</div>
+				{% endfor %}
+				<div style="display: block;"></div>
+				{% for key,value in row2 %}
+				<div class="list__openedgp">
+					<div style="float:left; width:210px; height:210px;">
+						<a href="/info_gp/{{key}}/">
+							<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지">
+						</a>
+					</div>
+
+					<div class="listobj_textarea">
+						<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
+						<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} </div>
+						<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;"> {{value.participant_count}} </span>명의 벗이 함께하는 중
+							<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
+						</div>
+						<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
+							<span class="status_text">{{value.status}} 중</span>
+							<span class="dropdown-container">
+								<select class="dropdown" onchange="updateStatus(this, '{{value.name}}')" style="display: none;">
+									<option id="모집">모집 중</option>
+									<option id="주문">주문 중</option>
+									<option id="수취">수취 중</option>
+									<option id="배부">배부 중</option>
+									<option id="마감">마감</option>
+								</select>
+								<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
+							</span>
+						</div>
+						<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		   <!--페이지네이션-->
+		   <div class="page-wrap">
+			<div class="pagenation">
+				<ul style="list-style: none;">
+					<li>
+						{% for i in range(page_count) %}
+						<a id="page{{i}}"class="page_btn" href="{{url_for('view_myGroupBuy_Sell',page=i)}}" color="black">{{i+1}}</a>
+						{% endfor %}
+					</li>
+				</ul>
+				<script>
+					var curr_page = window.location.search.split('=')[1];
+					var btn = document.getElementById("page"+curr_page);
+					btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
+				</script>
+			</div>
+		   </div>
+		   {% else %}
+		   <p>
+			{{session['id']}}님이 열고 있는 공동구매가 없습니다.
+		   </p>
+		   {% endif %}
   </div>
   <div id="Tab2" class="tab">
-      <div>
-			<script>
-				var k = 10;
-				for (var i = 0; i < k; i++) {
-					document.write(`
-						<div class="list__partedgp">
-							<div style="float:left; width:210px; height:210px;">
-								<a href="/info_item">
-									<<img src="../static/DBimage/{{data.img_path}}" alt="상품 이미지">
-								</a>
-							</div>
-							<div class="listobj_textarea">
-									<div class="listobj_title"><b>상품명 : {{data.name}}</b></div>
-									<div class="listobj_seller">주최자 <span class="bar">|</span> {{data.seller}}
-										<button class="btn" id="mailto" onclick="fn_mailto">
-											<a class="p2pmail" href="mailto:userid@ewha.ac.kr">1:1문의</a>
-										</button>
-									</div>
-									<div class="listobj_option">선택 옵션 <span class="bar">|</span> 
-										<span class="option-text">옵션1</span>
-										<span class="dropdown-container">
-											<select class="dropdown" onchange="updateOption(this)" style="display: none;">
-												<option value="옵션1">옵션1</option>
-												<option value="옵션2">옵션2</option>
-												<option value="옵션3">옵션3</option>
-												<option value="옵션4">옵션4</option>
-												<option value="옵션5">옵션5</option>
-											</select>
-											<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
-										</span>
-									</div>
-									<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;"> {{data.participant_count}} </span>명의 벗이 함께하는 중</div>
-									<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
-										<span class="status_text">{{data.status}} 중</span>
-									</div>
-							</div><br><br>
-							<div class="progressbar_container">
-								<div class="listobj_pbar"></div>
-								<div class="progress_steps">
-									<span>모집</span>
-									<span>주문</span>
-									<span>수취</span>
-									<span>배부</span>
-									<span>마감</span>
-								</div>
-							</div>
-						</div><br><br>`
-					);
-				}
-			</script>
+	{% if total_buy>0 %}
+		<h1 style="text-align: left;">Total {{total_buy}}</h1>
+		<!--내가 열고 있는 공동구매 섹션-->
+		<div class="buy__list" name="buyer" id="buyer" onchange="location=this.value">
+			<div value="{{ url_for('view_myGroupBuy_Buy', page=i, buyer=session['id']) }}">
+			{% for key,value in row1 %}
+			<div class="list__openedgp">
+				<div style="float:left;">
+					<a href="/info_gp/{{key}}/">
+						<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+					</a>
+				</div>
+
+				<div class="listobj_textarea">
+					<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
+					<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} 
+						<button class="btn" id="mailto" onclick="fn_mailto">
+							<a class="p2pmail" href="mailto:1234@ewha.ac.kr">1:1문의</a>
+						</button>
+					</div>
+					<div class="listobj_option">선택 옵션 <span class="bar">|</span> 
+						<span class="option-text">옵션1</span>
+						<span class="dropdown-container">
+							<select class="dropdown" onchange="updateOption(this)" style="display: none;">
+								{% for option in value.options %}
+									<option value="{{option}}">{{option}}</option>
+								{% endfor %}
+							</select>
+							<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
+						</span>
+					</div>
+					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
+						<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
+					</div>
+					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
+						<span class="status_text">{{value.status}} 중</span>
+					</div>
+					
+					<div class="progressbar_container">
+						<div class="listobj_pbar"></div>
+						<div class="progress_steps">
+							<span>모집</span>
+							<span>주문</span>
+							<span>수취</span>
+							<span>배부</span>
+							<span>마감</span>
+						</div>
+					</div>
+					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
+				</div>
+			</div>
+			{% endfor %}
+			<div style="display: block;"></div>
+			{% for key,value in row2 %}
+			<div class="list__openedgp">
+				<div style="float:left;">
+					<a href="/info_gp/{{key}}/">
+						<img src="../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
+					</a>
+				</div>
+
+				<div class="listobj_textarea">
+					<div class="listobj_title"><b>상품명 : {{value.name}}</b></div>
+					<div class="listobj_seller">주최자 <span class="bar">|</span> {{value.seller}} 
+						<button class="btn" id="mailto" onclick="fn_mailto">
+							<a class="p2pmail" href="mailto:1234@ewha.ac.kr">1:1문의</a>
+						</button>
+					</div>
+					<div class="listobj_option">선택 옵션 <span class="bar">|</span> 
+						<span class="option-text">옵션1</span>
+						<span class="dropdown-container">
+							<select class="dropdown" onchange="updateOption(this)" style="display: none;">
+								{% for option in value.options %}
+									<option value="{{option}}">{{option}}</option>
+								{% endfor %}
+							</select>
+							<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
+						</span>
+					</div>
+					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
+						<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
+					</div>
+					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
+						<span class="status_text">{{value.status}} 중</span>
+					</div>
+					
+					<div class="progressbar_container">
+						<div class="listobj_pbar"></div>
+						<div class="progress_steps">
+							<span>모집</span>
+							<span>주문</span>
+							<span>수취</span>
+							<span>배부</span>
+							<span>마감</span>
+						</div>
+					</div>
+					<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
+				</div>
+			</div>
+			{% endfor %}
 		</div>
-  </div>
+		<!--페이지네이션-->
+		<div class="page-wrap">
+			<div class="pagenation">
+				<ul style="list-style: none;">
+					<li>
+						{% for i in range(page_count) %}
+						<a id="page{{i}}"class="page_btn" href="{{url_for('view_myGroupBuy',page=i)}}" color="black">{{i+1}}</a>
+						{% endfor %}
+					</li>
+				</ul>
+				<script>
+					var curr_page = window.location.search.split('=')[1];
+					var btn = document.getElementById("page"+curr_page);
+					btn.setAttribute("style","color:green; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px;");
+				</script>
+			</div>
+		</div>
+	{% else %}
+	<p>
+		{{session['id']}}님이 참여하고 있는 공동구매가 없습니다.
+	</p>
+	{% endif %}
 </div>
-<script>
-	function toggleDropdown(button) {
-		const container = button.previousElementSibling; 
-		container.style.display = container.style.display === 'none' || container.style.display === '' ? 'inline-block' : 'none';
-	}
-
-	function updateStatus(selectElement) {
-		const selectedStatus = selectElement.value;
-		const selectedOption = selectElement.options[selectElement.selectedIndex];
-		const selectedStatusId = selectedOption.id;
-		const allStatusTexts = document.querySelectorAll(".status_text");
-	allStatusTexts.forEach((statusText) => {
-			statusText.textContent = `${selectedStatusId}`;
-	});
-		
-		
-	//프로그레스 바의 현황에 따른 변화를 보여주기 위한 부분으로, 차후에는 DB로부터 값을 불러와 width가 변화하도록 할 예정
-		const progressBar = document.querySelector(".listobj_pbar");
-		progressBar.style.width = selectedStatus+"%";
-
-	selectElement.style.display = 'none';
-		// DB 작업 추가
-	}
-	
-	function updateOption(selectElement) {
-		const selectedStatus = selectElement.value;
-		const statusText = selectElement.parentElement.previousElementSibling;
-		statusText.textContent = `${selectedStatus}`;
-		selectElement.style.display = 'none';
-		// DB 작업 추가
-	}
-	
-	function fn_ExcelDown(){
-	//DB작업 이후 경로 업데이트
-		var comSubmit = new ComSubmit();
-		comSubmit.setUrl();
-		comSubmit.submit();
-	}
-</script>
 {%endblock section%}
