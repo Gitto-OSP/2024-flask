@@ -312,7 +312,7 @@ def profile_edit_confirm():
     DB.edit_profile(session["id"],data,filename)
     return redirect(url_for('view_mypage'))
 
-@application.route("/mygroup_purchase")
+@application.route("/mygroup_purchase_sell")
 def view_myGroupBuy_Sell():
     page = request.args.get("page", 0, type=int)
     seller = request.args.get("seller")
@@ -346,7 +346,7 @@ def view_myGroupBuy_Sell():
         seller=seller
     )
 
-@application.route("/mygroup_purchase")
+@application.route("/mygroup_purchase_buy")
 def view_myGroupBuy_Buy():
     page = request.args.get("page", 0, type=int)
     buyer = request.args.get("buyer")
