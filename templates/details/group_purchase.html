@@ -25,17 +25,13 @@
                     <p><strong>물품: </strong>{{data.name}}</p>
                     <p><strong>업체: </strong>{{data.company}}</p>
                     <p><strong>설명: </strong>{{data.userComments}}</p>
+                    <p><strong>진행 일자 :</strong>{{data.startDate}} ~ {{data.endDate}}</p>
                 </div>
-                <div class="size-options">
-                    <label for="size">옵션: </label>
-                    <select id="size">
-                        {% for option in data.options %}
-                            <option value="{{option}}">{{option}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                <div class="listobj_status"><strong>진행상황: </strong>
+                    <span class="status_text">{{data.status}} 중</span>
+                </div><br>
                 <div class="provideRegions">
-                    <label for="Regions">수령 장소: </label>
+                    <label for="Regions"><strong>수령 장소 :</strong></label>
                     {% for regions in data.provideRegions %}
                         {% if regions=='engineering' %}
                         <span> 공대 </span>
@@ -51,18 +47,25 @@
                         <span> 택배 </span>
                         {% endif %}
                     {% endfor %}
-                </div><br>
+                </div>
+                <div class="size-options">
+                    <label for="size"><strong>옵션 :</strong></label>
+                    <select id="size">
+                        {% for option in data.options %}
+                            <option value="{{option}}">{{option}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                {% if data.status == '모집' %}
                 <div class="button-container">
                     <button class="participate-btn" onclick="participate()">참여하기</button>
                 </div>
+                {% endif %}
             </div>
         </section>
 
-        <!-- 본문 -->
         <section class="status-section">
-            <div class="listobj_status"><b>진행상황: </b>
-                <span class="status_text">{{data.status}} 중</span>
-            </div>
             <div class="progressbar_container">
                 <div class="listobj_pbar"></div>
                 <div class="progress_steps">
@@ -73,7 +76,7 @@
                     <span>마감</span>
                 </div>
             </div><br>
-            <p>{{data.participant_count | default(0)}}명의 벗이 함께하는 중</p>
+            <p id="participant-count"><b>{{data.participant_count}}명</b>의 벗이 함께하는 중</p>
         </section>
     </div>
 
@@ -81,7 +84,7 @@
         function participate() {
             const selectedOption = document.getElementById("size").value;
             const gpItemName = "{{data.name}}";
-        
+
             fetch("/gp_participate", {
                 method: "POST",
                 headers: {
@@ -94,19 +97,42 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("응답:", data);
+                console.log("응답 데이터:", data);
+
                 if (data.error) {
                     alert(`오류: ${data.error}`);
                 } else {
-                    document.getElementById("participant-count").innerText = 
-                        `${data.participant_count || 0}명의 벗이 함께하는 중`;
+                    // 참가자 수를 업데이트하며 participants가 없으면 기본값으로 0 처리
+                    const countElement = document.getElementById("participant-count");
+                    const participantCount = data.participant_count || 0;
+                    countElement.innerText = `${participantCount}명의 벗이 함께하는 중`;
                 }
             })
             .catch(error => {
                 console.error("네트워크 오류:", error);
                 alert("서버와 통신하지 못했습니다.");
             });
-        }        
+        }
+        
+        const statusWidthMap = {
+            "모집": "20%",
+            "주문": "40%",
+            "수취": "60%",
+            "배부": "80%",
+            "마감": "100%"
+        };
+
+        // 데이터를 HTML 요소와 연결하고 스타일 설정
+
+        const bar = document.getElementsByClassName('listobj_pbar');
+        if (bar) {
+            const width = statusWidthMap[data.status]; // 상태에 따른 width
+            bar.style.width = width;
+            bar.style.backgroundColor = "#0F4012"; // 스타일 설정
+            bar.style.height = "100%";
+            bar.style.borderRadius = "10px";
+        }
+
 
     </script>
 </body>

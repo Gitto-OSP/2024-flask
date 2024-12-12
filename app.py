@@ -182,6 +182,7 @@ def view_login_user():
     pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()    # db에 저장된 비밀번호 해시값으로 비교위한 해시값 생성
     if DB.find_user(id_,pw_hash):
         session['id']=id_    # session에 id 정보 삽입
+        session['email']=DB.get_userInfo(id_, 'email')
         session['prof_img']=DB.get_userInfo(id_,'profile_image')
         return redirect(url_for('view_list'))
     else:
@@ -308,12 +309,70 @@ def profile_edit_confirm():
         filename="static/DBimage/{}".format(image_file.filename)
         session['prof_img'] = filename
         print(filename)
-    DB.edit_profile(session["id"],data,filename)
+    flower_index = DB.get_user_flower_index(session['id'])
+    DB.edit_profile(session["id"],data,filename,flower_index)
     return redirect(url_for('view_mypage'))
 
-@application.route("/myGroupBuy")
-def view_myGroupBuy():
-    return render_template("./mypage/myGroupBuy.html")
+@application.route("/mygroup_purchase")
+def view_myGroupBuy_Sell():
+    page = request.args.get("page", 0, type=int)
+    seller = request.args.get("seller")
+    per_page = 10
+    per_row = 5
+    row_count = int(per_page / per_row)
+    start_idx = per_page * page
+    end_idx = per_page * (page + 1)
+    data_sell = DB.get_gp_byseller(session['id'])
+    
+    sell_counts = len(data_sell) if data_sell else 0
+    
+    for i in range(row_count):  # last row
+        if (i == row_count - 1) and (sell_counts % per_row != 0):
+            locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:(i + 1) * per_row])
+
+    return render_template(
+        "./mypage/mygroup_purchase.html", 
+        data_sell=data_sell.items(), 
+        row1=locals().get('data_0', {}).items(),
+        row2=locals().get('data_1', {}).items(),
+        limit=per_page,
+        page=page,
+        page_count=int((sell_counts / per_page) + 1),
+        total_sell=sell_counts, 
+        seller=seller
+    )
+
+def view_myGroupBuy_Buy():
+    page = request.args.get("page", 0, type=int)
+    buyer = request.args.get("buyer")
+    per_page = 10
+    per_row = 5
+    row_count = int(per_page / per_row)
+    start_idx = per_page * page
+    end_idx = per_page * (page + 1)
+    data_buy = DB.get_gp_bybuyer(session['id'])
+    
+    buy_counts = len(data_buy) if data_buy else 0
+    
+    for i in range(row_count):  # last row
+        if (i == row_count - 1) and (buy_counts % per_row != 0):
+            locals()['data_{}'.format(i)] = dict(list(data_buy.items())[i * per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data_buy.items())[i * per_row:(i + 1) * per_row])
+
+    return render_template(
+        "./mypage/mygroup_purchase.html", 
+        data_buy=data_buy.items(), 
+        row1=locals().get('data_0', {}).items(),
+        row2=locals().get('data_1', {}).items(),
+        limit=per_page,
+        page=page,
+        page_count=int((buy_counts / per_page) + 1),
+        total_buy=buy_counts, 
+        buyer=buyer
+    )
 
 @application.route("/myReview")
 def view_myReview():
@@ -538,79 +597,70 @@ def reg_season_submit():
     status=request.args.get("choice")
     print(name, seller, addr, boothLocation, status)
 
+
 @application.route("/submit_gpitem_post", methods=['POST'])
 def reg_gpitem_submit_post(): 
-    form_data = request.form
+    # 이미지 파일 처리
     image_file = request.files["file"]
     image_file.save("static/DBimage/{}".format(image_file.filename))
-    
-    image_paths = []
-    files_data = request.files.getlist('selectedFile')
-    for file in files_data:
-        if file.filename: 
-            img_path_format = f"static/DBimage/gp{form_data['name']}{form_data['seller']}{get_rid_spChar(file.filename)}"
-            file.save(img_path_format)
-            image_paths.append(img_path_format)
-    
+
+    # 폼 데이터 처리
     data = request.form.to_dict()
     data['provideRegions'] = request.form.getlist('provideRegions')
     data['options[]'] = request.form.getlist('options[]')
-    
-    DB.insert_gp_item(data['name'], data, image_file.filename, image_paths)
-    
-    return render_template(
-        "./details/group_purchase.html",
-        data=data,
-        img_path="static/DBimage/{}".format(image_file.filename)
-    )
 
-#공동구매 참여자 정보(수정중)
+    product_id = DB.insert_gp_item(data['name'], data, image_file.filename)
+    
+    return redirect(url_for('view_product', product_id=product_id))
+
+
+@application.route("/view_product/<product_id>")
+def view_product(product_id):
+
+    product = DB.db.child("gp_item").child(product_id).get().val()
+
+    if not product:
+        return "Product not found", 404
+
+    return render_template("details/group_purchase.html", data=product, img_path="static/DBimage/{}".format(product['img_path']))
+
 @application.route("/gp_participate", methods=["POST"])
 def participate():
     try:
-        data = request.get_json()  # JSON으로 데이터 받기
+        data = request.get_json()
         gp_item_name = data.get("name")
         selected_option = data.get("option")
 
-        # 세션에서 ID 확인
-        if DB.find_user(id_,pw_hash):
-            session['id']=id_    # session에 id 정보 삽입
-            session['prof_img']=DB.get_userInfo(id_,'profile_image')
-            return redirect(url_for('view_list'))
-    
-        user_id = session.get("id")
-        if not user_id:
-            return jsonify({"error": "로그인이 필요합니다."}), 401
-        
-        if user.val().get("id") == user_id:
-            user_email = DB.db.child("users").val().get("email")
+        user_id = session.get('id')
+        user_email = session.get('email')
 
-        # 사용자의 ID에 맞는 사용자 정보 필터링
-        user_info_from_db = None
-        for user in all_users.each():
-            if user.val().get("id") == user_id:
-                user_info_from_db = user.val()
-                break
-        
-        if not user_info_from_db:
-            return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
-
-        user_email = user_info_from_db.get("email")
-
-        # 사용자 정보 구성
         user_info = {
             "id": user_id,
             "email": user_email
         }
 
-        # 데이터베이스에 참여 정보 저장
         participant_count = DB.add_participant(gp_item_name, user_info, selected_option)
         return jsonify({"participant_count": participant_count})
 
     except Exception as e:
         error_message = str(e)
-        print("서버 오류 발생:", error_message)
+        print(f"서버 오류 발생: {error_message}")
         return jsonify({"error": "서버 오류 발생", "details": error_message}), 500
+
+@application.route('/update_gpstatus', methods=['POST'])
+def update_status():
+    data = request.json
+    name = data.get('name')
+    status = data.get('status')
+
+    if not name or not status:
+        return jsonify({"success": False, "error": "잘못된 요청입니다."}), 400
+
+    try:
+        DB.db.child("gp_item").child(name).update({"status": status})
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500    
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
@@ -631,7 +681,14 @@ def view_gp_detail(name):
     print("###name:",name)
     data=DB.get_gp_byname(str(name))
     print("####data:",data)
-    return render_template("./details/group_purchase.html",name=name,data=data)
+    # participants가 없으면 빈 딕셔너리로 기본값 처리
+    participants = data.get('participants', {})
+    participant_count = len(participants)
+
+    # 데이터에 participant_count 추가
+    data['participant_count'] = participant_count
+
+    return render_template("./details/group_purchase.html", name=name, data=data, participant_count=participant_count)
 
 @application.route("/info_brand/<name>/")
 def view_brand_detail(name):
