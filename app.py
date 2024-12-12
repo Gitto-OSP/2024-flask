@@ -596,7 +596,7 @@ def reg_brand_submit_post():
     
     brand_data = process_brand_data(form_data, files_data)  # 데이터 정제
     DB.insert_brand(brand_data)
-    return render_template("./details/brand_1.html", data=brand_data)
+    return render_template("./details/brand_detail.html", data=brand_data)
 
 @application.errorhandler(500)
 def internal_error(error):
