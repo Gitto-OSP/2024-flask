@@ -144,6 +144,19 @@ def view_gonggu():
                            total=item_counts,
                            category=category)
 
+@application.route('/api/gpitems', methods=['GET'])
+def fetch_items():
+    try:
+        year = int(request.args.get('year'))
+        month = int(request.args.get('month'))
+        print(f"Year: {year}, Month: {month}")  # 입력 값 확인
+        items = DB.get_gpitems_by_month(year, month)
+        print("Fetched items:", items)  # 쿼리 결과 확인
+        return jsonify(items)
+    except Exception as e:
+        print("Error:", str(e))  # 오류 출력
+        return jsonify({"error": str(e)}), 500
+
 @application.route("/graduatebrands")
 def view_graduatebrands():
     page = request.args.get("page",0,type=int)
