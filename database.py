@@ -384,7 +384,7 @@ class DBhandler:
             "startDate":data['startDate'],
             "endDate":data['endDate'],
             "status":data['status'],
-            "img_path":img_path,
+            "img_path":'static/DBimage/'+img_path,
             "userComments":data['userComments'],
             "participants": {}
         }
