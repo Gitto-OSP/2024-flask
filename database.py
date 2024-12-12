@@ -1,5 +1,6 @@
 import pyrebase
 import json 
+import datetime
 
 class DBhandler:
     def __init__(self ):
@@ -69,8 +70,33 @@ class DBhandler:
         gp = self.db.child("gp_item").get().val()
         return gp
     
+    def get_gpitems_by_month(self, year, month):
+        ref = self.db.child("gp_item")  # Firebase에서 gp_item 경로
+        # 해당 월의 시작일과 마지막 일 계산
+        start_date = f"{year}-{month:02d}-01"
+        end_date = f"{year}-{month:02d}-{(datetime.date(year, month, 1) + datetime.timedelta(days=31)).replace(day=1) - datetime.timedelta(days=1):%d}"
+
+        # Firebase에서 데이터 쿼리
+        query = ref.order_by_child('startDate').start_at(start_date).end_at(end_date)
+        results = query.get()
+
+        if not results.each():
+            print("#############results none#############")
+            return []
+
+        return [
+            {
+                "name": item.val().get("name", ""),
+                "seller": item.val().get("seller", ""),
+                "startDate": item.val().get("startDate", ""),
+                "endDate": item.val().get("endDate", "")
+            }
+            for item in results.each()
+        ]
+
     def get_gp_item_for_calendar(self, start_date, end_date):
         gps = self.db.child("gp_item").order_by_child("startDate").start_at(start_date).end_at(end_date).get()
+        print(gps)
         return gps
     
     def get_gp_bycategory(self,cate):
@@ -354,7 +380,7 @@ class DBhandler:
             "price":data['price'],
             "company":data['company'],
             "provideRegions":data['provideRegions'],
-            "options":data.getlist('options[]'),
+            "options":data['options[]'],
             "startDate":data['startDate'],
             "endDate":data['endDate'],
             "status":data['status'],
