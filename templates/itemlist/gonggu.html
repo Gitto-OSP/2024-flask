@@ -4,6 +4,7 @@
     <title>Butteo:Gonggu</title>
     <link rel="stylesheet" href="../../static/styles/itemList.css">
     <link rel="stylesheet" href="../../static/styles/gonggu.css">
+    <link rel="stylesheet" href="../../static/styles/trans_styles.css">
 </head>
 
 {%extends "index.html"%}
@@ -66,8 +67,7 @@
     {% for key,value in row %}
     <div class="list__obj">
         <a href="/info_gp/{{key}}/">
-            <img src="../../static/DBimage/{{value.img_path}}" alt="상품 이미지" width="210" height="210"
-                style="padding: 10px;">
+            <img src="{{ url_for('static', filename=value.img_path[0][7:]) }}" alt="상품 이미지" width="210" height="210" style="padding: 10px;">
             <div class="listobj_textarea">
                 <div class="listobj_title">{{key}}</div>
                 <div class="listobj_price">가격: {{value.price}} 원</div>
