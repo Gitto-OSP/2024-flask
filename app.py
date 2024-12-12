@@ -7,6 +7,7 @@ import math
 import random
 import string
 import re
+import traceback
 
 application = Flask(__name__)
 application.config["SECRET_KEY"] = "helloosp"
@@ -455,7 +456,15 @@ def view_brand1():
 
 @application.route("/mygroup_purchase")
 def mygroup_purchase():
-    return render_template("./mypage/mygroup_purchase.html")
+    data_sell = DB.get_gp_byseller(session['id'])
+    total_sell = len(data_sell) if data_sell else 0
+    
+    return render_template(
+        "./mypage/mygroup_purchase.html", 
+        data_sell=data_sell.items(),
+        total_sell=total_sell, 
+        tab="Tab1"
+    )
 
 @application.route("/mySpecificReview")
 def mySpecificReview():
@@ -661,10 +670,14 @@ def update_status():
         return jsonify({"success": False, "error": "잘못된 요청입니다."}), 400
 
     try:
+        # 데이터베이스 업데이트
         DB.db.child("gp_item").child(name).update({"status": status})
-        return jsonify({"success": True})
+        
+        # 성공 응답
+        return jsonify({"success": True, "redirect_url": url_for('view_myGroupBuy_Sell')})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500    
+        print("오류 발생:", traceback.format_exc())  # 자세한 오류 로그 출력
+        return jsonify({"success": False, "error": str(e)}), 500   
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):

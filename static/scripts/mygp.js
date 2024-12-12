@@ -8,35 +8,36 @@ function updateStatus(selectElement, name) {
     const selectedStatusId = selectedOption.id;
 
     // DB에 상태 저장 요청
-    fetch(`/update_gpstatus`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+    $.ajax({
+        url: '/update_gpstatus',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
             name: name,
             status: selectedStatusId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("공동구매 상태가 성공적으로 변경되었습니다!");
-            
-            // 상태 텍스트 업데이트 (선택한 상태를 화면에 반영)
-            const statusText = selectElement.parentElement.previousElementSibling;
-            statusText.textContent = `${selectedOption.textContent} 중`;
-            
-            // 드롭다운 숨김
-            selectElement.style.display = 'none';
-        } else {
-            alert(`오류: ${data.error}`);
+        }),
+        success: function(data) {
+            if (data.success) {
+                alert("공동구매 상태가 성공적으로 변경되었습니다!");
+
+                // 페이지 리디렉션
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;
+                }
+            } else {
+                alert(`오류: ${data.error}`);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert(`요청 중 오류가 발생했습니다: ${error}`);
         }
-    })
+    });
 
     // 드롭다운 숨김
     selectElement.style.display = 'none';
 }
+
+
 
 
 function updateOption(selectElement) {

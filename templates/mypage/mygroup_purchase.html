@@ -8,23 +8,21 @@
 {%extends "index.html"%}
 {%block section%}
 <script>
-	// $(document).ready(function(){
-	// 	$('#idoption:contaions("{{seller}}")').prop("selected",true);
-	// })
 	function openTab(tabName) {
         const currentUrl = window.location.origin;
         let newUrl = "";
 
         if (tabName === "Tab1") {
-            newUrl = currentUrl + "/mygroup_purchase_sell";
+            newUrl = "/mygroup_purchase_sell";
         } else if (tabName === "Tab2") {
-            newUrl = currentUrl + "/mygroup_purchase_buy";
+            newUrl = "/mygroup_purchase_buy";
         }
 
         window.location.href = newUrl;
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../../static/scripts/mygp.js"></script>
 <div class="tab-container">
     <div class="tabs {% if tab == 'Tab1' %}on{% endif %}" style="text-align: left;" onclick="openTab('Tab1')">내가 열고 있는 공동구매</div>
@@ -128,7 +126,7 @@
 		</div>
   	</div>
   	<div id="Tab2" class="tab">
-	{% if total_buy|default(0) >0 %}
+	{% if total_buy |default(0) >0 %}
 		<h1 style="text-align: left;">Total {{total_buy}}</h1>
 		<!--내가 열고 있는 공동구매 섹션-->
 		<div class="buy__list" name="buyer" id="buyer" onchange="location=this.value">

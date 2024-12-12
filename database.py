@@ -416,13 +416,13 @@ class DBhandler:
         return new_dict
     
     def get_gp_bybuyer(self, buyer):
-        gps = self.db.child("gp_item").get()
+        gps = self.db.child("gp_item").get()  # 전체 GP 아이템 가져오기
         target_values = []
         target_keys = []
 
         for gp in gps.each():
-            value = gp.val()
-            key_value = gp.key
+            value = gp.val()  # GP 아이템 값
+            key_value = gp.key()  # GP 아이템의 키값
 
             # participants 목록 가져오기
             participants = self.db.child("gp_item").child(key_value).child("participants").get().val()
@@ -444,7 +444,8 @@ class DBhandler:
 
 
 
-    def edit_profile(self,id_, data, img_path):
+
+    def edit_profile(self,id_, data, img_path,flower_index):
         key = -1
         val = {}
         users = self.db.child("user").get()
@@ -457,6 +458,7 @@ class DBhandler:
             "email": val["email"],
             "id":id_,
             "phone":data['phone'],
+            "flower_index": flower_index,
             "pw":data['pw'],
             "nickname":data['nickname'],
             "profile_image":img_path
