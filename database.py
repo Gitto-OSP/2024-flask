@@ -416,21 +416,21 @@ class DBhandler:
         return new_dict
     
     def get_gp_bybuyer(self, buyer):
-        gps = self.db.child("gp_item").get()
+        gps = self.db.child("gp_item").get()  # 전체 GP 아이템 가져오기
         target_values = []
         target_keys = []
 
         for gp in gps.each():
-            value = gp.val()
-            key_value = gp.key
+            value = gp.val()  # GP 아이템 값
+            key_value = gp.key()  # GP 아이템의 키값
 
             # participants 목록 가져오기
-            participants = self.db.child("gp_item").child(value['name']).child("participants").get().val()
+            participants = self.db.child("gp_item").child(key_value).child("participants").get().val()
 
-            # participants 목록에 buyer ID가 있는지 확인
-            if participants and buyer in participants:
-                participant_count = len(participants)
-                
+            # participants 목록에서 user_id가 buyer와 일치하는지 확인
+            if participants and any(participant.get('user_id') == buyer for participant in participants.values()):
+                participant_count = len(participants) if participants else 0
+
                 # 참가자 수 추가
                 value['participant_count'] = participant_count
                 target_values.append(value)
@@ -444,24 +444,24 @@ class DBhandler:
 
 
     def edit_profile(self,id_, data, img_path,flower_index):
-        key = -1
-        val = {}
-        users = self.db.child("user").get()
-        for res in users.each():
-            value = res.val()
-            if value['id']==id_:
-                key = res.key()
-                val = value
-        new_prof={
-            "email": val["email"],
-            "id":id_,
-            "phone":data['phone'],
-            "flower_index": flower_index,
-            "pw":data['pw'],
-            "nickname":data['nickname'],
-            "profile_image":img_path
-        }
-        self.db.child("user").child(key).set(new_prof)
+            key = -1
+            val = {}
+            users = self.db.child("user").get()
+            for res in users.each():
+                value = res.val()
+                if value['id']==id_:
+                    key = res.key()
+                    val = value
+            new_prof={
+                "email": val["email"],
+                "id":id_,
+                "phone":data['phone'],
+                "flower_index": flower_index,
+                "pw":data['pw'],
+                "nickname":data['nickname'],
+                "profile_image":img_path
+            }
+            self.db.child("user").child(key).set(new_prof)
     
     # db 연결 바꾸기...
     def get_sale_byname(self,uid,name):

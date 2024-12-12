@@ -7,6 +7,7 @@ import math
 import random
 import string
 import re
+import traceback
 
 application = Flask(__name__)
 application.config["SECRET_KEY"] = "helloosp"
@@ -313,7 +314,7 @@ def profile_edit_confirm():
     DB.edit_profile(session["id"],data,filename,flower_index)
     return redirect(url_for('view_mypage'))
 
-@application.route("/mygroup_purchase")
+@application.route("/mygroup_purchase_sell")
 def view_myGroupBuy_Sell():
     page = request.args.get("page", 0, type=int)
     seller = request.args.get("seller")
@@ -331,10 +332,13 @@ def view_myGroupBuy_Sell():
             locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:(i + 1) * per_row])
+    
+    print("Total Sell:", sell_counts)
 
     return render_template(
-        "./mypage/mygroup_purchase.html", 
-        data_sell=data_sell.items(), 
+        "/mypage/mygroup_purchase.html", 
+        data_sell=data_sell.items(),
+        tab = "Tab1", 
         row1=locals().get('data_0', {}).items(),
         row2=locals().get('data_1', {}).items(),
         limit=per_page,
@@ -344,6 +348,7 @@ def view_myGroupBuy_Sell():
         seller=seller
     )
 
+@application.route("/mygroup_purchase_buy")
 def view_myGroupBuy_Buy():
     page = request.args.get("page", 0, type=int)
     buyer = request.args.get("buyer")
@@ -363,8 +368,9 @@ def view_myGroupBuy_Buy():
             locals()['data_{}'.format(i)] = dict(list(data_buy.items())[i * per_row:(i + 1) * per_row])
 
     return render_template(
-        "./mypage/mygroup_purchase.html", 
-        data_buy=data_buy.items(), 
+        "/mypage/mygroup_purchase.html", 
+        data_buy=data_buy.items(),
+        tab = "Tab2",
         row1=locals().get('data_0', {}).items(),
         row2=locals().get('data_1', {}).items(),
         limit=per_page,
@@ -451,7 +457,15 @@ def view_brand1():
 
 @application.route("/mygroup_purchase")
 def mygroup_purchase():
-    return render_template("./mypage/mygroup_purchase.html")
+    data_sell = DB.get_gp_byseller(session['id'])
+    total_sell = len(data_sell) if data_sell else 0
+    
+    return render_template(
+        "./mypage/mygroup_purchase.html", 
+        data_sell=data_sell.items(),
+        total_sell=total_sell, 
+        tab="Tab1"
+    )
 
 @application.route("/mySpecificReview")
 def mySpecificReview():
@@ -657,10 +671,14 @@ def update_status():
         return jsonify({"success": False, "error": "잘못된 요청입니다."}), 400
 
     try:
+        # 데이터베이스 업데이트
         DB.db.child("gp_item").child(name).update({"status": status})
-        return jsonify({"success": True})
+        
+        # 성공 응답
+        return jsonify({"success": True, "redirect_url": url_for('view_myGroupBuy_Sell')})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500    
+        print("오류 발생:", traceback.format_exc())  # 자세한 오류 로그 출력
+        return jsonify({"success": False, "error": str(e)}), 500   
 
 @application.route("/info_item/<name>/")
 def view_item_detail(name):
