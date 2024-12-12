@@ -8,15 +8,27 @@
 {%extends "index.html"%}
 {%block section%}
 <script>
-	$(document).ready(function(){
-		//alert("{{writer}}");
-		$('#idoption:contaions("{{seller}}")').prop("selected",true);
-	})
+	// $(document).ready(function(){
+	// 	$('#idoption:contaions("{{seller}}")').prop("selected",true);
+	// })
+	function openTab(tabName) {
+        const currentUrl = window.location.origin;
+        let newUrl = "";
+
+        if (tabName === "Tab1") {
+            newUrl = currentUrl + "/mygroup_purchase_sell";
+        } else if (tabName === "Tab2") {
+            newUrl = currentUrl + "/mygroup_purchase_buy";
+        }
+
+        window.location.href = newUrl;
+    }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="../../static/scripts/mygp.js"></script>
 <div class="tab-container">
-    <div class="tabs on" style="text-align: left;" onclick="openTab('Tab1')">내가 열고 있는 공동구매</div>
-    <div class="tabs" style="text-align: right;" onclick="openTab('Tab2')">내가 참여한 공동구매</div>
+    <div class="tabs {% if tab == 'Tab1' %}on{% endif %}" style="text-align: left;" onclick="openTab('Tab1')">내가 열고 있는 공동구매</div>
+    <div class="tabs {% if tab == 'Tab2' %}on{% endif %}" style="text-align: right;" onclick="openTab('Tab2')">내가 참여한 공동구매</div>
 </div>
 
 <div class="tab_wrap">
@@ -113,9 +125,10 @@
 			{{session['id']}}님이 열고 있는 공동구매가 없습니다.
 		   </p>
 		   {% endif %}
-  </div>
-  <div id="Tab2" class="tab">
-	{% if total_buy>0 %}
+		</div>
+  	</div>
+  	<div id="Tab2" class="tab">
+	{% if total_buy|default(0) >0 %}
 		<h1 style="text-align: left;">Total {{total_buy}}</h1>
 		<!--내가 열고 있는 공동구매 섹션-->
 		<div class="buy__list" name="buyer" id="buyer" onchange="location=this.value">
@@ -147,7 +160,7 @@
 						</span>
 					</div>
 					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
-						<button class="btn" id="downloadExcel" onclick="fn_ExcelDown()">상세 다운로드</button>
+						<button class="btn" id="downloadExcel" onclick="fn_ExcelDown('{{value}}')">상세 다운로드</button>
 					</div>
 					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
 						<span class="status_text">{{value.status}} 중</span>
@@ -222,7 +235,7 @@
 				<ul style="list-style: none;">
 					<li>
 						{% for i in range(page_count) %}
-						<a id="page{{i}}"class="page_btn" href="{{url_for('view_myGroupBuy',page=i)}}" color="black">{{i+1}}</a>
+						<a id="page{{i}}"class="page_btn" href="{{url_for('view_myGroupBuy_Buy',page=i)}}" color="black">{{i+1}}</a>
 						{% endfor %}
 					</li>
 				</ul>
@@ -238,5 +251,6 @@
 		{{session['id']}}님이 참여하고 있는 공동구매가 없습니다.
 	</p>
 	{% endif %}
+	</div>
 </div>
 {%endblock section%}

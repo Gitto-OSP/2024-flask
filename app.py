@@ -330,10 +330,13 @@ def view_myGroupBuy_Sell():
             locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:(i + 1) * per_row])
+    
+    print("Total Sell:", sell_counts)
 
     return render_template(
-        "./mypage/mygroup_purchase.html", 
-        data_sell=data_sell.items(), 
+        "/mypage/mygroup_purchase.html", 
+        data_sell=data_sell.items(),
+        tab = "Tab1", 
         row1=locals().get('data_0', {}).items(),
         row2=locals().get('data_1', {}).items(),
         limit=per_page,
@@ -343,6 +346,7 @@ def view_myGroupBuy_Sell():
         seller=seller
     )
 
+@application.route("/mygroup_purchase")
 def view_myGroupBuy_Buy():
     page = request.args.get("page", 0, type=int)
     buyer = request.args.get("buyer")
@@ -362,8 +366,9 @@ def view_myGroupBuy_Buy():
             locals()['data_{}'.format(i)] = dict(list(data_buy.items())[i * per_row:(i + 1) * per_row])
 
     return render_template(
-        "./mypage/mygroup_purchase.html", 
-        data_buy=data_buy.items(), 
+        "/mypage/mygroup_purchase.html", 
+        data_buy=data_buy.items(),
+        tab = "Tab2",
         row1=locals().get('data_0', {}).items(),
         row2=locals().get('data_1', {}).items(),
         limit=per_page,

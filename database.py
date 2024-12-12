@@ -425,12 +425,12 @@ class DBhandler:
             key_value = gp.key
 
             # participants 목록 가져오기
-            participants = self.db.child("gp_item").child(value['name']).child("participants").get().val()
+            participants = self.db.child("gp_item").child(key_value).child("participants").get().val()
 
-            # participants 목록에 buyer ID가 있는지 확인
-            if participants and buyer in participants:
-                participant_count = len(participants)
-                
+            # participants 목록에서 user_id가 buyer와 일치하는지 확인
+            if participants and any(participant.get('user_id') == buyer for participant in participants.values()):
+                participant_count = len(participants) if participants else 0
+
                 # 참가자 수 추가
                 value['participant_count'] = participant_count
                 target_values.append(value)
@@ -441,6 +441,7 @@ class DBhandler:
         # 새로운 딕셔너리 생성
         new_dict = {k: v for k, v in zip(target_keys, target_values)}
         return new_dict
+
 
 
     def edit_profile(self,id_, data, img_path):

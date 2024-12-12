@@ -30,6 +30,22 @@
                 <div class="listobj_status"><strong>진행상황: </strong>
                     <span class="status_text">{{data.status}} 중</span>
                 </div><br>
+                <script> 
+                    const statusWidthMap = {
+                        "모집": "20%",
+                        "주문": "40%",
+                        "수취": "60%",
+                        "배부": "80%",
+                        "마감": "100%"
+                    };
+                
+                    // 데이터를 HTML 요소와 연결하고 스타일 설정
+                    const bar = document.getElementsByClassName('listobj_pbar');
+                    if (bar) {
+                        const width = statusWidthMap["{{data.status}}"]; // 상태에 따른 width
+                        bar.style.width = width;
+                    }
+                </script>
                 <div class="provideRegions">
                     <label for="Regions"><strong>수령 장소 :</strong></label>
                     {% for regions in data.provideRegions %}
@@ -59,6 +75,8 @@
                 <br>
                 {% if data.status == '모집' %}
                 <button class="participate-btn" onclick="participate()">참여하기</button>
+                {% else %}
+                <button class="participate-btn" style="background-color: gray;" disabled>모집이 끝났습니다</button>
                 {% endif %}
             </div>
         </section>
@@ -111,27 +129,6 @@
                 alert("서버와 통신하지 못했습니다.");
             });
         }
-        
-        const statusWidthMap = {
-            "모집": "20%",
-            "주문": "40%",
-            "수취": "60%",
-            "배부": "80%",
-            "마감": "100%"
-        };
-
-        // 데이터를 HTML 요소와 연결하고 스타일 설정
-
-        const bar = document.getElementsByClassName('listobj_pbar');
-        if (bar) {
-            const width = statusWidthMap[data.status]; // 상태에 따른 width
-            bar.style.width = width;
-            bar.style.backgroundColor = "#0F4012"; // 스타일 설정
-            bar.style.height = "100%";
-            bar.style.borderRadius = "10px";
-        }
-
-
     </script>
 </body>
 </html>

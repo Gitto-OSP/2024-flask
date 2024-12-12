@@ -1,12 +1,3 @@
-function openTab(tabName) {
-    document.querySelectorAll('.tab, .tabs').forEach(function(el) {
-        el.classList.remove('on');
-    });
-    document.getElementById(tabName).classList.add('on');
-    document.querySelector('.tabs[onclick="openTab(\'' + tabName + '\')"]').classList.add('on');
-}
-
-
 function toggleDropdown(button) {
     const container = button.previousElementSibling; 
     container.style.display = container.style.display === 'none' || container.style.display === '' ? 'inline-block' : 'none';
@@ -56,9 +47,38 @@ function updateOption(selectElement) {
     // DB 작업 추가
 }
 
-function fn_ExcelDown(){
-//DB작업 이후 경로 업데이트
-    var comSubmit = new ComSubmit();
-    comSubmit.setUrl();
-    comSubmit.submit();
+function fn_ExcelDown(value) {
+    if (!value || !value.name) {
+        console.error("Invalid value object. Ensure 'value.name' is provided.");
+        return;
+    }
+
+    // Firebase 데이터베이스 경로 정의 (value.name 사용)
+    var databaseRef = firebase.database().ref(value.name + "/participants");
+
+    // 데이터를 읽어온 후 Excel로 변환
+    databaseRef.once("value").then((snapshot) => {
+        var data = [];
+        snapshot.forEach((childSnapshot) => {
+            var participant = childSnapshot.val();
+            data.push({
+                email: participant.email || "",
+                option: participant.option || "",
+                user_id: participant.user_id || "",
+                price: participant.price || ""
+            });
+        });
+
+        // JSON 데이터를 워크시트로 변환
+        var worksheet = XLSX.utils.json_to_sheet(data);
+
+        // 워크북 생성
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Participants");
+
+        // Excel 파일 다운로드 (value.name 기반으로 파일명 설정)
+        XLSX.writeFile(workbook, `${value.name}_participants.xlsx`);
+    }).catch((error) => {
+        console.error(`Error fetching participants data for ${value.name}:`, error);
+    });
 }
