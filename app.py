@@ -143,6 +143,19 @@ def view_gonggu():
                            total=item_counts,
                            category=category)
 
+@application.route('/api/gpitems', methods=['GET'])
+def fetch_items():
+    try:
+        year = int(request.args.get('year'))
+        month = int(request.args.get('month'))
+        print(f"Year: {year}, Month: {month}")  # 입력 값 확인
+        items = DB.get_gpitems_by_month(year, month)
+        print("Fetched items:", items)  # 쿼리 결과 확인
+        return jsonify(items)
+    except Exception as e:
+        print("Error:", str(e))  # 오류 출력
+        return jsonify({"error": str(e)}), 500
+
 @application.route("/graduatebrands")
 def view_graduatebrands():
     page = request.args.get("page",0,type=int)
@@ -312,9 +325,88 @@ def profile_edit_confirm():
     DB.edit_profile(session["id"],data,filename,flower_index)
     return redirect(url_for('view_mypage'))
 
+@application.route("/mygroup_purchase_sell")
+def view_myGroupBuy_Sell():
+    page = request.args.get("page", 0, type=int)
+    seller = request.args.get("seller")
+    per_page = 10
+    per_row = 5
+    row_count = int(per_page / per_row)
+    start_idx = per_page * page
+    end_idx = per_page * (page + 1)
+    data_sell = DB.get_gp_byseller(session['id'])
+    
+    sell_counts = len(data_sell) if data_sell else 0
+    
+    for i in range(row_count):  # last row
+        if (i == row_count - 1) and (sell_counts % per_row != 0):
+            locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data_sell.items())[i * per_row:(i + 1) * per_row])
+    
+    print("Total Sell:", sell_counts)
+
+    return render_template(
+        "/mypage/mygroup_purchase.html", 
+        data_sell=data_sell.items(),
+        tab = "Tab1", 
+        row1=locals().get('data_0', {}).items(),
+        row2=locals().get('data_1', {}).items(),
+        limit=per_page,
+        page=page,
+        page_count=int((sell_counts / per_page) + 1),
+        total_sell=sell_counts, 
+        seller=seller
+    )
+
+@application.route("/mygroup_purchase_buy")
+def view_myGroupBuy_Buy():
+    page = request.args.get("page", 0, type=int)
+    buyer = request.args.get("buyer")
+    per_page = 10
+    per_row = 5
+    row_count = int(per_page / per_row)
+    
+    # 데이터 가져오기
+    data_buy = DB.get_gp_bybuyer(session['id']) or {}
+    buy_counts = len(data_buy)
+
+    # 디버깅
+    print(f"###### Page: {page}")
+    print(f"###### Buyer: {buyer}")
+    print(f"###### Data Buy: {data_buy}")
+    print(f"###### Buy Counts: {buy_counts}")
+
+    # Row 데이터 생성
+    data_rows = []
+    for i in range(row_count):
+        if (i == row_count - 1) and (buy_counts % per_row != 0):
+            data_rows.append(dict(list(data_buy.items())[i * per_row:]))
+        else:
+            data_rows.append(dict(list(data_buy.items())[i * per_row:(i + 1) * per_row]))
+
+    row1 = data_rows[0].items() if len(data_rows) > 0 else {}
+    row2 = data_rows[1].items() if len(data_rows) > 1 else {}
+
+    # 템플릿 렌더링
+    import math
+    return render_template(
+        "/mypage/mygroup_purchase.html", 
+        data_buy=data_buy.items(),
+        tab="Tab2",
+        row1=row1,
+        row2=row2,
+        limit=per_page,
+        page=page,
+        page_count=int((buy_counts / per_page) + 1),
+        total_buy=buy_counts,
+        buyer=buyer
+    )
 @application.route("/myGroupBuy")
 def view_myGroupBuy():
     return render_template("./mypage/myGroupBuy.html")
+
+
 
 @application.route("/myReview")
 def view_myReview():
@@ -511,7 +603,7 @@ def reg_brand_submit_post():
     
     brand_data = process_brand_data(form_data, files_data)  # 데이터 정제
     DB.insert_brand(brand_data)
-    return render_template("./details/brand_1.html", data=brand_data)
+    return render_template("./details/brand_detail.html", data=brand_data)
 
 @application.errorhandler(500)
 def internal_error(error):

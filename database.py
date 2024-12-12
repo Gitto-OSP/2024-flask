@@ -1,5 +1,6 @@
 import pyrebase
 import json 
+import datetime
 
 class DBhandler:
     def __init__(self ):
@@ -69,8 +70,33 @@ class DBhandler:
         gp = self.db.child("gp_item").get().val()
         return gp
     
+    def get_gpitems_by_month(self, year, month):
+        ref = self.db.child("gp_item")  # Firebase에서 gp_item 경로
+        # 해당 월의 시작일과 마지막 일 계산
+        start_date = f"{year}-{month:02d}-01"
+        end_date = f"{year}-{month:02d}-{(datetime.date(year, month, 1) + datetime.timedelta(days=31)).replace(day=1) - datetime.timedelta(days=1):%d}"
+
+        # Firebase에서 데이터 쿼리
+        query = ref.order_by_child('startDate').start_at(start_date).end_at(end_date)
+        results = query.get()
+
+        if not results.each():
+            print("#############results none#############")
+            return []
+
+        return [
+            {
+                "name": item.val().get("name", ""),
+                "seller": item.val().get("seller", ""),
+                "startDate": item.val().get("startDate", ""),
+                "endDate": item.val().get("endDate", "")
+            }
+            for item in results.each()
+        ]
+
     def get_gp_item_for_calendar(self, start_date, end_date):
         gps = self.db.child("gp_item").order_by_child("startDate").start_at(start_date).end_at(end_date).get()
+        print(gps)
         return gps
     
     def get_gp_bycategory(self,cate):
@@ -347,19 +373,18 @@ class DBhandler:
         return linked_items or []
     
     #공동구매
-    def insert_gp_item(self,name,data,img_path, image_paths):
+    def insert_gp_item(self,name,data,img_path):
         gp_item_info={
             "name":data['name'],
             "seller":data['seller'],
             "price":data['price'],
             "company":data['company'],
             "provideRegions":data['provideRegions'],
-            "options":data.getlist('options[]'),
+            "options":data['options[]'],
             "startDate":data['startDate'],
             "endDate":data['endDate'],
             "status":data['status'],
-            "img_path":img_path,
-            "img_paths" : image_paths,
+            "img_path":'static/DBimage/'+img_path,
             "userComments":data['userComments'],
             "participants": {}
         }
@@ -420,21 +445,27 @@ class DBhandler:
         target_values = []
         target_keys = []
 
+        # GP 목록 확인
+        if not gps.each():
+            print("###### No GP items found!")
+            return {}
+
         for gp in gps.each():
             value = gp.val()  # GP 아이템 값
             key_value = gp.key()  # GP 아이템의 키값
 
             # participants 목록 가져오기
             participants = self.db.child("gp_item").child(key_value).child("participants").get().val()
+            
+            # participants 존재 여부 및 타입 확인
+            if participants and isinstance(participants, dict):
+                if any(participant.get('user_id') == buyer for participant in participants.values()):
+                    participant_count = len(participants)
 
-            # participants 목록에서 user_id가 buyer와 일치하는지 확인
-            if participants and any(participant.get('user_id') == buyer for participant in participants.values()):
-                participant_count = len(participants) if participants else 0
-
-                # 참가자 수 추가
-                value['participant_count'] = participant_count
-                target_values.append(value)
-                target_keys.append(key_value)
+                    # 참가자 수 추가
+                    value['participant_count'] = participant_count
+                    target_values.append(value)
+                    target_keys.append(key_value)
 
         print("###### Target Values:", target_values)
 
