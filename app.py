@@ -636,8 +636,10 @@ def reg_gpitem_submit_post():
     form_data = request.form.to_dict()
     files_data = request.files.getlist('selectedFile')
     form_data['provideRegions'] = request.form.getlist('provideRegions')
-    form_data['optionInput'] = request.form.getlist('optionInput') 
+    form_data['optionInput'] = request.form.getlist('options[]') 
     seller_email = session['email']
+    # 이미지 파일 처리
+    img_path_list = []
     # 이미지 파일 처리
     img_path_list = []
     
@@ -700,24 +702,29 @@ def participate():
         return jsonify({"error": "서버 오류 발생", "details": error_message}), 500
 
 
-@application.route('/update_gpstatus', methods=['POST'])
-def update_gpstatus():
-    data = request.get_json()
+@application.route('/edit_gpitem/<name>', methods=['GET'])
+def edit_gpitem(name):
+    gpitem = DB.get_gp_byname(name)  # 데이터베이스에서 항목 조회
+    return render_template('./mypage/edit_gp.html', gpitem=gpitem)
 
-    name = data.get('name')  # 클라이언트에서 보낸 공동구매 이름
-    status = data.get('status')  # 클라이언트에서 보낸 상태 값
-
-    if not name or not status:
-        return jsonify({'success': False, 'error': 'Invalid input'}), 400
-
+@application.route('/update_gpitem_post/<name>', methods=['POST'])
+def update_gpitem_post(name):
     try:
-        # 데이터베이스 업데이트 로직
-        DB.db.child("gp_item").child(name).update({"status": status})
+        # POST 데이터 확인
+        print("POST 요청 데이터:", request.form)
 
-        # 상태 업데이트 성공 메시지 반환
-        return jsonify({'success': True, 'message': 'Status updated successfully'})
+        # 데이터 추출
+        status = request.form['status']
+        user_comments = request.form['userComments']
+
+        # 데이터 업데이트
+        update_result = DB.update_gpitem(name, status, user_comments)
+        print("업데이트 결과:", update_result)  # 성공 여부 출력
+
+        return redirect('/mygroup_purchase_sell')  # 성공 시 리다이렉트
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+        print("업데이트 중 오류 발생:", e)
+        return "업데이트 실패", 500
 
       
 @application.route("/info_item/<name>/")

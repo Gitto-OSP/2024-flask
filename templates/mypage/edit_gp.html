@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공동구매 수정</title>
+    <link rel="stylesheet" href="../../static/styles/reg.css">
+    <link rel="stylesheet" href="../../static/styles/regImage.css">
+    <link rel="stylesheet" href="../../static/styles/reg_group_purchase.css">
+</head>
+
+<body>
+    {% extends "index.html" %}
+    {% block section %}
+
+    <div id="writeContainer">
+        <h1>공동구매 수정하기</h1>
+
+        <form action="/update_gpitem_post/{{ gpitem.name }}" enctype="multipart/form-data" method="post">
+            <div>
+                <h2>기본 정보</h2>
+                <div id="basicInfoContainer">
+                    <label for="seller">주최자 ID</label>
+                    <input type="text" name="seller" id="seller" value="{{ gpitem.seller }}" readonly>
+
+                    <label for="name">상품 이름</label>
+                    <input type="text" name="name" id="name" value="{{ gpitem.name }}" readonly>
+
+                    <label for="price">가격</label>
+                    <input type="number" name="price" id="priceInput" value="{{ gpitem.price }}" readonly>
+
+                    <label for="company">업체명</label>
+                    <input type="text" name="company" id="company" value="{{ gpitem.company }}" readonly>
+
+                    <label for="period">공동구매 기간</label>
+                    <div id="periodContainer">
+                        <input type="date" name="startDate" id="startDate" class="input-style" value="{{ gpitem.startDate }}" readonly>
+                        <span id="period-gap">~</span>
+                        <input type="date" name="endDate" id="endDate" class="input-style" value="{{ gpitem.endDate }}" readonly>
+                    </div>
+
+                    <label for="status">진행 상황</label>
+                    <select id="status" name="status" required>
+                        <option value="모집" {% if gpitem.status == "모집" %}selected{% endif %}>모집</option>
+                        <option value="주문" {% if gpitem.status == "주문" %}selected{% endif %}>주문</option>
+                        <option value="수취" {% if gpitem.status == "수취" %}selected{% endif %}>수취</option>
+                        <option value="배부" {% if gpitem.status == "배부" %}selected{% endif %}>배부</option>
+                        <option value="마감" {% if gpitem.status == "마감" %}selected{% endif %}>완료</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <h2>상품 설명</h2>
+                <textarea id="write-description" class="descTextarea" name="userComments" required>{{ gpitem.userComments }}</textarea>
+            </div>
+
+            <input class="submit-btn" type="submit" value="수정하기">
+        </form>
+    </div>
+
+    <script src="../../static/scripts/reg.js"></script>
+    {% endblock section %}
+</body>
+
+</html>

@@ -549,3 +549,41 @@ class DBhandler:
                         }
                         linked_items.append(item)
         return linked_items or []
+    
+    def update_gpitem(self, name, status, usercomments):
+        try:
+            # 데이터 가져오기
+            gpitems = self.db.child("gp_item").get()
+            if not gpitems:
+                print("데이터베이스에서 아무 데이터도 반환되지 않았습니다.")
+                return "No data found", 404
+
+            # 데이터 매칭
+            key = None
+            for res in gpitems.each():
+                value = res.val()  # Firebase 데이터 값 가져오기
+                print(f"현재 데이터: {value} / 키: {res.key()}")  # key() 메서드로 키 가져오기
+                if value.get("name") == name:  # name으로 매칭
+                    key = res.key()  # 매칭된 키 저장
+                    print(f"매칭된 키: {key}")
+                    break
+
+            if not key:
+                print(f"'{name}'와 일치하는 항목이 없습니다.")
+                return f"Item with name '{name}' not found", 404
+
+            # 업데이트 데이터
+            update_data = {
+                "status": status,
+                "userComments": usercomments
+            }
+            print(f"업데이트 데이터: {update_data}")
+
+            # Firebase 업데이트
+            self.db.child("gp_item").child(key).update(update_data)
+            print(f"'{name}' 업데이트 성공")
+            return f"Item '{name}' updated successfully", 200
+
+        except Exception as e:
+            print(f"데이터베이스 업데이트 중 오류: {e}")
+            return f"Update failed: {str(e)}", 500

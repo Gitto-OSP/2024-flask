@@ -50,20 +50,11 @@
 							<button class="btn" id="downloadExcel" data-value = "{{value.name}}">상세 다운로드</button>
 						</div>					
 
-						<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
-							<span class="status_text">{{value.status}} 중</span>
-							<span class="dropdown-container">
-								<select class="dropdown" onchange="handleSelectChange(event, this, '{{ value.name }}')" style="display: none;">
-									<option id="모집">모집</option>
-									<option id="주문">주문</option>
-									<option id="수취">수취</option>
-									<option id="배부">배부</option>
-									<option id="마감">마감</option>
-								</select>
-								<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
-								<button class="btn save" style="display: none;" onclick="updateStatus(this.previousElementSibling.previousElementSibling, '{{ value.name }}')">저장</button>
-							</span>
+						<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
+							<span class="status_text">{{ value.status }} 중</span>
+							<button class="btn" id="changestat" onclick="navigateToEditPage('{{value.name}}')">공동구매 현황 변경</button>
 						</div>
+						
 						<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 					</div>
 				</div>
@@ -83,19 +74,11 @@
 						<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중
 							<button class="btn" id="downloadExcel" data-value = "{{value.name}}">상세 다운로드</button>
 						</div>
-						<div class="listobj_status">공동구매 현황 <span class="bar">|</span> 
-							<span class="status_text">{{value.status}} 중</span>
-							<span class="dropdown-container">
-								<select class="dropdown" onchange="handleSelectChange(event, this, '{{ value.name }}')" style="display: none;">
-									<option id="모집">모집</option>
-									<option id="주문">주문</option>
-									<option id="수취">수취</option>
-									<option id="배부">배부</option>
-									<option id="마감">마감</option>
-								</select>
-								<button class="btn" id="changestat" onclick="toggleDropdown(this)">공동구매 현황 변경</button>
-							</span>
+						<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
+							<span class="status_text">{{ value.status }} 중</span>
+							<button class="btn" id="changestat" onclick="navigateToEditPage('{{value.name}}')">공동구매 현황 변경</button>
 						</div>
+						
 						<div class="listobj_data">공동구매 기간 <span class="bar">|</span> {{value.startDate}} ~ {{value.endDate}}</div>
 					</div>
 				</div>
@@ -150,14 +133,6 @@
 						{% for participant_id, participant in value.buyer_participants.items() %}
 							<span class="option-text">{{ participant.option }}</span>
 						{% endfor %} 
-						<span class="dropdown-container">
-							<select class="dropdown" onchange="updateOption(this)" style="display: none;">
-								{% for option in value.options %}
-									<option value="{{option}}">{{option}}</option>
-								{% endfor %}
-							</select>
-							<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
-						</span>
 					</div>
 					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중</div>
 					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
@@ -195,15 +170,9 @@
 						</button>
 					</div>
 					<div class="listobj_option">선택 옵션 <span class="bar">|</span> 
-						<span class="option-text">{{value.buyer_participants[0].option}}</span>
-						<span class="dropdown-container">
-							<select class="dropdown" onchange="updateOption(this)" style="display: none;">
-								{% for option in value.options %}
-									<option value="{{option}}">{{option}}</option>
-								{% endfor %}
-							</select>
-							<button class="btn" id="changestat" onclick="toggleDropdown(this)">옵션 변경</button>
-						</span>
+						{% for participant_id, participant in value.buyer_participants.items() %}
+							<span class="option-text">{{ participant.option }}</span>
+						{% endfor %}
 					</div>
 					<div class="listobj_part">공동구매 참여자 <span class="bar">|</span> <span style="color:#008813;" id="participant-count"> {{value.participant_count}} </span>명의 벗이 함께하는 중</div>
 					<div class="listobj_status">공동구매 현황 <span class="bar">|</span>
@@ -254,4 +223,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../../static/scripts/mygp.js"></script>
+<script>
+    function navigateToEditPage(gpitemName) {
+        const url = `/edit_gpitem/${gpitemName}`;
+        window.location.href = url;
+    }
+</script>
+
 {%endblock section%}
